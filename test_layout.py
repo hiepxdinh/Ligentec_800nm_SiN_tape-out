@@ -16,6 +16,8 @@ import numpy as np
 # from waveguide_loop.cell import WaveguideLoop
 from Aux_ring import HeaterNotchRacetrack, Aux_all_pass_ring, Aux_add_drop_ring
 from All_pass_ring_taper import All_pass_ring_taper
+from Aux_ring_taper import Aux_add_drop_ring_taper
+from Bragg_grating import Unit_Cell, Bragg_grating
 #
 # #######################################
 # # Global parameters
@@ -28,9 +30,9 @@ from All_pass_ring_taper import All_pass_ring_taper
 
 chip_elements = list()
 
-###################################
-# Section for all-pass ring
-###################################
+##################################
+### Section for all-pass ring
+##################################
 
 # Radius: 50um
 radius = 50.0
@@ -72,25 +74,28 @@ for i, gap in enumerate(separation):
     # ring_lv.visualize(annotate=True)
     chip_elements.append(i3.SRef(reference=ring, position=(0, 1500)))
 
-# ####################################
-# # Generate the main layout
-# ####################################
+##################################
+### Section for all-pass ring
+##################################
+
+aux_ring = Aux_add_drop_ring_taper()
+aux_ring_lv = aux_ring.Layout(main_radius=300, aux_radius=50)
+chip_elements.append(i3.SRef(reference=aux_ring, position=(0, 2500)))
+
+####################################
+### Generate the main layout
+####################################
 chip_design = i3.LayoutCell(name = "Top")
 
 chip_layout = chip_design.Layout(elements=chip_elements)
 
 chip_layout.write_gdsii("gds_output/ligentec.gds")
 
-############################
-# For component testing
-############################
+# ############################
+# ### For component testing
+# ############################
 #
-# chip_elements = list()
-#
-# test_compnent = Aux_add_drop_ring()
-#
-# # test_compnent = pdk.HeaterNotchRacetrack()
-#
-# test_compnent_lv = test_compnent.Layout(main_radius=450.0, aux_radius=45.0, ring_gap=2.0)
-# test_compnent_lv.visualize(annotate=True)
-# test_compnent_lv.write_gdsii("gds_output/test_compnent_lv.gds")
+# test_component = Aux_add_drop_ring()
+# test_component_lv = test_component.Layout(main_radius=300, aux_radius=50, ring_gap=1.0, ring_width=1.5)
+# # test_component_lv.visualize(annotate=True)
+# test_component_lv.write_gdsii("gds_output/test_component_lv.gds")

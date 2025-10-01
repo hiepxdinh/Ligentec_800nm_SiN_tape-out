@@ -1,6 +1,7 @@
 import sys
 
 from numpy.f2py.rules import aux_rules
+from wx.lib.agw.cubecolourdialog import deg2rad
 
 sys.path.append("C:/pdk/Ligentec_SiN_2025/ipkiss")
 
@@ -59,10 +60,12 @@ def find_top_connector_elements(dc):
     arcbend2_inst = dc.instances["arcbend2"]
 
     points = []
-    points.extend(_get_points(arcbend2_inst, angle=45))
-    right_points = _get_points(arcbend1_inst, angle=0)
+    right_points = _get_points(arcbend1_inst, angle=60)
     right_points_reversed = right_points[::-1]
     points.extend(right_points_reversed)
+    left_points = _get_points(arcbend2_inst, angle=-15)
+    left_points_reversed = left_points[::1]
+    points.extend(left_points_reversed)
     return i3.Shape(points=points)
 
 class AddDropRacetrack(i3.PCell):
@@ -211,7 +214,8 @@ class AddDropRacetrack(i3.PCell):
             )
 
         def _generate_ports(self, ports):
-            return i3.expose_ports(
+            ports += i3.OpticalPort(name="center", position=(0.0, self.radius))
+            ports += i3.expose_ports(
                 self.instances,
                 {
                     "dc:in0": "in0",
@@ -220,6 +224,7 @@ class AddDropRacetrack(i3.PCell):
                     "wg_top:in0": "in1",
                 },
             )
+            return ports
 
     class Netlist(i3.NetlistFromLayout):
         pass
@@ -357,21 +362,51 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
             left_shape.start_face_angle = 135
             left_shape.end_face_angle = 45
             right_shape.start_face_angle = 45
-            right_shape.end_face_angle = 135
+            right_shape.end_face_angle =135
+
+            num_o_points = 50
+
+            angle_0 = np.linspace(-15, -60, num_o_points)
+            angle_1  = np.linspace(240, 120, num_o_points)
+            angle_2 = np.linspace(15, 60, num_o_points)
+
+            left_points = []
+            mid_points = []
+            right_points = []
+
+            for i in range(num_o_points):
+                x_0 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_0[i]))
+                y_0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0[i]))
+                left_points.append((x_0, y_0))
+
+            for i in range(num_o_points):
+                x_1 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_1[i]))
+                y_1 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_1[i]))
+
+                left_points.append((x_1, y_1))
+
+                x_2 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_2[i]))
+                y_2 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_2[i]))
+                right_points.append((x_2, y_2))
+
+            left_shape = i3.Shape(points=left_points)
+            right_shape = i3.Shape(points=right_points)
+
             right_wg = self.trace_template.cell(name=self.name + "_right_wg")
             right_wg.Layout(shape=right_shape)
 
             left_wg = self.trace_template.cell(name=self.name + "_left_wg")
             left_wg.Layout(shape=left_shape)
             insts += i3.SRef(name="vert_l", reference=left_wg, flatten=True)
+            # insts += i3.SRef(name="vert_m", reference=mid_wg, flatten=True)
             insts += i3.SRef(name="vert_r", reference=right_wg, flatten=True)
 
             if wire_length > 0.0:
                 half_width = metal_width / 2.0
                 elec_in = insts["vert_l"].ports["elec_in0"]
                 elec_out = insts["vert_r"].ports["elec_in0"]
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width, 0)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width, 0)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -381,8 +416,8 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
                 )
                 routing_south_insts.update({"wire_in": wire, "wire_out": wire})
                 routing_south_specs += [
-                    i3.Place("wire_in", relative_in, -90),
-                    i3.Place("wire_out", relative_out, -90),
+                    i3.Place("wire_in", relative_in, -15),
+                    i3.Place("wire_out", relative_out, 15),
                 ]
 
                 if taper:
@@ -540,13 +575,15 @@ class NotchRacetrack(i3.PCell):
             )
 
         def _generate_ports(self, ports):
-            return i3.expose_ports(
+            ports += i3.OpticalPort(name="center", position=(0, self.radius))
+            ports += i3.expose_ports(
                 self.instances,
                 {
                     "dc:in0": "in0",
                     "dc:out0": "out0",
                 },
             )
+            return ports
 
     class Netlist(i3.NetlistFromLayout):
         pass
@@ -554,7 +591,6 @@ class NotchRacetrack(i3.PCell):
     class CircuitModel(i3.CircuitModelView):
         def _generate_model(self):
             return i3.HierarchicalModel.from_netlistview(self.netlist_view)
-
 
 class HeaterNotchRacetrack(NotchRacetrack):
     """
@@ -630,8 +666,8 @@ class HeaterNotchRacetrack(NotchRacetrack):
                 half_width = metal_width / 2.0
                 elec_in = insts["top_ring"].ports["elec_in0"]
                 elec_out = insts["top_ring"].ports["elec_out0"]
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width, 0)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width, 0)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width - 0.75, 0.75)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 0.75, - 0.75)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -641,8 +677,8 @@ class HeaterNotchRacetrack(NotchRacetrack):
                 )
                 routing_south_insts.update({"wire_in": wire, "wire_out": wire})
                 routing_south_specs += [
-                    i3.Place("wire_in", relative_in, 90),
-                    i3.Place("wire_out", relative_out, 90),
+                    i3.Place("wire_in", relative_in, 30),
+                    i3.Place("wire_out", relative_out, 150),
                 ]
 
                 if taper:
@@ -718,7 +754,7 @@ class Aux_add_drop_ring(i3.PCell):
         return HeaterAddDropRacetrack()
 
     def _default_aux_ring(self):
-        return NotchRacetrack()
+        return HeaterNotchRacetrack()
 
     class Layout(i3.LayoutView):
 
@@ -729,8 +765,8 @@ class Aux_add_drop_ring(i3.PCell):
         width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.0)
         length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
         coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
-        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)
-        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.0)
+        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.5)
+        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.5)
         euler = i3.IntProperty(
             default=0,
             doc="Use Euler Bend?",
@@ -777,20 +813,23 @@ class Aux_add_drop_ring(i3.PCell):
             length = self.length
 
             main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
-            aux_ring_height = coupler_gap +  ring_width + 2 * aux_radius + ring_width
+            aux_ring_height = coupler_gap +  ring_width + 2*aux_radius + ring_width
 
             insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring}
             instances = insts_dict
 
             specs = [
-                # i3.Place("straight_0:in0", (0.0, 0.0)),
-
-                i3.Place("main_ring:in0", (0.0, 0.0)),
-
-                i3.Place("aux_ring:in0", (0 + (main_radius+ aux_radius + ring_width + ring_gap)*np.cos(np.deg2rad(45)), (main_radius+ aux_radius + ring_width + ring_gap)*np.sin(np.deg2rad(45)) + main_ring_height/2  - aux_ring_height/2),
-                         relative_to="main_ring:in0"),
-
+                i3.Place("main_ring:center", (0.0, 0.0)),
+                i3.Place("aux_ring:center", (51.0 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.cos(np.deg2rad(0)),-49 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.sin(np.deg2rad(0))),
+                         relative_to="main_ring:center", angle=90),
                 ]
+
+            # i3.Place("aux_ring:center",
+            #          (50.0 + (main_radius + aux_radius + 2 * ring_width + ring_gap) * np.cos(np.deg2rad(0)),
+            #           -50.0 + (main_radius + aux_radius + 2 * ring_width + ring_gap) * np.sin(np.deg2rad(0))),
+            #          relative_to="main_ring:center", angle=90),
+            # ]
+
 
             return i3.place_and_route(instances, specs)
 
@@ -798,10 +837,13 @@ class Aux_add_drop_ring(i3.PCell):
                 return i3.expose_ports(
                     self.instances,
                     {
-                        # "main_ring:in0": "in0",
-                        # "straight_0:in0": "in1",
-                        # "main_ring:out0": "out0",
-                        # "straight_0:out0": "out1",
+                        "main_ring:in0": "in",
+                        "main_ring:in1": "add",
+                        "main_ring:out0": "through",
+                        "main_ring:out1": "drop",
+                        "aux_ring:in0": "aux_in",
+                        "aux_ring:out0": "aux_through",
+
                     },
                 )
 
@@ -892,8 +934,9 @@ class Aux_all_pass_ring(i3.PCell):
 
                 i3.Place("main_ring:in0", (0.0, 0.0)),
 
-                i3.Place("aux_ring:in0", (0 + (main_radius+ aux_radius + ring_width + ring_gap)*np.cos(np.deg2rad(45)), (main_radius+ aux_radius + ring_width + ring_gap)*np.sin(np.deg2rad(45)) + main_ring_height/2  - aux_ring_height/2),
+                i3.Place("aux_ring", (0 + (main_radius+ aux_radius + ring_width + ring_gap)*np.cos(np.deg2rad(0)), (main_radius+ aux_radius + ring_width + ring_gap)*np.sin(np.deg2rad(0)) + main_ring_height/2  - aux_ring_height/2),
                          relative_to="main_ring:in0"),
+                # i3.FlipV("aux_ring")
 
                 ]
 
