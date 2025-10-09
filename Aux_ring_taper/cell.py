@@ -5,8 +5,9 @@ import ligentec_an800.all as ligentec
 import ipkiss3.all as i3
 import numpy as np
 
-from Aux_ring import Aux_add_drop_ring
+from ipkiss3.pcell.cell.pcell import NameProperty
 
+from Aux_ring import Aux_add_drop_ring
 
 
 class Aux_add_drop_ring_taper(i3.Circuit):
@@ -16,6 +17,11 @@ class Aux_add_drop_ring_taper(i3.Circuit):
 
     ring_position = i3.Coord2Property(default=(0, 0),
                                       doc="the position of the ring with respect to the gc.")
+
+    name = NameProperty()
+
+    def _default_name(self):
+        return "RING"
 
     def _default_taper(self):
         return ligentec.AN800BB_EdgeCoupler_Lensed_C()
@@ -74,6 +80,9 @@ class Aux_add_drop_ring_taper(i3.Circuit):
         main_radius = i3.PositiveNumberProperty(default=50.0,doc="Radius of main rings [um]")
         aux_radius = i3.PositiveNumberProperty(default=50.0,doc="Radius of aux rings [um]")
 
+        name_position = i3.Coord2Property(default =(0.0,0.0), doc="name position", locked=True)
+        name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
+
 
         def _default_aux_ring(self):
             lo = self.cell.aux_ring.get_default_view(i3.LayoutView)
@@ -86,9 +95,19 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             # lo.set(core_width=self.bus_wg_width)
             return lo
 
-        # def _generate_instances(self, insts):
-        #     insts += i3.SRef(reference=self.inverse_taper)
-        #     insts += i3.SRef(reference=self.inverse_taper)
-        #     insts += i3.SRef(reference=self.ring)
-        #
-        #     return insts
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            name_position = self.name_position
+            fontsize = self.name_fontsize
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=name_position,
+                text=self.name,
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=fontsize,
+            )
+            return elems

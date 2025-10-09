@@ -19,6 +19,9 @@ class All_pass_ring_taper(i3.Circuit):
 
     out_taper_position = i3.NumberProperty(default=0, doc="out taper position")
 
+    # def _default_name(self):
+    #     return "RING"
+
     def _default_taper(self):
         return ligentec.AN800BB_EdgeCoupler_Lensed_C()
 
@@ -85,10 +88,3 @@ class All_pass_ring_taper(i3.Circuit):
             lo=self.cell.trace_template.get_default_view(i3.LayoutView)
             # lo.set(core_width=self.bus_wg_width)
             return lo
-
-        # def _generate_instances(self, insts):
-        #     insts += i3.SRef(reference=self.inverse_taper)
-        #     insts += i3.SRef(reference=self.inverse_taper)
-        #     insts += i3.SRef(reference=self.ring)
-        #
-        #     return insts

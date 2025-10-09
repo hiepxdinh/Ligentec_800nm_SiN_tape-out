@@ -10,6 +10,8 @@ import ligentec_an800.all as pdk
 
 import ipkiss3.all as i3
 import numpy as np
+
+from chip_frame import CSL_FRAME_10500_4850, CHS_FRAME_10500_4850_HALF, CHS_FRAME_10500_HALF_4850_HALF
 #
 # from ring_gc.cell import RingModulatorGC
 # from ring_modulator.cell import AddDropRingWithElectrode
@@ -26,9 +28,29 @@ from Bragg_grating import Unit_Cell, Bragg_grating
 # bend_radius = 200  # Bending radius used in waveguide routing
 # hot_electrode_width = 20
 # fibre_array_pich = 127
-# ebl_writing_size = (1000, 1000)
+ebl_writing_size = (1000, 1000)
 
 chip_elements = list()
+
+######################################
+# 1. Grid
+######################################
+# # #
+grid_1 = CSL_FRAME_10500_4850()
+grid_1_lo = grid_1.Layout(ebl_writing_size=ebl_writing_size)
+chip_elements.append(i3.SRef(reference=grid_1, position=(0.0, 0.0)))
+
+grid_2 = CHS_FRAME_10500_4850_HALF()
+grid_2_lo = grid_2.Layout(ebl_writing_size=ebl_writing_size)
+chip_elements.append(i3.SRef(reference=grid_2, position=(5.0, 5.0)))
+
+grid_3 = CHS_FRAME_10500_HALF_4850_HALF()
+grid_3_lo = grid_3.Layout(ebl_writing_size=ebl_writing_size)
+chip_elements.append(i3.SRef(reference=grid_3, position=(5.0, 4850/2 + 125/2)))
+
+grid_4 = CHS_FRAME_10500_HALF_4850_HALF()
+grid_4_lo = grid_4.Layout(ebl_writing_size=ebl_writing_size)
+chip_elements.append(i3.SRef(reference=grid_4, position=(10500/2 + 125/2, 4850/2 + 125/2)))
 
 ##################################
 ### Section for all-pass ring
@@ -69,18 +91,32 @@ offset = 250
 out_taper_position = 150
 gap_list = [2.05]
 for i, gap in enumerate(separation):
+    name = "All_Pass_Ring_{}".format(radius)
     ring = All_pass_ring_taper(ring_position_x=-i*h_separation+350, ring_position_y=(1-i)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
     ring_lv = ring.Layout(ring_radius=radius)
     # ring_lv.visualize(annotate=True)
     chip_elements.append(i3.SRef(reference=ring, position=(0, 1500)))
 
 ##################################
-### Section for all-pass ring
+### Section for aux ring
 ##################################
-
-aux_ring = Aux_add_drop_ring_taper()
+name = "All_Pass_Ring"
+aux_ring = Aux_add_drop_ring_taper(name=name)
 aux_ring_lv = aux_ring.Layout(main_radius=300, aux_radius=50)
 chip_elements.append(i3.SRef(reference=aux_ring, position=(0, 2500)))
+
+
+##################################
+### Section ExSpot
+##################################
+
+exspot = pdk.AN800BB_MMI2x2_85_15_C()
+exspot_lv = exspot.Layout()
+chip_elements.append(i3.SRef(reference=exspot, position=(-5000, 3000)))
+
+exspot_pkg = pdk.AN800BB_ExSpot_packaging_SMF_C()
+exspot_pkg_lv = exspot_pkg.Layout()
+chip_elements.append(i3.SRef(reference=exspot_pkg, position=(-3000, 3000)))
 
 ####################################
 ### Generate the main layout
@@ -95,7 +131,7 @@ chip_layout.write_gdsii("gds_output/ligentec.gds")
 # ### For component testing
 # ############################
 #
-# test_component = Aux_add_drop_ring()
-# test_component_lv = test_component.Layout(main_radius=300, aux_radius=50, ring_gap=1.0, ring_width=1.5)
+# test_component = Bragg_grating()
+# test_component_lv = test_component.Layout()
 # # test_component_lv.visualize(annotate=True)
 # test_component_lv.write_gdsii("gds_output/test_component_lv.gds")

@@ -9,6 +9,8 @@ import ligentec_an800.all as pdk
 from ligentec.technology import TECH
 
 from ipkiss3 import all as i3
+from ipkiss3.pcell.cell.pcell import NameProperty
+
 # from ..directional_coupler.cell import (
 #     DirectionalCouplerRing,
 #     EulerDirectionalCouplerRing,
@@ -742,7 +744,11 @@ class Aux_add_drop_ring(i3.PCell):
     Auxiliary coupled resonators
     """
 
-    _name_prefix = "Aux_ring"
+    # _name_prefix = "ring"
+    #
+    # name = NameProperty(locked=True)
+
+
     # straight = i3.ChildCellProperty(locked=True)
     main_ring = i3.ChildCellProperty(locked=True)
     aux_ring = i3.ChildCellProperty(locked=True)
@@ -772,6 +778,9 @@ class Aux_add_drop_ring(i3.PCell):
             doc="Use Euler Bend?",
             restriction=i3.RestrictValueList((0, 1)),
         )
+
+        # name_position = i3.Coord2Property(default =(0.0,0.0), doc="name position", locked=True)
+        # name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
 
         def validate_properties(self):
             validate_on_grid("width", self.width, self.__class__.__name__)
@@ -832,6 +841,24 @@ class Aux_add_drop_ring(i3.PCell):
 
 
             return i3.place_and_route(instances, specs)
+
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     name_position = self.name_position
+        #     fontsize = self.name_fontsize
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.CELLNAME,
+        #         coordinate=name_position,
+        #         text=self.name,
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=fontsize,
+        #     )
+        #     return elems
+
 
         def _generate_ports(self, ports):
                 return i3.expose_ports(

@@ -75,29 +75,45 @@ class Unit_Cell(i3.PCell):
                 },
             )
 
-unit_cell = Unit_Cell()
-unit_cell_lo = unit_cell.Layout()
-
 class Bragg_grating(i3.PCell):
-    unit_cell_lo = i3.ChildCellProperty(doc='unit cell of the grating')
+    unit_cell = i3.ChildCellProperty(doc='unit cell of the grating')
 
-    # def _default_unit_cell(self):
-    #     return Unit_Cell()
+    def _default_unit_cell(self):
+        return Unit_Cell()
 
     class Layout(i3.LayoutView):
 
-        grating_length = i3.PositiveNumberProperty(doc='Total length of the grating')
+        width_1 = i3.PositiveNumberProperty(default=1.0, doc="width of first waveguide")
+        width_2 = i3.PositiveNumberProperty(default=2.0, doc="width of second waveguide")
+        length_1 = i3.PositiveNumberProperty(default=1.0, doc="length of first waveguide")
+        length_2 = i3.PositiveNumberProperty(default=2.0, doc="length of second waveguide")
+
+        # grating_length = i3.PositiveNumberProperty(doc='Total length of the grating')
 
         period = i3.PositiveIntProperty(default = 10, doc= 'the number of times the unit cell repeats')
 
-        def _default_grating_length(self):
-            return unit_cell_lo.unit_cell_length * self.period
+        def _default_unit_cell(self):
+            unit_cell_layout = self.cell.unit_cell.get_default_view(i3.LayoutView)
+            unit_cell_layout.set(width_1=self.width_1)
+            unit_cell_layout.set(width_2=self.width_2)
+            unit_cell_layout.set(length_1=self.length_1)
+            unit_cell_layout.set(length_2=self.length_2)
+            return unit_cell_layout
 
         def _generate_instances(self, insts):
-            insts += i3.ARef(reference=self.unit_cell_lo, origin=(0, 0), period=(unit_cell_lo.unit_cell_length,0),
+            unit_cell_lo = self.cell.unit_cell.get_default_view(i3.LayoutView)
+            cell_length = unit_cell_lo.unit_cell_length
+            insts += i3.ARef(name='unit_cell', reference=self.unit_cell, origin=(0, 0), period=(cell_length,0),
                              n_o_periods=(self.period,1))
 
             return insts
+
+        def _generate_ports(self, ports):
+            unit_cell_lo = self.cell.unit_cell.get_default_view(i3.LayoutView)
+            cell_length = unit_cell_lo.unit_cell_length
+            ports += i3.OpticalPort(name="in", position=(0.0, 0))
+            ports += i3.OpticalPort(name="out", position=(self.period*cell_length, 0))
+            return ports
 
 
 
