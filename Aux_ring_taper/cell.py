@@ -13,10 +13,13 @@ from Aux_ring import Aux_add_drop_ring
 class Aux_add_drop_ring_taper(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
     aux_ring = i3.ChildCellProperty(doc="ring resonator")
-    trace_template = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
+    trace_template_in = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
+    trace_template_out = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
 
     ring_position = i3.Coord2Property(default=(0, 0),
                                       doc="the position of the ring with respect to the gc.")
+
+    linear_transition = i3.ChildCellProperty(doc="linear transition waveguide")
 
     name = NameProperty()
 
@@ -29,8 +32,15 @@ class Aux_add_drop_ring_taper(i3.Circuit):
     def _default_aux_ring(self):
         return Aux_add_drop_ring()
 
-    def _default_trace_template(self):
-        return ligentec.ligentec.WireWaveguideTemplate()
+    def _default_trace_template_in(self):
+        return ligentec.WireWaveguideTemplate()
+
+    def _default_trace_template_out(self):
+        return ligentec.WireWaveguideTemplate()
+
+    def _default_linear_transition(self):
+        return ligentec.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+
 
     def _default_insts(self):
         return {"aux_ring": self.aux_ring,
@@ -40,6 +50,12 @@ class Aux_add_drop_ring_taper(i3.Circuit):
                 "drop_taper": self.taper,
                 "aux_in_taper": self.taper,
                 "aux_through_taper": self.taper,
+                "linear_transition_in": self.linear_transition,
+                "linear_transition_through": self.linear_transition,
+                "linear_transition_add": self.linear_transition,
+                "linear_transition_drop": self.linear_transition,
+                "linear_transition_aux_in": self.linear_transition,
+                "linear_transition_aux_through": self.linear_transition,
                 }
 
     def _default_specs(self):
@@ -57,13 +73,21 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             i3.FlipH("aux_in_taper"),
             i3.Place('aux_through_taper', position=(-900, 450), angle=0, relative_to="aux_ring:aux_through"),
             i3.FlipH("aux_through_taper"),
-            i3.ConnectBend("aux_ring:in", "in_taper:in0"),
-            i3.ConnectBend("aux_ring:through", "through_taper:in0"),
-            i3.ConnectBend("aux_ring:add", "add_taper:in0"),
-            i3.ConnectBend("aux_ring:drop", "drop_taper:in0"),
-            i3.ConnectBend("aux_ring:aux_in", "aux_in_taper:in0"),
-            i3.ConnectBend("aux_ring:aux_through", "aux_through_taper:in0"),
 
+            i3.Place("linear_transition_in", position=(0, 0), angle=180, relative_to="aux_ring:in"),
+            i3.Place("linear_transition_through", position=(0, 0), angle=0, relative_to="aux_ring:through"),
+            i3.Place("linear_transition_add", position=(0, 0), angle=180, relative_to="aux_ring:add"),
+            i3.Place("linear_transition_drop", position=(0, 0), angle=0, relative_to="aux_ring:drop"),
+
+            i3.Place("linear_transition_aux_in", position=(0, 0), angle=-90, relative_to="aux_ring:aux_in"),
+            i3.Place("linear_transition_aux_through", position=(0, 0), angle=90, relative_to="aux_ring:aux_through"),
+
+            i3.ConnectBend("linear_transition_in:out", "in_taper:in0"),
+            i3.ConnectBend("linear_transition_through:out", "through_taper:in0"),
+            i3.ConnectBend("linear_transition_add:out", "add_taper:in0"),
+            i3.ConnectBend("linear_transition_drop:out", "drop_taper:in0"),
+            i3.ConnectBend("linear_transition_aux_in:out", "aux_in_taper:in0"),
+            i3.ConnectBend("linear_transition_aux_through:out", "aux_through_taper:in0"),
 
         ]
 
@@ -83,6 +107,9 @@ class Aux_add_drop_ring_taper(i3.Circuit):
         name_position = i3.Coord2Property(default =(0.0,0.0), doc="name position", locked=True)
         name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
 
+        width_in = i3.PositiveNumberProperty(default=1.5, doc="width of input waveguide")
+        width_out = i3.PositiveNumberProperty(default=1.8, doc="width of output waveguide")
+
 
         def _default_aux_ring(self):
             lo = self.cell.aux_ring.get_default_view(i3.LayoutView)
@@ -90,9 +117,14 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             lo.set(aux_radius=self.aux_radius)
             return lo
 
-        def _default_trace_template(self):
-            lo=self.cell.trace_template.get_default_view(i3.LayoutView)
-            # lo.set(core_width=self.bus_wg_width)
+        def _default_trace_template_in(self):
+            lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
+            lo.set(core_width=self.width_in)
+            return lo
+
+        def _default_trace_template_out(self):
+            lo=self.cell.trace_template_out.get_default_view(i3.LayoutView)
+            lo.set(core_width=self.width_out)
             return lo
 
         def _generate_elements(self, elems):

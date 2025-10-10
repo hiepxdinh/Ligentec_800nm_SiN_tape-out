@@ -19,6 +19,7 @@ from chip_frame import CSL_FRAME_10500_4850, CHS_FRAME_10500_4850_HALF, CHS_FRAM
 from Aux_ring import HeaterNotchRacetrack, Aux_all_pass_ring, Aux_add_drop_ring
 from All_pass_ring_taper import All_pass_ring_taper
 from Aux_ring_taper import Aux_add_drop_ring_taper
+from waveguide_taper import Waveguide_test
 from Bragg_grating import Unit_Cell, Bragg_grating
 #
 # #######################################
@@ -67,7 +68,7 @@ for i, gap in enumerate(separation):
     ring = All_pass_ring_taper(ring_position_x=-i*h_separation, ring_position_y=(1-i)*v_separation, output_offset=offset)
     ring_lv = ring.Layout(ring_radius=radius)
     # ring_lv.visualize(annotate=True)
-    chip_elements.append(i3.SRef(reference=ring, position=(0, 0)))
+    chip_elements.append(i3.SRef(reference=ring, position=(5395, 0)))
 
 # Radius: 100um
 radius = 100.0
@@ -80,7 +81,7 @@ for i, gap in enumerate(separation):
     ring = All_pass_ring_taper(ring_position_x=-i*h_separation, ring_position_y=(1-i)*v_separation, output_offset=offset)
     ring_lv = ring.Layout(ring_radius=radius)
     # ring_lv.visualize(annotate=True)
-    chip_elements.append(i3.SRef(reference=ring, position=(0, 600)))
+    chip_elements.append(i3.SRef(reference=ring, position=(5395, 600)))
 
 # Radius: 200um
 radius = 200.0
@@ -95,7 +96,7 @@ for i, gap in enumerate(separation):
     ring = All_pass_ring_taper(ring_position_x=-i*h_separation+350, ring_position_y=(1-i)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
     ring_lv = ring.Layout(ring_radius=radius)
     # ring_lv.visualize(annotate=True)
-    chip_elements.append(i3.SRef(reference=ring, position=(0, 1500)))
+    chip_elements.append(i3.SRef(reference=ring, position=(5395, 1500)))
 
 ##################################
 ### Section for aux ring
@@ -105,18 +106,31 @@ aux_ring = Aux_add_drop_ring_taper(name=name)
 aux_ring_lv = aux_ring.Layout(main_radius=300, aux_radius=50)
 chip_elements.append(i3.SRef(reference=aux_ring, position=(0, 2500)))
 
+##################################
+### Section Waveguide test
+##################################
+waveguide_width = [1.0, 1.5, 2.0]
+separation =  100
+for i, width in enumerate(waveguide_width):
+    waveguide_test = Waveguide_test()
+    waveguide_test_lv = waveguide_test.Layout(width_in=waveguide_width[i])
+    chip_elements.append(i3.SRef(reference=waveguide_test, position=(-3000, i*separation)))
 
 ##################################
 ### Section ExSpot
 ##################################
 
-exspot = pdk.AN800BB_MMI2x2_85_15_C()
-exspot_lv = exspot.Layout()
-chip_elements.append(i3.SRef(reference=exspot, position=(-5000, 3000)))
-
 exspot_pkg = pdk.AN800BB_ExSpot_packaging_SMF_C()
 exspot_pkg_lv = exspot_pkg.Layout()
 chip_elements.append(i3.SRef(reference=exspot_pkg, position=(-3000, 3000)))
+
+##################################
+### Section P1
+##################################
+
+elecvia = pdk.ElecVia()
+elecvia_pkg_lv = elecvia.Layout()
+chip_elements.append(i3.SRef(reference=elecvia, position=(-3000, 3100)))
 
 ####################################
 ### Generate the main layout
@@ -127,11 +141,11 @@ chip_layout = chip_design.Layout(elements=chip_elements)
 
 chip_layout.write_gdsii("gds_output/ligentec.gds")
 
-# ############################
-# ### For component testing
-# ############################
-#
-# test_component = Bragg_grating()
+############################
+### For component testing
+############################
+
+# test_component = pdk.LinearTaperFromPort()
 # test_component_lv = test_component.Layout()
-# # test_component_lv.visualize(annotate=True)
-# test_component_lv.write_gdsii("gds_output/test_component_lv.gds")
+# test_component_lv.visualize(annotate=True)
+# # test_component_lv.write_gdsii("gds_output/test_component_lv.gds")
