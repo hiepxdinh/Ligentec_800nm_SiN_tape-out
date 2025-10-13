@@ -10,8 +10,8 @@ from numpy.ma.core import angle
 class All_pass_ring_taper(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
     ring = i3.ChildCellProperty(doc="ring resonator")
-    trace_template_in = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
-    trace_template_out = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
+    # trace_template_in = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
+    # trace_template_out = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
 
     ring_position_x = i3.NumberProperty(default=0.0, doc="the x position of ring")
     ring_position_y = i3.NumberProperty(default=0.0, doc="the y position of ring")
@@ -28,14 +28,17 @@ class All_pass_ring_taper(i3.Circuit):
     def _default_ring(self):
         return ligentec.NotchRacetrack()
 
-    def _default_trace_template_in(self):
-        return ligentec.WireWaveguideTemplate()
-
-    def _default_trace_template_out(self):
-        return ligentec.WireWaveguideTemplate()
+    # def _default_trace_template_in(self):
+    #     return ligentec.WireWaveguideTemplate()
+    #
+    # def _default_trace_template_out(self):
+    #     return ligentec.WireWaveguideTemplate()
 
     def _default_linear_transition(self):
-        return ligentec.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        # return ligentec.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return ligentec.Taper()
+
+
 
     def _default_insts(self):
         return {"ring": self.ring,
@@ -66,11 +69,11 @@ class All_pass_ring_taper(i3.Circuit):
             #                     ],
             #     bend_radius=50,
             # ),
-            i3.ConnectBend("in_taper:in0", "linear_transition_in:out"),
+            i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
             # i3.ConnectBend("out_taper:in0", "ring:out0")
             #
             i3.ConnectManhattan(
-                "linear_transition_out:out", "out_taper:in0",
+                "linear_transition_out:out0", "out_taper:in0",
                 control_points=[i3.V(i3.START+self.output_offset),
                                 i3.H(i3.END)
                                 ],
@@ -97,12 +100,21 @@ class All_pass_ring_taper(i3.Circuit):
             lo.set(radius=self.ring_radius)
             return lo
 
-        def _default_trace_template_in(self):
-            lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
-            lo.set(core_width=self.width_in)
-            return lo
+        # def _default_trace_template_in(self):
+        #     lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
+        #     lo.set(core_width=self.width_in)
+        #     return lo
+        #
+        # def _default_trace_template_out(self):
+        #     lo=self.cell.trace_template_out.get_default_view(i3.LayoutView)
+        #     lo.set(core_width=self.width_out)
+        #     return lo
 
-        def _default_trace_template_out(self):
-            lo=self.cell.trace_template_out.get_default_view(i3.LayoutView)
-            lo.set(core_width=self.width_out)
-            return lo
+        def _default_linear_transition(self):
+            cell = self.cell.linear_transition
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.width_in,
+                out_width=self.width_out
+            )
+            return lv

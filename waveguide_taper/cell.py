@@ -20,7 +20,8 @@ class Waveguide_test(i3.Circuit):
         return ligentec.WireWaveguideTemplate()
 
     def _default_linear_transition(self):
-        return ligentec.LinearTaperFromPort(start_trace_template=self.trace_template_in, end_trace_template=self.trace_template_out)
+        # return ligentec.LinearTaperFromPort(start_trace_template=self.trace_template_in, end_trace_template=self.trace_template_out)
+        return ligentec.Taper()
 
     def _default_insts(self):
         return {
@@ -36,9 +37,9 @@ class Waveguide_test(i3.Circuit):
             i3.Place("out_taper", position = (10000,0), angle = 0),
             i3.Place("linear_transition_in", position = (35,0), angle = 180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-35, 0), relative_to="out_taper:in0"),
-            i3.ConnectBend("in_taper:in0", "linear_transition_in:out"),
-            i3.ConnectBend("out_taper:in0", "linear_transition_out:out"),
-            i3.ConnectBend("linear_transition_in:in", "linear_transition_out:in"),
+            i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
+            i3.ConnectBend("out_taper:in0", "linear_transition_out:out0"),
+            i3.ConnectBend("linear_transition_in:in0", "linear_transition_out:in0"),
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -54,3 +55,12 @@ class Waveguide_test(i3.Circuit):
                 lo = self.cell.trace_template_out.get_default_view(i3.LayoutView)
                 lo.set(core_width=self.width_out)
                 return lo
+
+        def _default_linear_transition(self):
+            cell = self.cell.linear_transition
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.width_in,
+                out_width=self.width_out
+            )
+            return lv

@@ -13,8 +13,8 @@ from Aux_ring import Aux_add_drop_ring
 class Aux_add_drop_ring_taper(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
     aux_ring = i3.ChildCellProperty(doc="ring resonator")
-    trace_template_in = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
-    trace_template_out = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
+    # trace_template_in = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
+    # trace_template_out = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
 
     ring_position = i3.Coord2Property(default=(0, 0),
                                       doc="the position of the ring with respect to the gc.")
@@ -32,14 +32,15 @@ class Aux_add_drop_ring_taper(i3.Circuit):
     def _default_aux_ring(self):
         return Aux_add_drop_ring()
 
-    def _default_trace_template_in(self):
-        return ligentec.WireWaveguideTemplate()
-
-    def _default_trace_template_out(self):
-        return ligentec.WireWaveguideTemplate()
+    # def _default_trace_template_in(self):
+    #     return ligentec.WireWaveguideTemplate()
+    #
+    # def _default_trace_template_out(self):
+    #     return ligentec.WireWaveguideTemplate()
 
     def _default_linear_transition(self):
-        return ligentec.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        # return ligentec.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return ligentec.Taper()
 
 
     def _default_insts(self):
@@ -82,12 +83,12 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             i3.Place("linear_transition_aux_in", position=(0, 0), angle=-90, relative_to="aux_ring:aux_in"),
             i3.Place("linear_transition_aux_through", position=(0, 0), angle=90, relative_to="aux_ring:aux_through"),
 
-            i3.ConnectBend("linear_transition_in:out", "in_taper:in0"),
-            i3.ConnectBend("linear_transition_through:out", "through_taper:in0"),
-            i3.ConnectBend("linear_transition_add:out", "add_taper:in0"),
-            i3.ConnectBend("linear_transition_drop:out", "drop_taper:in0"),
-            i3.ConnectBend("linear_transition_aux_in:out", "aux_in_taper:in0"),
-            i3.ConnectBend("linear_transition_aux_through:out", "aux_through_taper:in0"),
+            i3.ConnectBend("linear_transition_in:out0", "in_taper:in0"),
+            i3.ConnectBend("linear_transition_through:out0", "through_taper:in0"),
+            i3.ConnectBend("linear_transition_add:out0", "add_taper:in0"),
+            i3.ConnectBend("linear_transition_drop:out0", "drop_taper:in0"),
+            i3.ConnectBend("linear_transition_aux_in:out0", "aux_in_taper:in0"),
+            i3.ConnectBend("linear_transition_aux_through:out0", "aux_through_taper:in0"),
 
         ]
 
@@ -116,16 +117,25 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             lo.set(main_radius=self.main_radius)
             lo.set(aux_radius=self.aux_radius)
             return lo
+        #
+        # def _default_trace_template_in(self):
+        #     lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
+        #     lo.set(core_width=self.width_in)
+        #     return lo
+        #
+        # def _default_trace_template_out(self):
+        #     lo=self.cell.trace_template_out.get_default_view(i3.LayoutView)
+        #     lo.set(core_width=self.width_out)
+        #     return lo
 
-        def _default_trace_template_in(self):
-            lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
-            lo.set(core_width=self.width_in)
-            return lo
-
-        def _default_trace_template_out(self):
-            lo=self.cell.trace_template_out.get_default_view(i3.LayoutView)
-            lo.set(core_width=self.width_out)
-            return lo
+        def _default_linear_transition(self):
+            cell = self.cell.linear_transition
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.width_in,
+                out_width=self.width_out
+            )
+            return lv
 
         def _generate_elements(self, elems):
             """

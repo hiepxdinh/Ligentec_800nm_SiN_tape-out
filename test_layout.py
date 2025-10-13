@@ -1,5 +1,7 @@
 import sys
 
+from setuptools.command.rotate import rotate
+
 sys.path.append("C:/pdk/Ligentec_SiN_2025/ipkiss")
 
 # import asp_sin_lnoi_photonics.technology
@@ -20,7 +22,8 @@ from Aux_ring import HeaterNotchRacetrack, Aux_all_pass_ring, Aux_add_drop_ring
 from All_pass_ring_taper import All_pass_ring_taper
 from Aux_ring_taper import Aux_add_drop_ring_taper
 from waveguide_taper import Waveguide_test
-from Bragg_grating import Unit_Cell, Bragg_grating
+from Bragg_grating import FP_Waveguide_width_Linear_Taper, BG_1
+from exspot_test import Exspot_Spiral_Square, Exspot_Spiral_Circular
 #
 # #######################################
 # # Global parameters
@@ -109,28 +112,44 @@ chip_elements.append(i3.SRef(reference=aux_ring, position=(0, 2500)))
 ##################################
 ### Section Waveguide test
 ##################################
-waveguide_width = [1.0, 1.5, 2.0]
-separation =  100
-for i, width in enumerate(waveguide_width):
-    waveguide_test = Waveguide_test()
-    waveguide_test_lv = waveguide_test.Layout(width_in=waveguide_width[i])
-    chip_elements.append(i3.SRef(reference=waveguide_test, position=(-3000, i*separation)))
+# waveguide_width = [1.0, 1.5, 2.0]
+# separation =  100
+# for i, width in enumerate(waveguide_width):
+#     waveguide_test = Waveguide_test()
+#     waveguide_test_lv = waveguide_test.Layout(width_in=waveguide_width[i])
+#     chip_elements.append(i3.SRef(reference=waveguide_test, position=(-3000, i*separation)))
 
 ##################################
 ### Section ExSpot
 ##################################
 
-exspot_pkg = pdk.AN800BB_ExSpot_packaging_SMF_C()
-exspot_pkg_lv = exspot_pkg.Layout()
-chip_elements.append(i3.SRef(reference=exspot_pkg, position=(-3000, 3000)))
+spiral_length = [3500, 4000, 4500, 5000]
+
+for idx, length in enumerate(spiral_length):
+    exspot_pkg = Exspot_Spiral_Square()
+    exspot_pkg_lv = exspot_pkg.Layout(spiral_length=length)
+    # exspot_pkg_lv.visualize()
+    chip_elements.append(i3.SRef(reference=exspot_pkg, position=(500 + idx*300, 2500+730+221.25), transformation=i3.Rotation(rotation=90)))
 
 ##################################
 ### Section P1
 ##################################
 
-elecvia = pdk.ElecVia()
-elecvia_pkg_lv = elecvia.Layout()
-chip_elements.append(i3.SRef(reference=elecvia, position=(-3000, 3100)))
+heater_test = pdk.MZIVertical()
+
+heater_test_lv = heater_test.Layout()
+chip_elements.append(i3.SRef(reference=heater_test, position=(-3000, 3100)))
+
+##################################
+### Section Bragg grating
+##################################
+
+bg_1 = BG_1()
+
+bg_1_lv = bg_1.Layout()
+bg_1_lv.visualize(annotate=True)
+
+chip_elements.append(i3.SRef(reference=heater_test, position=(-3000, 3100)))
 
 ####################################
 ### Generate the main layout
@@ -141,11 +160,11 @@ chip_layout = chip_design.Layout(elements=chip_elements)
 
 chip_layout.write_gdsii("gds_output/ligentec.gds")
 
-############################
-### For component testing
-############################
-
-# test_component = pdk.LinearTaperFromPort()
+# ###########################
+# ## For component testing
+# ###########################
+#
+# test_component = BG_1()
 # test_component_lv = test_component.Layout()
-# test_component_lv.visualize(annotate=True)
-# # test_component_lv.write_gdsii("gds_output/test_component_lv.gds")
+# # test_component_lv.visualize(annotate=True)
+# test_component_lv.write_gdsii("gds_output/test_component_lv_2.gds")
