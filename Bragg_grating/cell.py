@@ -1,6 +1,7 @@
 
 import sys
 import numpy as np
+from PIL.ImageOps import mirror
 
 sys.path.append("C:/pdk/Ligentec_SiN_2025/ipkiss")
 
@@ -12,11 +13,11 @@ import numpy as np
 x = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 y = [5, 3, 4, 5, 3, 4, 2, 1, 5, 3, 4]
 
-array = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design1_grating_params_2.csv", delimiter=',')
-BG_1_length_1 = array[:, 0]
-BG_1_width_1 = array[:, 2]
-BG_1_length_2 = array[:, 1]
-BG_1_width_2 = array[:, 3]
+array_1 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design1_grating_params_2.csv", delimiter=',')
+BG_1_length_1 = array_1[:, 0]
+BG_1_width_1 = array_1[:, 2]
+BG_1_length_2 = array_1[:, 1]
+BG_1_width_2 = array_1[:, 3]
 
 
 class BG_1(i3.PCell):
@@ -78,10 +79,428 @@ class BG_1(i3.PCell):
                 },
             )
 
+array_2 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_2_grating_params_2.csv", delimiter=',')
+BG_2_length_1 = array_2[:, 0]
+BG_2_width_1 = array_2[:, 2]
+BG_2_length_2 = array_2[:, 1]
+BG_2_width_2 = array_2[:, 3]
 
-class FP_Waveguide_width_Linear_Taper(i3.PCell):
+
+class BG_2(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_2_width_1)):
+                width_1 = BG_2_width_1[idx]
+                length_1 = BG_2_length_1[idx]
+                width_2 = BG_2_width_2[idx]
+                length_2 = BG_2_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_2_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_3 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_3_grating_params_2.csv", delimiter=',')
+BG_3_length_1 = array_3[:, 0]
+BG_3_width_1 = array_3[:, 2]
+BG_3_length_2 = array_3[:, 1]
+BG_3_width_2 = array_3[:, 3]
+
+
+class BG_3(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_3_width_1)):
+                width_1 = BG_3_width_1[idx]
+                length_1 = BG_3_length_1[idx]
+                width_2 = BG_3_width_2[idx]
+                length_2 = BG_3_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_3_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_4 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_4_grating_params_2.csv", delimiter=',')
+BG_4_length_1 = array_4[:, 0]
+BG_4_width_1 = array_4[:, 2]
+BG_4_length_2 = array_4[:, 1]
+BG_4_width_2 = array_4[:, 3]
+
+
+class BG_4(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_4_width_1)):
+                width_1 = BG_4_width_1[idx]
+                length_1 = BG_4_length_1[idx]
+                width_2 = BG_4_width_2[idx]
+                length_2 = BG_4_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_4_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_5 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_5_grating_params_2.csv", delimiter=',')
+BG_5_length_1 = array_5[:, 0]
+BG_5_width_1 = array_5[:, 2]
+BG_5_length_2 = array_5[:, 1]
+BG_5_width_2 = array_5[:, 3]
+
+class BG_5(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_5_width_1)):
+                width_1 = BG_5_width_1[idx]
+                length_1 = BG_5_length_1[idx]
+                width_2 = BG_5_width_2[idx]
+                length_2 = BG_5_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_5_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_6 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design6_grating_params_2.csv", delimiter=',')
+BG_6_length_1 = array_6[:, 0]
+BG_6_width_1 = array_6[:, 2]
+BG_6_length_2 = array_6[:, 1]
+BG_6_width_2 = array_6[:, 3]
+
+class BG_6(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_6_width_1)):
+                width_1 = BG_6_width_1[idx]
+                length_1 = BG_6_length_1[idx]
+                width_2 = BG_6_width_2[idx]
+                length_2 = BG_6_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_6_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_7 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_7_grating_params_2.csv", delimiter=',')
+BG_7_length_1 = array_7[:, 0]
+BG_7_width_1 = array_7[:, 2]
+BG_7_length_2 = array_7[:, 1]
+BG_7_width_2 = array_7[:, 3]
+
+class BG_6(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_7_width_1)):
+                width_1 = BG_7_width_1[idx]
+                length_1 = BG_7_length_1[idx]
+                width_2 = BG_7_width_2[idx]
+                length_2 = BG_7_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_7_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_8 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_8_grating_params_2.csv", delimiter=',')
+BG_8_length_1 = array_8[:, 0]
+BG_8_width_1 = array_8[:, 2]
+BG_8_length_2 = array_8[:, 1]
+BG_8_width_2 = array_8[:, 3]
+
+class BG_8(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_8_width_1)):
+                width_1 = BG_8_width_1[idx]
+                length_1 = BG_8_length_1[idx]
+                width_2 = BG_8_width_2[idx]
+                length_2 = BG_8_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_8_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+array_9 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_9_grating_params_2.csv", delimiter=',')
+BG_9_length_1 = array_9[:, 0]
+BG_9_width_1 = array_9[:, 2]
+BG_9_length_2 = array_9[:, 1]
+BG_9_width_2 = array_9[:, 3]
+
+class BG_6(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_9_width_1)):
+                width_1 = BG_9_width_1[idx]
+                length_1 = BG_9_length_1[idx]
+                width_2 = BG_9_width_2[idx]
+                length_2 = BG_9_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_9_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
+# array_10 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_10_grating_params_2.csv", delimiter=',')
+# BG_10_length_1 = array_10[:, 0]
+# BG_10_width_1 = array_10[:, 2]
+# BG_10_length_2 = array_10[:, 1]
+# BG_10_width_2 = array_10[:, 3]
+#
+# class BG_10(i3.PCell):
+#
+#     class Layout(i3.LayoutView):
+#         width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+#         length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+#         width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+#         length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+#
+#         def _generate_instances(self, insts):
+#             insts += i3.InstanceDict()
+#             x_pos = 0
+#             for idx in range(len(BG_10_width_1)):
+#                 width_1 = BG_10_width_1[idx]
+#                 length_1 = BG_10_length_1[idx]
+#                 width_2 = BG_10_width_2[idx]
+#                 length_2 = BG_10_length_2[idx]
+#
+#                 wg1 = pdk.Straight(name=f"wg1_{idx}")
+#                 wg1_lv = wg1.Layout(width=width_1, length=length_1)
+#                 # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+#                 wg2 = pdk.Straight(name=f"wg2_{idx}")
+#                 wg2_lv = wg2.Layout(width=width_2, length=length_2)
+#                 insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+#                 x_pos += length_1
+#                 insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+#                 x_pos += length_2
+#
+#                 # print(insts)
+#
+#             return insts
+#
+#         def _generate_ports(self, ports):
+#             return i3.expose_ports(
+#                 self.instances,
+#                 {
+#                     f"wg1_0:in0": "in",  # Start of the waveguide chain
+#                     f"wg2_{len(BG_10_width_1) - 1}:out0": "out",  # End of the last waveguide
+#                 },
+#             )
+
+class FP_BG_1(i3.PCell):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
     linear_taper = i3.ChildCellProperty(doc="linear taper")
+    coupler = i3.ChildCellProperty(doc="coupler")
+    BG = i3.ChildCellProperty(doc="bragg grating")
 
     # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
     # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
@@ -101,11 +520,18 @@ class FP_Waveguide_width_Linear_Taper(i3.PCell):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
 
+    def _default_coupler(self):
+        return pdk.Sbend()
+
+    def _default_BG(self):
+        return BG_1()
+
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
         fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
         end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
-        linear_taper_length = i3.PositiveNumberProperty(default=10.0, doc="width of end taper port")
+        linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+        coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -115,6 +541,123 @@ class FP_Waveguide_width_Linear_Taper(i3.PCell):
                 length=self.fp_length,
             )
             return lv
+
+        def _default_end_taper_width(self):
+            return BG_1_width_2[len(array_1)-1]
+
+        def _default_linear_taper(self):
+            cell = self.cell.linear_taper
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=self.end_taper_width,
+                length=self.linear_taper_length,
+            )
+            return lv
+
+        def _default_coupler(self):
+            cell = self.cell.coupler
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+            )
+            return lv
+
+        # def _default_trace_template_in(self):
+        #     cell = self.cell.trace_template_in
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.fp_width)
+        #     return lv
+        #
+        # def _default_trace_template_out(self):
+        #     cell = self.cell.trace_template_out
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.end_taper_width)
+        #     return lv
+
+        def _generate_instances(self, insts):
+            fp_waveguide = self.fp_waveguide
+            linear_taper = self.linear_taper
+            coupler = self.coupler
+            BG = self.BG
+            insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+            insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+            insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+            insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+
+            return i3.place_and_route(
+                insts=insts,
+                specs=[
+                    i3.Place("fp_waveguide", (0, 0)),
+                    i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+                    i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+                    i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+                    i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+                    i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+                    i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+                    ]
+            )
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    "linear_taper_in:out0": "in",
+                    "linear_taper_out:out0": "out",
+                },
+            )
+
+class FP_BG_2(i3.PCell):
+    fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+    linear_taper = i3.ChildCellProperty(doc="linear taper")
+    coupler = i3.ChildCellProperty(doc="coupler")
+    BG = i3.ChildCellProperty(doc="bragg grating")
+
+    # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+    # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+
+    def _default_fp_waveguide(self):
+        return pdk.Straight()
+
+    # These trace template used if linear taper not pre-defined.
+
+    # def _default_trace_template_in(self):
+    #     return pdk.WireWaveguideTemplate()
+    #
+    # def _default_trace_template_out(self):
+    #     return pdk.WireWaveguideTemplate()
+
+    def _default_linear_taper(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
+    def _default_coupler(self):
+        return pdk.Sbend()
+
+    def _default_BG(self):
+        return BG_2()
+
+    class Layout(i3.LayoutView):
+        fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+        fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+        end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+        linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+        coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+
+        def _default_fp_waveguide(self):
+            cell = self.cell.fp_waveguide
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+                length=self.fp_length,
+            )
+            return lv
+
+        def _default_end_taper_width(self):
+            return BG_2_width_2[len(array_2)-1]
 
         def _default_linear_taper(self):
             cell = self.cell.linear_taper
@@ -141,9 +684,15 @@ class FP_Waveguide_width_Linear_Taper(i3.PCell):
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             linear_taper = self.linear_taper
+            coupler = self.coupler
+            BG = self.BG
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+            insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+            insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -151,6 +700,10 @@ class FP_Waveguide_width_Linear_Taper(i3.PCell):
                     i3.Place("fp_waveguide", (0, 0)),
                     i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+                    i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+                    i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+                    i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+                    i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
                     ]
             )
 
@@ -164,6 +717,855 @@ class FP_Waveguide_width_Linear_Taper(i3.PCell):
             )
 
 
+class FP_BG_3(i3.PCell):
+    fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+    linear_taper = i3.ChildCellProperty(doc="linear taper")
+    coupler = i3.ChildCellProperty(doc="coupler")
+    BG = i3.ChildCellProperty(doc="bragg grating")
+
+    # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+    # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+
+    def _default_fp_waveguide(self):
+        return pdk.Straight()
+
+    # These trace template used if linear taper not pre-defined.
+
+    # def _default_trace_template_in(self):
+    #     return pdk.WireWaveguideTemplate()
+    #
+    # def _default_trace_template_out(self):
+    #     return pdk.WireWaveguideTemplate()
+
+    def _default_linear_taper(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
+    def _default_coupler(self):
+        return pdk.Sbend()
+
+    def _default_BG(self):
+        return BG_3()
+
+    class Layout(i3.LayoutView):
+        fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+        fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+        end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+        linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+        coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+
+        def _default_fp_waveguide(self):
+            cell = self.cell.fp_waveguide
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+                length=self.fp_length,
+            )
+            return lv
+
+        def _default_end_taper_width(self):
+            return BG_3_width_2[len(array_3)-1]
+
+        def _default_linear_taper(self):
+            cell = self.cell.linear_taper
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=self.end_taper_width,
+                length=self.linear_taper_length,
+            )
+            return lv
+
+        # def _default_trace_template_in(self):
+        #     cell = self.cell.trace_template_in
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.fp_width)
+        #     return lv
+        #
+        # def _default_trace_template_out(self):
+        #     cell = self.cell.trace_template_out
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.end_taper_width)
+        #     return lv
+
+        def _generate_instances(self, insts):
+            fp_waveguide = self.fp_waveguide
+            linear_taper = self.linear_taper
+            coupler = self.coupler
+            BG = self.BG
+            insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+            insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+            insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+            insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+
+            return i3.place_and_route(
+                insts=insts,
+                specs=[
+                    i3.Place("fp_waveguide", (0, 0)),
+                    i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+                    i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+                    i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+                    i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+                    i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+                    i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+                    ]
+            )
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    "linear_taper_in:out0": "in",
+                    "linear_taper_out:out0": "out",
+                },
+            )
+
+class FP_BG_4(i3.PCell):
+    fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+    linear_taper = i3.ChildCellProperty(doc="linear taper")
+    coupler = i3.ChildCellProperty(doc="coupler")
+    BG = i3.ChildCellProperty(doc="bragg grating")
+
+    # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+    # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+
+    def _default_fp_waveguide(self):
+        return pdk.Straight()
+
+    # These trace template used if linear taper not pre-defined.
+
+    # def _default_trace_template_in(self):
+    #     return pdk.WireWaveguideTemplate()
+    #
+    # def _default_trace_template_out(self):
+    #     return pdk.WireWaveguideTemplate()
+
+    def _default_linear_taper(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
+    def _default_coupler(self):
+        return pdk.Sbend()
+
+    def _default_BG(self):
+        return BG_4()
+
+    class Layout(i3.LayoutView):
+        fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+        fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+        end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+        linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+        coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+
+        def _default_fp_waveguide(self):
+            cell = self.cell.fp_waveguide
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+                length=self.fp_length,
+            )
+            return lv
+
+        def _default_end_taper_width(self):
+            return BG_4_width_2[len(array_4)-1]
+
+        def _default_linear_taper(self):
+            cell = self.cell.linear_taper
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=self.end_taper_width,
+                length=self.linear_taper_length,
+            )
+            return lv
+
+        # def _default_trace_template_in(self):
+        #     cell = self.cell.trace_template_in
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.fp_width)
+        #     return lv
+        #
+        # def _default_trace_template_out(self):
+        #     cell = self.cell.trace_template_out
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.end_taper_width)
+        #     return lv
+
+        def _generate_instances(self, insts):
+            fp_waveguide = self.fp_waveguide
+            linear_taper = self.linear_taper
+            coupler = self.coupler
+            BG = self.BG
+            insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+            insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+            insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+            insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+
+            return i3.place_and_route(
+                insts=insts,
+                specs=[
+                    i3.Place("fp_waveguide", (0, 0)),
+                    i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+                    i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+                    i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+                    i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+                    i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+                    i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+                    ]
+            )
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    "linear_taper_in:out0": "in",
+                    "linear_taper_out:out0": "out",
+                },
+            )
+
+class FP_BG_5(i3.PCell):
+    fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+    linear_taper = i3.ChildCellProperty(doc="linear taper")
+    coupler = i3.ChildCellProperty(doc="coupler")
+    BG = i3.ChildCellProperty(doc="bragg grating")
+
+    # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+    # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+
+    def _default_fp_waveguide(self):
+        return pdk.Straight()
+
+    # These trace template used if linear taper not pre-defined.
+
+    # def _default_trace_template_in(self):
+    #     return pdk.WireWaveguideTemplate()
+    #
+    # def _default_trace_template_out(self):
+    #     return pdk.WireWaveguideTemplate()
+
+    def _default_linear_taper(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
+    def _default_coupler(self):
+        return pdk.Sbend()
+
+    def _default_BG(self):
+        return BG_5()
+
+    class Layout(i3.LayoutView):
+        fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+        fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+        end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+        linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+        coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+
+        def _default_fp_waveguide(self):
+            cell = self.cell.fp_waveguide
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+                length=self.fp_length,
+            )
+            return lv
+
+        def _default_end_taper_width(self):
+            return BG_5_width_2[len(array_5)-1]
+
+        def _default_linear_taper(self):
+            cell = self.cell.linear_taper
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=self.end_taper_width,
+                length=self.linear_taper_length,
+            )
+            return lv
+
+        # def _default_trace_template_in(self):
+        #     cell = self.cell.trace_template_in
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.fp_width)
+        #     return lv
+        #
+        # def _default_trace_template_out(self):
+        #     cell = self.cell.trace_template_out
+        #     lv = cell.get_default_view(i3.LayoutView)
+        #     lv.set(core_width=self.end_taper_width)
+        #     return lv
+
+        def _generate_instances(self, insts):
+            fp_waveguide = self.fp_waveguide
+            linear_taper = self.linear_taper
+            coupler = self.coupler
+            BG = self.BG
+            insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+            insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+            insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+            insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+            insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+
+            return i3.place_and_route(
+                insts=insts,
+                specs=[
+                    i3.Place("fp_waveguide", (0, 0)),
+                    i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+                    i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+                    i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+                    i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+                    i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+                    i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+                    ]
+            )
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    "linear_taper_in:out0": "in",
+                    "linear_taper_out:out0": "out",
+                },
+            )
+
+# class FP_BG_6(i3.PCell):
+#     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+#     linear_taper = i3.ChildCellProperty(doc="linear taper")
+#     coupler = i3.ChildCellProperty(doc="coupler")
+#     BG = i3.ChildCellProperty(doc="bragg grating")
+#
+#     # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+#     # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+#
+#     def _default_fp_waveguide(self):
+#         return pdk.Straight()
+#
+#     # These trace template used if linear taper not pre-defined.
+#
+#     # def _default_trace_template_in(self):
+#     #     return pdk.WireWaveguideTemplate()
+#     #
+#     # def _default_trace_template_out(self):
+#     #     return pdk.WireWaveguideTemplate()
+#
+#     def _default_linear_taper(self):
+#         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+#         return pdk.Taper()
+#
+#     def _default_coupler(self):
+#         return pdk.Sbend()
+#
+#     def _default_BG(self):
+#         return BG_6()
+#
+#     class Layout(i3.LayoutView):
+#         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+#         fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+#         end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+#         linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+#         coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+#
+#         def _default_fp_waveguide(self):
+#             cell = self.cell.fp_waveguide
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 width=self.fp_width,
+#                 length=self.fp_length,
+#             )
+#             return lv
+#
+#         def _default_end_taper_width(self):
+#             return BG_6_width_2[len(array_6)-1]
+#
+#         def _default_linear_taper(self):
+#             cell = self.cell.linear_taper
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 in_width=self.fp_width,
+#                 out_width=self.end_taper_width,
+#                 length=self.linear_taper_length,
+#             )
+#             return lv
+#
+#         # def _default_trace_template_in(self):
+#         #     cell = self.cell.trace_template_in
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.fp_width)
+#         #     return lv
+#         #
+#         # def _default_trace_template_out(self):
+#         #     cell = self.cell.trace_template_out
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.end_taper_width)
+#         #     return lv
+#
+#         def _generate_instances(self, insts):
+#             fp_waveguide = self.fp_waveguide
+#             linear_taper = self.linear_taper
+#             coupler = self.coupler
+#             BG = self.BG
+#             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+#             insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+#             insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+#             insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+#             insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+#
+#             return i3.place_and_route(
+#                 insts=insts,
+#                 specs=[
+#                     i3.Place("fp_waveguide", (0, 0)),
+#                     i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+#                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+#                     i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+#                     i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+#                     i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+#                     i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+#                     ]
+#             )
+#
+#         def _generate_ports(self, ports):
+#             return i3.expose_ports(
+#                 self.instances,
+#                 {
+#                     "linear_taper_in:out0": "in",
+#                     "linear_taper_out:out0": "out",
+#                 },
+#             )
+#
+#
+# class FP_BG_7(i3.PCell):
+#     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+#     linear_taper = i3.ChildCellProperty(doc="linear taper")
+#     coupler = i3.ChildCellProperty(doc="coupler")
+#     BG = i3.ChildCellProperty(doc="bragg grating")
+#
+#     # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+#     # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+#
+#     def _default_fp_waveguide(self):
+#         return pdk.Straight()
+#
+#     # These trace template used if linear taper not pre-defined.
+#
+#     # def _default_trace_template_in(self):
+#     #     return pdk.WireWaveguideTemplate()
+#     #
+#     # def _default_trace_template_out(self):
+#     #     return pdk.WireWaveguideTemplate()
+#
+#     def _default_linear_taper(self):
+#         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+#         return pdk.Taper()
+#
+#     def _default_coupler(self):
+#         return pdk.Sbend()
+#
+#     def _default_BG(self):
+#         return BG_7()
+#
+#     class Layout(i3.LayoutView):
+#         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+#         fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+#         end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+#         linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+#         coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+#
+#         def _default_fp_waveguide(self):
+#             cell = self.cell.fp_waveguide
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 width=self.fp_width,
+#                 length=self.fp_length,
+#             )
+#             return lv
+#
+#         def _default_end_taper_width(self):
+#             return BG_7_width_2[len(array_7)-1]
+#
+#         def _default_linear_taper(self):
+#             cell = self.cell.linear_taper
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 in_width=self.fp_width,
+#                 out_width=self.end_taper_width,
+#                 length=self.linear_taper_length,
+#             )
+#             return lv
+#
+#         # def _default_trace_template_in(self):
+#         #     cell = self.cell.trace_template_in
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.fp_width)
+#         #     return lv
+#         #
+#         # def _default_trace_template_out(self):
+#         #     cell = self.cell.trace_template_out
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.end_taper_width)
+#         #     return lv
+#
+#         def _generate_instances(self, insts):
+#             fp_waveguide = self.fp_waveguide
+#             linear_taper = self.linear_taper
+#             coupler = self.coupler
+#             BG = self.BG
+#             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+#             insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+#             insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+#             insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+#             insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+#
+#             return i3.place_and_route(
+#                 insts=insts,
+#                 specs=[
+#                     i3.Place("fp_waveguide", (0, 0)),
+#                     i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+#                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+#                     i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+#                     i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+#                     i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+#                     i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+#                     ]
+#             )
+#
+#         def _generate_ports(self, ports):
+#             return i3.expose_ports(
+#                 self.instances,
+#                 {
+#                     "linear_taper_in:out0": "in",
+#                     "linear_taper_out:out0": "out",
+#                 },
+#             )
+#
+#
+# class FP_BG_8(i3.PCell):
+#     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+#     linear_taper = i3.ChildCellProperty(doc="linear taper")
+#     coupler = i3.ChildCellProperty(doc="coupler")
+#     BG = i3.ChildCellProperty(doc="bragg grating")
+#
+#     # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+#     # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+#
+#     def _default_fp_waveguide(self):
+#         return pdk.Straight()
+#
+#     # These trace template used if linear taper not pre-defined.
+#
+#     # def _default_trace_template_in(self):
+#     #     return pdk.WireWaveguideTemplate()
+#     #
+#     # def _default_trace_template_out(self):
+#     #     return pdk.WireWaveguideTemplate()
+#
+#     def _default_linear_taper(self):
+#         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+#         return pdk.Taper()
+#
+#     def _default_coupler(self):
+#         return pdk.Sbend()
+#
+#     def _default_BG(self):
+#         return BG_8()
+#
+#     class Layout(i3.LayoutView):
+#         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+#         fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+#         end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+#         linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+#         coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+#
+#         def _default_fp_waveguide(self):
+#             cell = self.cell.fp_waveguide
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 width=self.fp_width,
+#                 length=self.fp_length,
+#             )
+#             return lv
+#
+#         def _default_end_taper_width(self):
+#             return BG_8_width_2[len(array_8)-1]
+#
+#         def _default_linear_taper(self):
+#             cell = self.cell.linear_taper
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 in_width=self.fp_width,
+#                 out_width=self.end_taper_width,
+#                 length=self.linear_taper_length,
+#             )
+#             return lv
+#
+#         # def _default_trace_template_in(self):
+#         #     cell = self.cell.trace_template_in
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.fp_width)
+#         #     return lv
+#         #
+#         # def _default_trace_template_out(self):
+#         #     cell = self.cell.trace_template_out
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.end_taper_width)
+#         #     return lv
+#
+#         def _generate_instances(self, insts):
+#             fp_waveguide = self.fp_waveguide
+#             linear_taper = self.linear_taper
+#             coupler = self.coupler
+#             BG = self.BG
+#             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+#             insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+#             insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+#             insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+#             insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+#
+#             return i3.place_and_route(
+#                 insts=insts,
+#                 specs=[
+#                     i3.Place("fp_waveguide", (0, 0)),
+#                     i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+#                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+#                     i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+#                     i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+#                     i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+#                     i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+#                     ]
+#             )
+#
+#         def _generate_ports(self, ports):
+#             return i3.expose_ports(
+#                 self.instances,
+#                 {
+#                     "linear_taper_in:out0": "in",
+#                     "linear_taper_out:out0": "out",
+#                 },
+#             )
+#
+# class FP_BG_9(i3.PCell):
+#     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+#     linear_taper = i3.ChildCellProperty(doc="linear taper")
+#     coupler = i3.ChildCellProperty(doc="coupler")
+#     BG = i3.ChildCellProperty(doc="bragg grating")
+#
+#     # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+#     # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+#
+#     def _default_fp_waveguide(self):
+#         return pdk.Straight()
+#
+#     # These trace template used if linear taper not pre-defined.
+#
+#     # def _default_trace_template_in(self):
+#     #     return pdk.WireWaveguideTemplate()
+#     #
+#     # def _default_trace_template_out(self):
+#     #     return pdk.WireWaveguideTemplate()
+#
+#     def _default_linear_taper(self):
+#         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+#         return pdk.Taper()
+#
+#     def _default_coupler(self):
+#         return pdk.Sbend()
+#
+#     def _default_BG(self):
+#         return BG_9()
+#
+#     class Layout(i3.LayoutView):
+#         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+#         fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+#         end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+#         linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+#         coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+#
+#         def _default_fp_waveguide(self):
+#             cell = self.cell.fp_waveguide
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 width=self.fp_width,
+#                 length=self.fp_length,
+#             )
+#             return lv
+#
+#         def _default_end_taper_width(self):
+#             return BG_9_width_2[len(array_9)-1]
+#
+#         def _default_linear_taper(self):
+#             cell = self.cell.linear_taper
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 in_width=self.fp_width,
+#                 out_width=self.end_taper_width,
+#                 length=self.linear_taper_length,
+#             )
+#             return lv
+#
+#         # def _default_trace_template_in(self):
+#         #     cell = self.cell.trace_template_in
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.fp_width)
+#         #     return lv
+#         #
+#         # def _default_trace_template_out(self):
+#         #     cell = self.cell.trace_template_out
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.end_taper_width)
+#         #     return lv
+#
+#         def _generate_instances(self, insts):
+#             fp_waveguide = self.fp_waveguide
+#             linear_taper = self.linear_taper
+#             coupler = self.coupler
+#             BG = self.BG
+#             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+#             insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+#             insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+#             insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+#             insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+#
+#             return i3.place_and_route(
+#                 insts=insts,
+#                 specs=[
+#                     i3.Place("fp_waveguide", (0, 0)),
+#                     i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+#                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+#                     i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+#                     i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+#                     i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+#                     i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+#                     ]
+#             )
+#
+#         def _generate_ports(self, ports):
+#             return i3.expose_ports(
+#                 self.instances,
+#                 {
+#                     "linear_taper_in:out0": "in",
+#                     "linear_taper_out:out0": "out",
+#                 },
+#             )
+#
+# class FP_BG_10(i3.PCell):
+#     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+#     linear_taper = i3.ChildCellProperty(doc="linear taper")
+#     coupler = i3.ChildCellProperty(doc="coupler")
+#     BG = i3.ChildCellProperty(doc="bragg grating")
+#
+#     # trace_template_in = i3.ChildCellProperty(doc="input template for linear taper")
+#     # trace_template_out = i3.ChildCellProperty(doc="out template for linear taper")
+#
+#     def _default_fp_waveguide(self):
+#         return pdk.Straight()
+#
+#     # These trace template used if linear taper not pre-defined.
+#
+#     # def _default_trace_template_in(self):
+#     #     return pdk.WireWaveguideTemplate()
+#     #
+#     # def _default_trace_template_out(self):
+#     #     return pdk.WireWaveguideTemplate()
+#
+#     def _default_linear_taper(self):
+#         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+#         return pdk.Taper()
+#
+#     def _default_coupler(self):
+#         return pdk.Sbend()
+#
+#     def _default_BG(self):
+#         return BG_10()
+#
+#     class Layout(i3.LayoutView):
+#         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+#         fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+#         end_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end taper port")
+#         linear_taper_length = i3.PositiveNumberProperty(default=50.0, doc="width of end taper port")
+#         coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+#
+#         def _default_fp_waveguide(self):
+#             cell = self.cell.fp_waveguide
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 width=self.fp_width,
+#                 length=self.fp_length,
+#             )
+#             return lv
+#
+#         def _default_end_taper_width(self):
+#             return BG_10_width_2[len(array_10)-1]
+#
+#         def _default_linear_taper(self):
+#             cell = self.cell.linear_taper
+#             lv = cell.get_default_view(self)
+#             lv.set(
+#                 in_width=self.fp_width,
+#                 out_width=self.end_taper_width,
+#                 length=self.linear_taper_length,
+#             )
+#             return lv
+#
+#         # def _default_trace_template_in(self):
+#         #     cell = self.cell.trace_template_in
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.fp_width)
+#         #     return lv
+#         #
+#         # def _default_trace_template_out(self):
+#         #     cell = self.cell.trace_template_out
+#         #     lv = cell.get_default_view(i3.LayoutView)
+#         #     lv.set(core_width=self.end_taper_width)
+#         #     return lv
+#
+#         def _generate_instances(self, insts):
+#             fp_waveguide = self.fp_waveguide
+#             linear_taper = self.linear_taper
+#             coupler = self.coupler
+#             BG = self.BG
+#             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+#             insts += i3.SRef(name="linear_taper_in", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="linear_taper_out", reference=linear_taper, flatten=True)
+#             insts += i3.SRef(name="coupler_1", reference=coupler, flatten=True)
+#             insts += i3.SRef(name="coupler_2", reference=coupler, flatten=True, transformation=i3.VMirror())
+#             insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+#             insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+#
+#             return i3.place_and_route(
+#                 insts=insts,
+#                 specs=[
+#                     i3.Place("fp_waveguide", (0, 0)),
+#                     i3.Place("linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+#                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+#                     i3.Place("BG_in:out", (0,0), relative_to="linear_taper_in:out0"),
+#                     i3.Place("BG_out:out", (0, 0), relative_to="linear_taper_out:out0", angle=180),
+#                     i3.Place("coupler_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+#                     i3.Place("coupler_2", (0,0), relative_to="coupler_1:in0"),
+#                     ]
+#             )
+#
+#         def _generate_ports(self, ports):
+#             return i3.expose_ports(
+#                 self.instances,
+#                 {
+#                     "linear_taper_in:out0": "in",
+#                     "linear_taper_out:out0": "out",
+#                 },
+#             )
 
 
 # class Unit_Cell(i3.PCell):

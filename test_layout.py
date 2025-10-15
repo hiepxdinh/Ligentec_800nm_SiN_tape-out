@@ -22,7 +22,7 @@ from Aux_ring import HeaterNotchRacetrack, Aux_all_pass_ring, Aux_add_drop_ring
 from All_pass_ring_taper import All_pass_ring_taper
 from Aux_ring_taper import Aux_add_drop_ring_taper
 from waveguide_taper import Waveguide_test
-from Bragg_grating import FP_Waveguide_width_Linear_Taper, BG_1
+from Bragg_grating import FP_Waveguide_width_Linear_Taper, BG_1, BG_2, BG_3, BG_4, BG_5
 from exspot_test import Exspot_Spiral_Square, Exspot_Spiral_Circular
 #
 # #######################################
@@ -145,11 +145,30 @@ chip_elements.append(i3.SRef(reference=heater_test, position=(-3000, 3100)))
 ##################################
 
 bg_1 = BG_1()
-
 bg_1_lv = bg_1.Layout()
 bg_1_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=bg_1_lv, position=(-3000, 3100)))
 
-chip_elements.append(i3.SRef(reference=heater_test, position=(-3000, 3100)))
+bg_2 = BG_2()
+bg_2_lv = bg_2.Layout()
+bg_2_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=bg_2_lv, position=(-3000, 3200)))
+
+bg_3 = BG_3()
+bg_3_lv = bg_3.Layout()
+bg_3_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=bg_3_lv, position=(-3000, 3300)))
+
+bg_4 = BG_4()
+bg_4_lv = bg_4.Layout()
+bg_4_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=bg_4_lv, position=(-3000, 3400)))
+
+bg_5 = BG_5()
+bg_5_lv = bg_5.Layout()
+bg_5_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=bg_5_lv, position=(-3000, 3500)))
+
 
 ####################################
 ### Generate the main layout
@@ -159,12 +178,3 @@ chip_design = i3.LayoutCell(name = "Top")
 chip_layout = chip_design.Layout(elements=chip_elements)
 
 chip_layout.write_gdsii("gds_output/ligentec.gds")
-
-# ###########################
-# ## For component testing
-# ###########################
-#
-# test_component = BG_1()
-# test_component_lv = test_component.Layout()
-# # test_component_lv.visualize(annotate=True)
-# test_component_lv.write_gdsii("gds_output/test_component_lv_2.gds")
