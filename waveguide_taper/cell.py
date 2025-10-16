@@ -1,9 +1,9 @@
-import ligentec_an800.all as ligentec
+import ligentec_an800.all as pdk
 
 import ipkiss3.all as i3
 
 
-class Waveguide_test(i3.Circuit):
+class Waveguide_Exspot(i3.Circuit):
 
     taper = i3.ChildCellProperty("edge coupler")
     trace_template_in = i3.TraceTemplateProperty(doc="waveguide template used in the circuit")
@@ -11,17 +11,17 @@ class Waveguide_test(i3.Circuit):
     linear_transition = i3.ChildCellProperty(doc="linear transition waveguide")
 
     def _default_taper(self):
-        return ligentec.AN800BB_EdgeCoupler_Lensed_C()
+        return pdk.AN800BB_ExSpot_SMF_C()
 
     def _default_trace_template_in(self):
-        return ligentec.WireWaveguideTemplate()
+        return pdk.WireWaveguideTemplate()
 
     def _default_trace_template_out(self):
-        return ligentec.WireWaveguideTemplate()
+        return pdk.WireWaveguideTemplate()
 
     def _default_linear_transition(self):
         # return ligentec.LinearTaperFromPort(start_trace_template=self.trace_template_in, end_trace_template=self.trace_template_out)
-        return ligentec.Taper()
+        return pdk.Taper()
 
     def _default_insts(self):
         return {
@@ -34,17 +34,17 @@ class Waveguide_test(i3.Circuit):
     def _default_specs(self):
         return[
             i3.Place("in_taper", position = (0,0), angle = 180),
-            i3.Place("out_taper", position = (10000,0), angle = 0),
-            i3.Place("linear_transition_in", position = (35,0), angle = 180, relative_to="in_taper:in0"),
-            i3.Place("linear_transition_out", position=(-35, 0), relative_to="out_taper:in0"),
-            i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
-            i3.ConnectBend("out_taper:in0", "linear_transition_out:out0"),
-            i3.ConnectBend("linear_transition_in:in0", "linear_transition_out:in0"),
+            i3.Place("out_taper", position = (10000-750,0), angle = 0),
+            i3.Place("linear_transition_in", position = (5,0), angle = 0, relative_to="in_taper:in0"),
+            i3.Place("linear_transition_out", position=(-5, 0), angle = 180, relative_to="out_taper:in0"),
+            i3.ConnectBend("in_taper:in0", "linear_transition_in:in0"),
+            i3.ConnectBend("out_taper:in0", "linear_transition_out:in0"),
+            i3.ConnectBend("linear_transition_in:out0", "linear_transition_out:out0"),
         ]
 
     class Layout(i3.Circuit.Layout):
         width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
-        width_out = i3.PositiveNumberProperty(default=1.8, doc="width of output waveguide")
+        width_out = i3.PositiveNumberProperty(default=1.5, doc="width of output waveguide")
 
         def _default_trace_template_in(self):
                 lo = self.cell.trace_template_in.get_default_view(i3.LayoutView)

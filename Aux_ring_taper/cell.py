@@ -1,6 +1,6 @@
 import sys
 
-import ligentec_an800.all as ligentec
+import ligentec_an800.all as pdk
 
 import ipkiss3.all as i3
 import numpy as np
@@ -27,7 +27,7 @@ class Aux_add_drop_ring_taper(i3.Circuit):
         return "RING"
 
     def _default_taper(self):
-        return ligentec.AN800BB_EdgeCoupler_Lensed_C()
+        return pdk.AN800BB_ExSpot_SMF_C()
 
     def _default_aux_ring(self):
         return Aux_add_drop_ring()
@@ -40,7 +40,7 @@ class Aux_add_drop_ring_taper(i3.Circuit):
 
     def _default_linear_transition(self):
         # return ligentec.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
-        return ligentec.Taper()
+        return pdk.Taper()
 
 
     def _default_insts(self):
@@ -70,9 +70,9 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             i3.FlipH("add_taper"),
             i3.Place('drop_taper', position=(-600, 100), angle=0, relative_to="aux_ring:drop"),
             i3.FlipH("drop_taper"),
-            i3.Place('aux_in_taper', position=(-900, -450), angle=0, relative_to="aux_ring:aux_in"),
+            i3.Place('aux_in_taper', position=(-900-55.5, -450), angle=0, relative_to="aux_ring:aux_in"),
             i3.FlipH("aux_in_taper"),
-            i3.Place('aux_through_taper', position=(-900, 450), angle=0, relative_to="aux_ring:aux_through"),
+            i3.Place('aux_through_taper', position=(-900-55.5, 450), angle=0, relative_to="aux_ring:aux_through"),
             i3.FlipH("aux_through_taper"),
 
             i3.Place("linear_transition_in", position=(0, 0), angle=180, relative_to="aux_ring:in"),
