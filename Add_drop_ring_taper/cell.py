@@ -59,21 +59,22 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
         return [
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
-            i3.Place("linear_transition_in", position=(2350/2-620-100-200, -120-2.732/2+127/4+127/2), angle=0, relative_to="ring:in0"),
-            i3.Place("linear_transition_out", position=(2350/2-620-100-200, -120-2.732/2+127/4), angle=0, relative_to="ring:in0"),
-            i3.Place("linear_transition_add", position=(2350/2-620-100-200, +120+2.732/2-127/4-127/2), angle=0, relative_to="ring:in1"),
-            i3.Place("linear_transition_drop", position=(2350/2-620-100-200, +120+2.732/2-127/4), angle=0, relative_to="ring:in1"),
 
-            i3.Place('in_taper', position=(200,0), angle=0, relative_to="linear_transition_in:in0"),
-            i3.Place('out_taper', position=(200,0), angle=0, relative_to="linear_transition_out:in0"),
-            i3.Place('add_taper', position=(200,0), angle=0, relative_to="linear_transition_add:in0"),
-            i3.Place('drop_taper', position=(200,0), angle=0, relative_to="linear_transition_drop:in0"),
+            i3.Place('in_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/4+127/2), angle=0, relative_to="ring:in0"),
+            i3.Place('out_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/4), angle=0, relative_to="ring:in0"),
+            i3.Place('add_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4-127/2), angle=0, relative_to="ring:in1"),
+            i3.Place('drop_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4), angle=0, relative_to="ring:in1"),
+
+            i3.Place('linear_transition_in', position=(-115,0), angle=0, relative_to="in_taper:in0"),
+            i3.Place('linear_transition_out', position=(-115,0), angle=0, relative_to="out_taper:in0"),
+            i3.Place('linear_transition_add', position=(-115,0), angle=0, relative_to="add_taper:in0"),
+            i3.Place('linear_transition_drop', position=(-115,0), angle=0, relative_to="drop_taper:in0"),
 
             i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
             i3.ConnectBend("out_taper:in0", "linear_transition_out:out0"),
             i3.ConnectBend("add_taper:in0", "linear_transition_add:out0"),
             i3.ConnectBend("drop_taper:in0", "linear_transition_drop:out0"),
-            # #
+            # # #
             i3.ConnectManhattan("ring:in0", "linear_transition_in:in0",
             control_points=[i3.H(i3.START+105),
                             ],
@@ -85,7 +86,6 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             ),
             i3.ConnectBend("ring:out1", "linear_transition_drop:in0",
             ),
-
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -99,6 +99,7 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
         # v_separation = i3.NumberProperty(default=0.7, doc="the gap ")
         width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
         width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
+        linear_taper_length = i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
 
         def _default_ring(self):
@@ -121,7 +122,8 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             lv = cell.get_default_view(self)
             lv.set(
                 in_width=self.width_in,
-                out_width=self.width_out
+                out_width=self.width_out,
+                length=self.linear_taper_length
             )
             return lv
 
@@ -176,32 +178,35 @@ class Add_drop_ring_Exspot_100GHz(i3.Circuit):
         return [
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
-            i3.Place("linear_transition_in", position=(2350/2-620-100, -120-2.732/2+127/4+127/2), angle=0, relative_to="ring:in0"),
-            i3.Place("linear_transition_out", position=(2350/2-620-100, -120-2.732/2+127/4), angle=0, relative_to="ring:in0"),
-            i3.Place("linear_transition_add", position=(2350/2-620-100, +120+2.732/2-127/4-127/2), angle=0, relative_to="ring:in1"),
-            i3.Place("linear_transition_drop", position=(2350/2-620-100, +120+2.732/2-127/4), angle=0, relative_to="ring:in1"),
 
-            i3.Place('in_taper', position=(200,0), angle=0, relative_to="linear_transition_in:in0"),
-            i3.Place('out_taper', position=(200,0), angle=0, relative_to="linear_transition_out:in0"),
-            i3.Place('add_taper', position=(200,0), angle=0, relative_to="linear_transition_add:in0"),
-            i3.Place('drop_taper', position=(200,0), angle=0, relative_to="linear_transition_drop:in0"),
+            i3.Place('in_taper', position=(200,0), angle=0, relative_to="ring:in0"),
+            i3.Place('out_taper', position=(200,0), angle=0, relative_to="ring:in0"),
+            i3.Place('add_taper', position=(200,0), angle=0, relative_to="ring:in1"),
+            i3.Place('drop_taper', position=(200,0), angle=0, relative_to="ring:in1"),
 
-            i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
-            i3.ConnectBend("out_taper:in0", "linear_transition_out:out0"),
-            i3.ConnectBend("add_taper:in0", "linear_transition_add:out0"),
-            i3.ConnectBend("drop_taper:in0", "linear_transition_drop:out0"),
-            # #
-            i3.ConnectManhattan("ring:in0", "linear_transition_in:in0",
-            control_points=[i3.H(i3.START+105),
-                            ],
-            ),
-            i3.ConnectBend("ring:out0", "linear_transition_out:in0"),
-            i3.ConnectManhattan("ring:in1", "linear_transition_add:in0",
-            control_points=[i3.H(i3.START - 105),
-                           ],
-            ),
-            i3.ConnectBend("ring:out1", "linear_transition_drop:in0",
-            ),
+            # i3.Place("linear_transition_in", position=(2350/2-620-100, -120-2.732/2+127/4+127/2), angle=0, relative_to="ring:in0"),
+            # i3.Place("linear_transition_out", position=(2350/2-620-100, -120-2.732/2+127/4), angle=0, relative_to="ring:in0"),
+            # i3.Place("linear_transition_add", position=(2350/2-620-100, +120+2.732/2-127/4-127/2), angle=0, relative_to="ring:in1"),
+            # i3.Place("linear_transition_drop", position=(2350/2-620-100, +120+2.732/2-127/4), angle=0, relative_to="ring:in1"),
+
+
+
+            # i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
+            # i3.ConnectBend("out_taper:in0", "linear_transition_out:out0"),
+            # i3.ConnectBend("add_taper:in0", "linear_transition_add:out0"),
+            # i3.ConnectBend("drop_taper:in0", "linear_transition_drop:out0"),
+            # # #
+            # i3.ConnectManhattan("ring:in0", "linear_transition_in:in0",
+            # control_points=[i3.H(i3.START+105),
+            #                 ],
+            # ),
+            # i3.ConnectBend("ring:out0", "linear_transition_out:in0"),
+            # i3.ConnectManhattan("ring:in1", "linear_transition_add:in0",
+            # control_points=[i3.H(i3.START - 105),
+            #                ],
+            # ),
+            # i3.ConnectBend("ring:out1", "linear_transition_drop:in0",
+            # ),
 
         ]
 

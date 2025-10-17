@@ -35,8 +35,8 @@ class Waveguide_Exspot(i3.Circuit):
         return[
             i3.Place("in_taper", position = (0,0), angle = 180),
             i3.Place("out_taper", position = (10000-750,0), angle = 0),
-            i3.Place("linear_transition_in", position = (5,0), angle = 0, relative_to="in_taper:in0"),
-            i3.Place("linear_transition_out", position=(-5, 0), angle = 180, relative_to="out_taper:in0"),
+            i3.Place("linear_transition_in", position = (15,0), angle = 0, relative_to="in_taper:in0"),
+            i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
             i3.ConnectBend("in_taper:in0", "linear_transition_in:in0"),
             i3.ConnectBend("out_taper:in0", "linear_transition_out:in0"),
             i3.ConnectBend("linear_transition_in:out0", "linear_transition_out:out0"),

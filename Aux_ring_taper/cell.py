@@ -62,35 +62,35 @@ class Aux_add_drop_ring_taper(i3.Circuit):
     def _default_specs(self):
         return [
             i3.Place('aux_ring', position=self.ring_position, angle=0),
-            i3.Place('through_taper', position=(-500+1500-250-75-75, 0+239-127), angle=0, relative_to="aux_ring:in"),
-            i3.Place('in_taper', position=(-600+1500-250-75-75, -100+212-127), angle=0, relative_to="aux_ring:through"),
-            i3.Place('drop_taper', position=(-500+1500-250-75-75, 0-239+127), angle=0, relative_to="aux_ring:add"),
-            i3.Place('add_taper', position=(-600+1500-250-75-75, 100-212+127), angle=0, relative_to="aux_ring:drop"),
-            i3.Place('aux_in_taper', position=(-900-55.5+1500+127-250-75-75-1.08, 50-127/2), angle=0, relative_to="aux_ring:aux_in"),
-            i3.Place('aux_through_taper', position=(-900-55.5+1500+127-250-75-75-1.08, -50+127/2), angle=0, relative_to="aux_ring:aux_through"),
+            i3.Place('through_taper', position=(-500+1500-250-75-75+50+50, 0+239-127+55.12-127), angle=0, relative_to="aux_ring:in"),
+            i3.Place('in_taper', position=(-600+1500-250-75-75+50+50, -100+212-127+55.12-127), angle=0, relative_to="aux_ring:through"),
+            i3.Place('drop_taper', position=(-500+1500-250-75-75+50+50, 0-239+127-55.12+127), angle=0, relative_to="aux_ring:add"),
+            i3.Place('add_taper', position=(-600+1500-250-75-75+50+50, 100-212+127-55.12+127), angle=0, relative_to="aux_ring:drop"),
+            i3.Place('aux_in_taper', position=(-900-55.5+1500+127-250-75-75-1.08+50+50-73.84, 50-127/2), angle=0, relative_to="aux_ring:aux_in"),
+            i3.Place('aux_through_taper', position=(-900-55.5+1500+127-250-75-75-1.08+50+50-73.84, -50+127/2), angle=0, relative_to="aux_ring:aux_through"),
 
-            i3.Place("linear_transition_in", position=(-75, 0), angle=0, relative_to="in_taper:in0"),
+            i3.Place("linear_transition_in", position=(-115, 0), angle=0, relative_to="in_taper:in0"),
             # i3.FlipH("linear_transition_in"),
-            i3.Place("linear_transition_through", position=(-75, 0), angle=0, relative_to="through_taper:in0"),
+            i3.Place("linear_transition_through", position=(-115, 0), angle=0, relative_to="through_taper:in0"),
             # i3.FlipH("linear_transition_through"),
-            i3.Place("linear_transition_add", position=(-75, 0), angle=0, relative_to="add_taper:in0"),
+            i3.Place("linear_transition_add", position=(-115, 0), angle=0, relative_to="add_taper:in0"),
             # i3.FlipH("linear_transition_add"),
-            i3.Place("linear_transition_drop", position=(-75, 0), angle=0, relative_to="drop_taper:in0"),
+            i3.Place("linear_transition_drop", position=(-115, 0), angle=0, relative_to="drop_taper:in0"),
             # i3.FlipH("linear_transition_drop"),
             # #
-            i3.Place("linear_transition_aux_in", position=(-75, 0), angle=0, relative_to="aux_in_taper:in0"),
-            i3.Place("linear_transition_aux_through", position=(-75, 0), angle=0, relative_to="aux_through_taper:in0"),
+            i3.Place("linear_transition_aux_in", position=(-115, 0), angle=0, relative_to="aux_in_taper:in0"),
+            i3.Place("linear_transition_aux_through", position=(-115, 0), angle=0, relative_to="aux_through_taper:in0"),
             #
             i3.ConnectBend("linear_transition_in:out0", "in_taper:in0"),
             i3.ConnectBend("linear_transition_through:out0", "through_taper:in0"),
             i3.ConnectBend("linear_transition_add:out0", "add_taper:in0"),
-            i3.ConnectManhattan("linear_transition_drop:out0", "drop_taper:in0"),
+            i3.ConnectBend("linear_transition_drop:out0", "drop_taper:in0"),
             i3.ConnectBend("linear_transition_aux_in:out0", "aux_in_taper:in0"),
             i3.ConnectBend("linear_transition_aux_through:out0", "aux_through_taper:in0"),
-            #
+            # #
             i3.ConnectManhattan("linear_transition_aux_in:in0", "aux_ring:aux_in"),
             i3.ConnectManhattan("linear_transition_aux_through:in0", "aux_ring:aux_through"),
-
+            #
             i3.ConnectManhattan("aux_ring:in", "linear_transition_in:in0"),
             i3.ConnectManhattan("aux_ring:through", "linear_transition_through:in0"),
             i3.ConnectManhattan("aux_ring:add", "linear_transition_add:in0"),
@@ -116,6 +116,7 @@ class Aux_add_drop_ring_taper(i3.Circuit):
 
         width_in = i3.PositiveNumberProperty(default=1.8, doc="width of input waveguide")
         width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
+        linear_taper_length = i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
 
         def _default_aux_ring(self):
@@ -139,7 +140,8 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             lv = cell.get_default_view(self)
             lv.set(
                 in_width=self.width_in,
-                out_width=self.width_out
+                out_width=self.width_out,
+                length=self.linear_taper_length
             )
             return lv
 
