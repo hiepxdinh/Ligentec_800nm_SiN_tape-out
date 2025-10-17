@@ -270,7 +270,7 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
         p1_module = i3.BoolProperty(
             doc="If True, it will use the P1 module layers (default set by the technology variant imported)"
         )
-        heater_width = i3.NonNegativeNumberProperty(default=1.5, doc="Width of the Heater path [um]")
+        heater_width = i3.NonNegativeNumberProperty(default=2, doc="Width of the Heater path [um]")
         wire_length = i3.NonNegativeNumberProperty(
             default=5.0,
             doc="Length of wire routing south from heater with heater_width width [um]"
@@ -309,43 +309,47 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            junction_width = self.add_heater_width
-            insts = self.instances
-            metal_hw = self.heater_width / 2.0
-            vert_insts = i3.InstanceDict([insts["vert_l"], insts["vert_r"]])
-            if self.trace_template.p1_module:
-                layer = i3.TECH.PPLAYER.P1P
-            else:
-                layer = i3.TECH.PPLAYER.M1P
-
-            vert_elems = i3.get_layer_elements(
-                i3.LayoutCell(name=self.name + "_dummy").Layout(instances=vert_insts),
-                [layer],
-            )
-            points = vert_elems.convex_hull().points
-            max_y = max(points[:, 1])
-            min_y = max_y - junction_width
-            idxs = np.where(points[:, 1] > min_y)[0]
-            points = points[idxs]
-
-            shape = i3.Shape(points=points)
-            points = shape.remove_identicals().points
-            orientation = shape.orientation()
-            if orientation == 1:
-                points = points[::-1]
-            min_pts = sorted(points, key=lambda p: p[1])[0:2]
-            min_pts = sorted(min_pts, key=lambda p: p[0])
-            min_pts_idx = sorted([index_of_point(p, points) for p in min_pts])
-            add_points = [
-                (min_pts[0][0] + metal_hw, min_y),
-                (min_pts[1][0] - metal_hw, min_y),
-            ]
-            if min_pts_idx[0] != 0:
-                points = np.roll(points, -2 * min_pts_idx[1])
-            points = np.concatenate([add_points, points])
-            elems += i3.Boundary(layer=layer, shape=points)
-            return elems
+        # def _generate_elements(self, elems):
+        #     junction_width = self.add_heater_width
+        #     insts = self.instances
+        #     metal_hw = self.heater_width / 2.0
+        #     vert_insts = i3.InstanceDict([insts["vert_l"], insts["vert_r"]])
+        #     if self.trace_template.p1_module:
+        #         layer = i3.TECH.PPLAYER.P1P
+        #     else:
+        #         layer = i3.TECH.PPLAYER.M1P
+        #
+        #     vert_elems = i3.get_layer_elements(
+        #         i3.LayoutCell(name=self.name + "_dummy").Layout(instances=vert_insts),
+        #         [layer],
+        #     )
+        #     points = vert_elems.convex_hull().points
+        #     max_y = max(points[:, 1])
+        #     min_y = max_y - junction_width
+        #     idxs = np.where(points[:, 1] > min_y)[0]
+        #     points = points[idxs]
+        #
+        #     shape = i3.Shape(points=points)
+        #     points = shape.remove_identicals().points
+        #     orientation = shape.orientation()
+        #     if orientation == 1:
+        #         points = points[::-1]
+        #     min_pts = sorted(points, key=lambda p: p[1])[0:2]
+        #     min_pts = sorted(min_pts, key=lambda p: p[0])
+        #     min_pts_idx = sorted([index_of_point(p, points) for p in min_pts])
+        #     add_points = [
+        #         (min_pts[0][0] + metal_hw, min_y),
+        #         (min_pts[1][0] - metal_hw, min_y),
+        #     ]
+        #     if min_pts_idx[0] != 0:
+        #         points = np.roll(points, -2 * min_pts_idx[1])
+        #     points = np.concatenate([add_points, points])
+        #     angle_0=-15
+        #     x0 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_0))
+        #     y0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0)) -0.3
+        #     points = [(x0, y0), (x0 + 10, y0+10)]
+        #     elems += i3.Boundary(layer=layer, shape=points)
+        #     return elems
 
         def _generate_instances(self, insts):
             name = self.name
@@ -360,17 +364,18 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
             insts = super(HeaterAddDropRacetrack.Layout, self)._generate_instances(insts)
             routing_south_insts = {}
             routing_south_specs = []
-            left_shape, right_shape = find_side_elements(insts["dc"].reference)
-            left_shape.start_face_angle = 135
-            left_shape.end_face_angle = 45
-            right_shape.start_face_angle = 45
-            right_shape.end_face_angle =135
+            # left_shape, right_shape = find_side_elements(insts["dc"].reference)
+            # left_shape.start_face_angle = 135
+            # left_shape.end_face_angle = 45
+            # right_shape.start_face_angle = 45
+            # right_shape.end_face_angle =135
 
-            num_o_points = 50
+            num_o_points = 1000
 
-            angle_0 = np.linspace(-15, -60, num_o_points)
-            angle_1  = np.linspace(240, 120, num_o_points)
-            angle_2 = np.linspace(15, 60, num_o_points)
+            angle_0 = np.linspace(-15, -180, num_o_points)
+            angle_1  = np.linspace(300, 180, num_o_points)
+            angle_2 = np.linspace(15, 185, num_o_points)
+            angle_3 = np.linspace(90, 180, num_o_points)
 
             left_points = []
             mid_points = []
@@ -378,18 +383,22 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
 
             for i in range(num_o_points):
                 x_0 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_0[i]))
-                y_0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0[i]))
+                y_0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0[i])) -0.3
                 left_points.append((x_0, y_0))
 
             for i in range(num_o_points):
                 x_1 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_1[i]))
                 y_1 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_1[i]))
 
-                left_points.append((x_1, y_1))
+                # left_points.append((x_1, y_1))
 
                 x_2 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_2[i]))
-                y_2 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_2[i]))
+                y_2 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_2[i])) -0.3
                 right_points.append((x_2, y_2))
+
+                # x_3 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_3[i]))
+                # y_3 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_3[i]))
+                # right_points.append((x_3, y_3))
 
             left_shape = i3.Shape(points=left_points)
             right_shape = i3.Shape(points=right_points)
@@ -501,7 +510,7 @@ class NotchRacetrack(i3.PCell):
         ]
 
         bus0_width = i3.PositiveNumberProperty(doc="Width of the straight waveguide at the bottom [um]")
-        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.0)
+        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.8)
         bus0_length = i3.PositiveNumberProperty(doc="Length of the straight waveguide at the bottom[um]", default=100.0)
         gap0 = i3.PositiveNumberProperty(doc="Gap of bottom directional coupler", default=1.0)
         coupler_length = i3.NonNegativeNumberProperty(doc="Coupling Length of the directional coupler[um]", default=0.0)
@@ -624,7 +633,7 @@ class HeaterNotchRacetrack(NotchRacetrack):
         p1_module = i3.BoolProperty(
             doc="If True, it will use the P1 module layers (default set by the technology variant imported)"
         )
-        heater_width = i3.NonNegativeNumberProperty(default=1.5, doc="Width of the Heater path [um]")
+        heater_width = i3.NonNegativeNumberProperty(default=2.0, doc="Width of the Heater path [um]")
         wire_length = i3.NonNegativeNumberProperty(
             default=5.0,
             doc="Length of wire routing south from heater with heater_width width [um]"
@@ -768,11 +777,11 @@ class Aux_add_drop_ring(i3.PCell):
 
         main_radius = i3.PositiveNumberProperty(doc="Radius of main rings [um]")
         aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
-        width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.0)
+        width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
         length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
         coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
-        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.5)
-        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.5)
+        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)
+        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.8)
         euler = i3.IntProperty(
             default=0,
             doc="Use Euler Bend?",
@@ -902,7 +911,7 @@ class Aux_all_pass_ring(i3.PCell):
 
         main_radius = i3.PositiveNumberProperty(doc="Radius of main rings [um]")
         aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
-        width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.0)
+        width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
         length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
         coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
         ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)

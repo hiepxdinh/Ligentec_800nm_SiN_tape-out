@@ -45,6 +45,7 @@ class Waveguide_Exspot(i3.Circuit):
     class Layout(i3.Circuit.Layout):
         width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
         width_out = i3.PositiveNumberProperty(default=1.5, doc="width of output waveguide")
+        linear_taper_length=i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
         def _default_trace_template_in(self):
                 lo = self.cell.trace_template_in.get_default_view(i3.LayoutView)
@@ -61,6 +62,7 @@ class Waveguide_Exspot(i3.Circuit):
             lv = cell.get_default_view(self)
             lv.set(
                 in_width=self.width_in,
-                out_width=self.width_out
+                out_width=self.width_out,
+                length=self.linear_taper_length
             )
             return lv
