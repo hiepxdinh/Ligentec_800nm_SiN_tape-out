@@ -1162,43 +1162,48 @@ class FP_BG_8(i3.PCell):
             )
 
 
-# class SinusoidalGrating(i3.PCell):
-#     class Layout(i3.LayoutView):
-#         period = i3.PositiveNumberProperty(default=0.475, doc="Grating period (um)")
-#         n_periods = i3.PositiveIntProperty(default=100, doc="Number of periods")
-#         w_min = i3.PositiveNumberProperty(default=0.3, doc="Minimum waveguide width (µm)")
-#         w_max = i3.PositiveNumberProperty(default=0.9, doc="Maximum waveguide width (µm)")
-#
-#         def _default_name(self):
-#             return "sinusoidal_grating"
-#
-#         def _generate_elements(self, elems):
-#             # Generate sinusoidal edge
-#             length = self.period * self.n_periods
-#             z = np.linspace(0, length, 1000)  # higher resolution for smooth edges
-#
-#             w_base = 0.5 * (self.w_max + self.w_min)
-#             delta_w = 0.5 * (self.w_max - self.w_min)
-#
-#             # --- Compute sinusoidal width along z ---
-#             w_z = w_base + delta_w * np.sin(2 * np.pi * z / self.period)
-#
-#             y_top = +w_z / 2.0
-#             y_bot = -w_z / 2.0
-#
-#             # --- Construct polygon ---
-#             top_pts = [(zi, yi) for zi, yi in zip(z, y_top)]
-#             bot_pts = [(zi, yi) for zi, yi in zip(z[::-1], y_bot[::-1])]
-#             shape = i3.Shape(points=top_pts + bot_pts)
-#
-#             elems += i3.Boundary(shape=shape, layer=i3.TECH.PPLAYER.X1P)
-#             return elems
+class SinusoidalGrating(i3.PCell):
+    class Layout(i3.LayoutView):
+        period = i3.PositiveNumberProperty(default=0.475, doc="Grating period (um)")
+        n_periods = i3.PositiveIntProperty(default=100, doc="Number of periods")
+        w_min = i3.PositiveNumberProperty(default=0.3, doc="Minimum waveguide width (µm)")
+        w_max = i3.PositiveNumberProperty(default=0.9, doc="Maximum waveguide width (µm)")
+
+        def _default_name(self):
+            return "sinusoidal_grating"
+
+        def _generate_elements(self, elems):
+            # Generate sinusoidal edge
+            length = self.period * self.n_periods
+            z = np.linspace(0, length, 2000)  # higher resolution for smooth edges
+
+            w_base = 0.5 * (self.w_max + self.w_min)
+            delta_w = 0.5 * (self.w_max - self.w_min)
+
+            # --- Compute sinusoidal width along z ---
+            w_z = w_base + delta_w * np.sin(2 * np.pi * z / self.period)
+
+            y_top = +w_z / 2.0
+            y_bot = -w_z / 2.0
+
+            # --- Construct polygon ---
+            top_pts = [(zi, yi) for zi, yi in zip(z, y_top)]
+            bot_pts = [(zi, yi) for zi, yi in zip(z[::-1], y_bot[::-1])]
+            shape = i3.Shape(points=top_pts + bot_pts)
+
+            elems += i3.Boundary(shape=shape, layer=i3.TECH.PPLAYER.X1P)
+            return elems
+        def _generate_ports(self, ports):
+            total_length = self.period * self.n_periods
+            ports += i3.OpticalPort(name="in", position=(0.0, 0.0), angle=180.0)
+            ports += i3.OpticalPort(name="out", position=(total_length, 0.0), angle=0.0)
+            return ports
 
 class SinusoidalGratingTaper(i3.PCell):
     class Layout(i3.LayoutView):
         period = i3.PositiveNumberProperty(default=0.475, doc="Grating period (um)")
         n_periods = i3.PositiveIntProperty(default=100, doc="Number of periods")
-        n_fade = i3.PositiveIntProperty(default=5, doc="Number of periods to fade out")
+        n_fade = i3.PositiveIntProperty(default=100, doc="Number of periods to fade out")
         w_min = i3.PositiveNumberProperty(default=0.3, doc="Minimum waveguide width (µm)")
         w_max = i3.PositiveNumberProperty(default=0.9, doc="Maximum waveguide width (µm)")
 
@@ -1248,6 +1253,7 @@ class Sinusoidal_BG(i3.PCell):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     bus_waveguide = i3.ChildCellProperty(doc="bus_waveguide")
     BG = i3.ChildCellProperty(doc="bragg grating")
+    BG_Taper = i3.ChildCellProperty(doc="bragg grating taper")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -1259,6 +1265,9 @@ class Sinusoidal_BG(i3.PCell):
         return pdk.Sbend()
 
     def _default_BG(self):
+        return SinusoidalGrating()
+
+    def _default_BG_Taper(self):
         return SinusoidalGratingTaper()
 
     class Layout(i3.LayoutView):
@@ -1305,12 +1314,18 @@ class Sinusoidal_BG(i3.PCell):
             fp_linear_taper = self.fp_linear_taper
             bus_waveguide = self.bus_waveguide
             BG = self.BG
+            BG_Taper = self.BG_Taper
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper_in", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="fp_linear_taper_out", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="bus_waveguide_1", reference=bus_waveguide, flatten=True)
             insts += i3.SRef(name="bus_waveguide_2", reference=bus_waveguide, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_Taper_in_1", reference=BG_Taper, flatten=True)
+            insts += i3.SRef(name="BG_Taper_out_1", reference=BG_Taper, flatten=True)
+            insts += i3.SRef(name="BG_Taper_in_2", reference=BG_Taper, flatten=True)
+            insts += i3.SRef(name="BG_Taper_out_2", reference=BG_Taper, flatten=True)
+            #
             insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
             insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
 
@@ -1320,8 +1335,16 @@ class Sinusoidal_BG(i3.PCell):
                     i3.Place("fp_waveguide", (0, 0)),
                     i3.Place("fp_linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("fp_linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
-                    i3.Place("BG_in:out", (0,0), relative_to="fp_linear_taper_in:out0"),
-                    i3.Place("BG_out:out", (0, 0), relative_to="fp_linear_taper_out:out0", angle=180),
+                    i3.Place("BG_Taper_in_1", (0,0), relative_to="fp_linear_taper_in:out0"),
+                    i3.FlipH("BG_Taper_in_1"),
+                    i3.Place("BG_Taper_in_2", (0,0), relative_to="fp_linear_taper_out:out0"),
+                    i3.Place("BG_in", (0, 0), relative_to="BG_Taper_in_1:out"),
+                    i3.FlipH("BG_in"),
+                    i3.Place("BG_out", (0, 0), relative_to="BG_Taper_in_2:out"),
+                    i3.Place("BG_Taper_out_1:out", (0.475/2, 0), relative_to="BG_in:out"),
+                    # i3.FlipH("BG_Taper_out_1"),
+                    i3.Place("BG_Taper_out_2:out", (-0.475/2, 0), relative_to="BG_out:out"),
+                    i3.FlipH("BG_Taper_out_2"),
                     i3.Place("bus_waveguide_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
                     i3.Place("bus_waveguide_2", (0,0), relative_to="bus_waveguide_1:in0"),
                     ]
