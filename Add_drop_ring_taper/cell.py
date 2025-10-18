@@ -91,6 +91,7 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
     class Layout(i3.Circuit.Layout):
         # horizontal_spacing = i3.PositiveNumberProperty(default=9000, doc="horizontal spacing between input and output inverse_taper couplers")
         ring_radius = i3.PositiveNumberProperty(default=50.0, doc="radius of the ring")
+        ring_width = i3.PositiveNumberProperty(default=1.0, doc="width of the ring")
         # ring_gap = i3.PositiveNumberProperty(default=0.7, doc="the gap ")
         # ring_position_x=i3.NumberProperty (default=0.0, doc="the x position of ring")
         # ring_position_y=i3.NumberProperty (default=0.0, doc="the y position of ring")
@@ -105,6 +106,7 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
         def _default_ring(self):
             lo = self.cell.ring.get_default_view(i3.LayoutView)
             lo.set(radius=self.ring_radius)
+            lo.set(ring_width=self.ring_width)
             return lo
 
         # def _default_trace_template_in(self):
@@ -121,7 +123,7 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             cell = self.cell.linear_transition
             lv = cell.get_default_view(self)
             lv.set(
-                in_width=self.width_in,
+                in_width=self.ring_width,
                 out_width=self.width_out,
                 length=self.linear_taper_length
             )

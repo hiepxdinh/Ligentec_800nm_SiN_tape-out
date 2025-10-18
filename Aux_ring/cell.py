@@ -762,6 +762,12 @@ class Aux_add_drop_ring(i3.PCell):
     main_ring = i3.ChildCellProperty(locked=True)
     aux_ring = i3.ChildCellProperty(locked=True)
 
+    dc_pad_array = i3.ChildCellProperty(locked=True)
+    metal_wire_1 = i3.ChildCellProperty(locked=True)
+    metal_wire_2 = i3.ChildCellProperty(locked=True)
+    # metal_wire = i3.ChildCellProperty(locked=True)
+    # metal_wire = i3.ChildCellProperty(locked=True)
+
     # def _default_straight(self):
     #     return pdk.Straight(name=self.name + "straight")
 
@@ -770,6 +776,15 @@ class Aux_add_drop_ring(i3.PCell):
 
     def _default_aux_ring(self):
         return HeaterNotchRacetrack()
+
+    def _default_dc_pad_array(self):
+        return pdk.DCPadArray()
+
+    def _default_metal_wire_1(self):
+        return pdk.DCBend()
+
+    def _default_metal_wire_2(self):
+        return pdk.DCBend()
 
     class Layout(i3.LayoutView):
 
@@ -821,6 +836,34 @@ class Aux_add_drop_ring(i3.PCell):
             lv.set(ring_width=self.ring_width)
             return lv
 
+        def _default_dc_pad_array(self):
+            lv = self.cell.dc_pad_array.get_default_view(self)
+            lv.set(n_o_pads=(1, 4))
+            lv.set(pad_size=90.0)
+            lv.set(pitch=200.0)
+            # lv.set()
+            return lv
+
+        def _default_metal_wire_1(self):
+            lv = self.cell.metal_wire_1.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            electric_wire_shape = i3.Shape([(0,0), (629, 0), (629, 240), (625, 245)])
+            lv.set(shape=electric_wire_shape)
+            return lv
+
+        def _default_metal_wire_2(self):
+            lv = self.cell.metal_wire_2.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            electric_wire_shape = i3.Shape([(0,0), (-129, 0), (-129, -400), (-125+600+180, -400), (-125+600+180, -400+440), (-125+600+180+2+4, -400+440+4+4)])
+            lv.set(shape=electric_wire_shape)
+            return lv
+
         def _generate_instances(self, insts):
             ring_gap = self.ring_gap
             coupler_gap = self.coupler_gap
@@ -833,13 +876,21 @@ class Aux_add_drop_ring(i3.PCell):
             main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
             aux_ring_height = coupler_gap +  ring_width + 2*aux_radius + ring_width
 
-            insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring}
+            insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2}
             instances = insts_dict
 
             specs = [
                 i3.Place("main_ring:center", (0.0, 0.0)),
                 i3.Place("aux_ring:center", (51.0 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.cos(np.deg2rad(0)),-49 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.sin(np.deg2rad(0))),
                          relative_to="main_ring:center", angle=90),
+                i3.Place("dc_pad_array", (-350,0)),
+                i3.Place("metal_wire_1", (-350, -300)),
+                i3.Place("metal_wire_2", (-350, -100)),
+
+                i3.Place("metal_wire_3", (-350, -300+400+200+5)),
+                i3.FlipV("metal_wire_3"),
+                i3.Place("metal_wire_4", (-350, -100+200+5)),
+                i3.FlipV("metal_wire_4")
                 ]
 
             # i3.Place("aux_ring:center",
@@ -868,7 +919,6 @@ class Aux_add_drop_ring(i3.PCell):
         #     )
         #     return elems
 
-
         def _generate_ports(self, ports):
                 return i3.expose_ports(
                     self.instances,
@@ -886,111 +936,111 @@ class Aux_add_drop_ring(i3.PCell):
     class Netlist(i3.NetlistFromLayout):
         pass
 
-class Aux_all_pass_ring(i3.PCell):
-    """
-    Auxiliary coupled resonators
-    """
-
-    _name_prefix = "Aux_ring"
-    # straight = i3.ChildCellProperty(locked=True)
-    main_ring = i3.ChildCellProperty(locked=True)
-    aux_ring = i3.ChildCellProperty(locked=True)
-
-    # def _default_straight(self):
-    #     return pdk.Straight(name=self.name + "straight")
-
-    def _default_main_ring(self):
-        return HeaterNotchRacetrack()
-
-    def _default_aux_ring(self):
-        return NotchRacetrack()
-
-    class Layout(i3.LayoutView):
-
-        _doc_properties = ["radius", "width", "length", "gap", "euler"]
-
-        main_radius = i3.PositiveNumberProperty(doc="Radius of main rings [um]")
-        aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
-        width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
-        length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
-        coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
-        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)
-        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.0)
-        euler = i3.IntProperty(
-            default=0,
-            doc="Use Euler Bend?",
-            restriction=i3.RestrictValueList((0, 1)),
-        )
-
-        def validate_properties(self):
-            validate_on_grid("width", self.width, self.__class__.__name__)
-            return True
-
-        def _default_main_radius(self):
-            return i3.TECH.TECH.MINIMUM_BEND_RADIUS
-
-        def _default_aux_radius(self):
-            return i3.TECH.TECH.MINIMUM_BEND_RADIUS
-
-        # def _default_straight(self):
-        #     lv = self.cell.straight.get_default_view(self)
-        #     lv.set(width=self.width, length=self.length)
-        #     return lv
-
-        def _default_main_ring(self):
-            lv = self.cell.main_ring.get_default_view(self)
-            lv.set(radius=self.main_radius)
-            lv.set(gap0=self.coupler_gap)
-            lv.set(ring_width=self.ring_width)
-            return lv
-
-        def _default_aux_ring(self):
-            lv = self.cell.aux_ring.get_default_view(self)
-            lv.set(radius=self.aux_radius)
-            lv.set(ring_width=self.ring_width)
-            return lv
-
-        def _generate_instances(self, insts):
-            ring_gap = self.ring_gap
-            coupler_gap = self.coupler_gap
-            ring_width = self.ring_width
-            main_radius = self.main_radius
-            aux_radius = self.aux_radius
-            ring_width = self.ring_width
-            length = self.length
-
-            main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
-            aux_ring_height = coupler_gap +  ring_width + 2 * aux_radius + ring_width
-
-            insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring}
-            instances = insts_dict
-
-            specs = [
-                # i3.Place("straight_0:in0", (0.0, 0.0)),
-
-                i3.Place("main_ring:in0", (0.0, 0.0)),
-
-                i3.Place("aux_ring", (0 + (main_radius+ aux_radius + ring_width + ring_gap)*np.cos(np.deg2rad(0)), (main_radius+ aux_radius + ring_width + ring_gap)*np.sin(np.deg2rad(0)) + main_ring_height/2  - aux_ring_height/2),
-                         relative_to="main_ring:in0"),
-                # i3.FlipV("aux_ring")
-
-                ]
-
-            return i3.place_and_route(instances, specs)
-
-        def _generate_ports(self, ports):
-                return i3.expose_ports(
-                    self.instances,
-                    {
-                        # "main_ring:in0": "in0",
-                        # "straight_0:in0": "in1",
-                        # "main_ring:out0": "out0",
-                        # "straight_0:out0": "out1",
-                    },
-                )
-
-    class Netlist(i3.NetlistFromLayout):
-        pass
+# class Aux_all_pass_ring(i3.PCell):
+#     """
+#     Auxiliary coupled resonators
+#     """
+#
+#     _name_prefix = "Aux_ring"
+#     # straight = i3.ChildCellProperty(locked=True)
+#     main_ring = i3.ChildCellProperty(locked=True)
+#     aux_ring = i3.ChildCellProperty(locked=True)
+#
+#     # def _default_straight(self):
+#     #     return pdk.Straight(name=self.name + "straight")
+#
+#     def _default_main_ring(self):
+#         return HeaterNotchRacetrack()
+#
+#     def _default_aux_ring(self):
+#         return NotchRacetrack()
+#
+#     class Layout(i3.LayoutView):
+#
+#         _doc_properties = ["radius", "width", "length", "gap", "euler"]
+#
+#         main_radius = i3.PositiveNumberProperty(doc="Radius of main rings [um]")
+#         aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
+#         width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
+#         length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
+#         coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+#         ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)
+#         ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.0)
+#         euler = i3.IntProperty(
+#             default=0,
+#             doc="Use Euler Bend?",
+#             restriction=i3.RestrictValueList((0, 1)),
+#         )
+#
+#         def validate_properties(self):
+#             validate_on_grid("width", self.width, self.__class__.__name__)
+#             return True
+#
+#         def _default_main_radius(self):
+#             return i3.TECH.TECH.MINIMUM_BEND_RADIUS
+#
+#         def _default_aux_radius(self):
+#             return i3.TECH.TECH.MINIMUM_BEND_RADIUS
+#
+#         # def _default_straight(self):
+#         #     lv = self.cell.straight.get_default_view(self)
+#         #     lv.set(width=self.width, length=self.length)
+#         #     return lv
+#
+#         def _default_main_ring(self):
+#             lv = self.cell.main_ring.get_default_view(self)
+#             lv.set(radius=self.main_radius)
+#             lv.set(gap0=self.coupler_gap)
+#             lv.set(ring_width=self.ring_width)
+#             return lv
+#
+#         def _default_aux_ring(self):
+#             lv = self.cell.aux_ring.get_default_view(self)
+#             lv.set(radius=self.aux_radius)
+#             lv.set(ring_width=self.ring_width)
+#             return lv
+#
+#         def _generate_instances(self, insts):
+#             ring_gap = self.ring_gap
+#             coupler_gap = self.coupler_gap
+#             ring_width = self.ring_width
+#             main_radius = self.main_radius
+#             aux_radius = self.aux_radius
+#             ring_width = self.ring_width
+#             length = self.length
+#
+#             main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
+#             aux_ring_height = coupler_gap +  ring_width + 2 * aux_radius + ring_width
+#
+#             insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring}
+#             instances = insts_dict
+#
+#             specs = [
+#                 # i3.Place("straight_0:in0", (0.0, 0.0)),
+#
+#                 i3.Place("main_ring:in0", (0.0, 0.0)),
+#
+#                 i3.Place("aux_ring", (0 + (main_radius+ aux_radius + ring_width + ring_gap)*np.cos(np.deg2rad(0)), (main_radius+ aux_radius + ring_width + ring_gap)*np.sin(np.deg2rad(0)) + main_ring_height/2  - aux_ring_height/2),
+#                          relative_to="main_ring:in0"),
+#                 # i3.FlipV("aux_ring")
+#
+#                 ]
+#
+#             return i3.place_and_route(instances, specs)
+#
+#         def _generate_ports(self, ports):
+#                 return i3.expose_ports(
+#                     self.instances,
+#                     {
+#                         # "main_ring:in0": "in0",
+#                         # "straight_0:in0": "in1",
+#                         # "main_ring:out0": "out0",
+#                         # "straight_0:out0": "out1",
+#                     },
+#                 )
+#
+#     class Netlist(i3.NetlistFromLayout):
+#         pass
 
 
 

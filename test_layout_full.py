@@ -20,13 +20,13 @@ from chip_frame import CSL_FRAME_10500_4850, CHS_FRAME_10500_4850_HALF, CHS_FRAM
 # from ring_gc.cell import RingModulatorGC
 # from ring_modulator.cell import AddDropRingWithElectrode
 # from waveguide_loop.cell import WaveguideLoop
-from Aux_ring import HeaterNotchRacetrack, Aux_all_pass_ring, Aux_add_drop_ring
-from All_pass_ring_taper import All_pass_ring_Exspot, All_pass_ring_Exspot_200GHz, All_pass_ring_Exspot_100GHz, All_pass_ring_Exspot_50GHz
+from Aux_ring import HeaterNotchRacetrack, Aux_add_drop_ring
+from All_pass_ring_taper import All_pass_ring_Exspot, All_pass_ring_Exspot_200GHz, All_pass_ring_Exspot_100GHz, All_pass_ring_Exspot_50GHz, All_pass_ring_Exspot_Aux
 from Add_drop_ring_taper import Add_drop_ring_Exspot_100GHz, Add_drop_ring_Exspot_200GHz
 from Aux_ring_taper import Aux_add_drop_ring_taper
 from waveguide_taper import Waveguide_Exspot, Waveguide_Exspot_2
 from bragg_grating_exspot import FP_BG_1_Exspot, FP_BG_2_Exspot, FP_BG_3_Exspot, FP_BG_4_Exspot, FP_BG_5_Exspot, FP_BG_6_Exspot, FP_BG_7_Exspot, FP_BG_8_Exspot, Sinusoidal_BG_Exspot
-from exspot_test import Exspot_Spiral_Square, Exspot_Spiral_Circular
+from Bragg_grating_test import BG_Test_1, BG_Test_2, BG_Test_3, BG_Test_4, BG_Test_5, BG_Test_6, BG_Test_7, BG_Test_8, BG_Test_Sinusoidal
 #
 # #######################################
 # # Global parameters
@@ -82,17 +82,17 @@ coupler_gap = [1.0, 1.0, 1.0, 1.0, 1.0]
 offset = 125
 gap_list = [2.05]
 ring_1 = All_pass_ring_Exspot_50GHz(ring_position_x=175, ring_position_y=0, output_offset=0)
-ring_1_lv = ring_1.Layout(ring_radius=radius_50ghz)
+ring_1_lv = ring_1.Layout(ring_radius=radius_50ghz, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_1, position=(4095 + 200-1250, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 
 ring_2 = All_pass_ring_Exspot_50GHz(ring_position_x=175, ring_position_y=0, output_offset=0)
-ring_2_lv = ring_2.Layout(ring_radius=radius_50ghz)
+ring_2_lv = ring_2.Layout(ring_radius=radius_50ghz, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_2, position=(4095 + 200-1250+1050, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 
 ring_3 = All_pass_ring_Exspot_50GHz(ring_position_x=175, ring_position_y=0, output_offset=0)
-ring_3_lv = ring_3.Layout(ring_radius=radius_50ghz)
+ring_3_lv = ring_3.Layout(ring_radius=radius_50ghz, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_3, position=(4095 + 200-1250+1050+1050, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 
@@ -111,20 +111,20 @@ gap_list = [1.0, 1.0]
 # for i, gap in enumerate(gap_list):
 #     name = "All_Pass_Ring_{}".format(radius)
 ring_1 = All_pass_ring_Exspot_100GHz(ring_position_x=1*h_separation_2-400+50-7.5, ring_position_y=(2)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
-ring_1_lv = ring_1.Layout(ring_radius=radius_100ghz)
+ring_1_lv = ring_1.Layout(ring_radius=radius_100ghz, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_1, position=(6595-5500+400-40+1000-500, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 
 ring_2 = All_pass_ring_Exspot_100GHz(ring_position_x=-1*h_separation_2-300+50-7.5, ring_position_y=(1)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
-ring_2_lv = ring_2.Layout(ring_radius=radius_100ghz)
+ring_2_lv = ring_2.Layout(ring_radius=radius_100ghz, ring_width=1.8)
 chip_elements.append(i3.SRef(reference=ring_2, position=(6595-5500+400-40+1000-500, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 #
 ring_3 = All_pass_ring_Exspot_100GHz(ring_position_x=1*h_separation_2-400+50-7.5, ring_position_y=(2)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
-ring_3_lv = ring_3.Layout(ring_radius=radius_100ghz)
+ring_3_lv = ring_3.Layout(ring_radius=radius_100ghz, ring_width=1.8)
 chip_elements.append(i3.SRef(reference=ring_3, position=(6595-5500+400-40+1000-500+575, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 #
 ring_4 = All_pass_ring_Exspot_100GHz(ring_position_x=-1*h_separation_2-300+50-7.5, ring_position_y=(1)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
-ring_4_lv = ring_4.Layout(ring_radius=radius_100ghz)
+ring_4_lv = ring_4.Layout(ring_radius=radius_100ghz, ring_width=1.8)
 chip_elements.append(i3.SRef(reference=ring_4, position=(6595-5500+400-40+1000-500+575, 1500+1600+500+275-50-17.5), transformation=i3.Rotation(rotation=90)))
 
 # Radius: 200GHz
@@ -140,7 +140,7 @@ gap_list = [1.0, 1.0, 1.0]
 for i, gap in enumerate(gap_list):
     # name = "All_Pass_Ring_{}".format(radius)
     ring = All_pass_ring_Exspot_200GHz(ring_position_x=-i*h_separation+25-7.5, ring_position_y=(1-i)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
-    ring_lv = ring.Layout(ring_radius=radius)
+    ring_lv = ring.Layout(ring_radius=radius, ring_width=1.8)
     # ring_lv.visualize(annotate=True)
     chip_elements.append(i3.SRef(reference=ring, position=(6595-5500, 1500+1600+500+275-50-17.5+25), transformation=i3.Rotation(rotation=90)))
 
@@ -148,7 +148,7 @@ gap_list = [1.0, 1.0]
 for i, gap in enumerate(gap_list):
     # name = "All_Pass_Ring_{}".format(radius)
     ring = All_pass_ring_Exspot_200GHz(ring_position_x=-i*h_separation-7.5, ring_position_y=(1-i)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
-    ring_lv = ring.Layout(ring_radius=radius)
+    ring_lv = ring.Layout(ring_radius=radius, ring_width=1.8)
     # ring_lv.visualize(annotate=True)
     chip_elements.append(i3.SRef(reference=ring, position=(6595-5500+400-40, 1500+1600+500+275-50-17.5+25), transformation=i3.Rotation(rotation=90)))
 
@@ -168,22 +168,22 @@ offset = 125
 gap_list = [2.05]
 #
 ring_1 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, output_offset=0)
-ring_1_lv = ring_1.Layout(ring_radius=radius)
+ring_1_lv = ring_1.Layout(ring_radius=radius, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_1, position=(7895 + 200*1-2500-2400+1050, 3615+155-307.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
 ring_3 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, output_offset=0)
-ring_3_lv = ring_3.Layout(ring_radius=radius)
+ring_3_lv = ring_3.Layout(ring_radius=radius, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_3, position=(7895 + 200*1-2500+500-2400+1050, 3615+155-307.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
 ring_2 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, output_offset=0)
-ring_2_lv = ring_2.Layout(ring_radius=radius)
+ring_2_lv = ring_2.Layout(ring_radius=radius, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_2, position=(7895 + 200*1-2500-2400, 3615-52.5-100), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
 ring_4 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, output_offset=0)
-ring_4_lv = ring_4.Layout(ring_radius=radius)
+ring_4_lv = ring_4.Layout(ring_radius=radius, ring_width=1.8)
 # ring_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=ring_4, position=(7895 + 200*1-2500+500-2400, 3615-52.5-100), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
@@ -194,11 +194,26 @@ chip_elements.append(i3.SRef(reference=ring_4, position=(7895 + 200*1-2500+500-2
 
 aux_ring = Aux_add_drop_ring_taper()
 aux_ring_lv = aux_ring.Layout(main_radius=227.82, aux_radius=60)
-chip_elements.append(i3.SRef(reference=aux_ring, position=(9000, 3500+125-100), transformation=i3.Rotation(rotation=-90)+i3.VMirror()))
+chip_elements.append(i3.SRef(reference=aux_ring, position=(9000-150, 3500+125-100), transformation=i3.Rotation(rotation=-90)+i3.VMirror()))
 
 aux_ring = Aux_add_drop_ring_taper()
 aux_ring_lv = aux_ring.Layout(main_radius=227.82, aux_radius=60)
-chip_elements.append(i3.SRef(reference=aux_ring, position=(10000, 3500+125), transformation=i3.Rotation(rotation=-90)+i3.VMirror()))
+chip_elements.append(i3.SRef(reference=aux_ring, position=(10000-100, 3500+125-100), transformation=i3.Rotation(rotation=-90)+i3.VMirror()))
+
+### Aux ring test
+radius = 60
+h_separation = 205.0
+v_separation = 127/3
+offset = 75
+out_taper_position = 150
+gap_list = [1.0, 1.0, 1.0, 1.0]
+for i, gap in enumerate(gap_list):
+    # name = "All_Pass_Ring_{}".format(radius)
+    ring = All_pass_ring_Exspot_Aux(ring_position_x=-i*h_separation+17.5, ring_position_y=(1-i)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
+    ring_lv = ring.Layout(ring_radius=radius, ring_width=1.8)
+    # ring_lv.visualize(annotate=True)
+    chip_elements.append(i3.SRef(reference=ring, position=(6595-5500+400-40+5000, 1500+1600+500+275-50-17.5+25), transformation=i3.Rotation(rotation=90)))
+
 
 ##################################
 ### Section Waveguide test -
@@ -317,7 +332,7 @@ chip_elements.append(i3.SRef(reference=sinusoidal_bg_2_lv, position=(-3000+7010-
 
 # ### Short chip
 # device_length_short = 2350
-#
+
 # # BG_1: 4 devices
 # fp_width_1=0.8
 # fp_length_1=1486
@@ -343,6 +358,100 @@ chip_elements.append(i3.SRef(reference=sinusoidal_bg_2_lv, position=(-3000+7010-
 #     bg_7_1 = FP_BG_7_Exspot(device_length=device_length_short)
 #     bg_7_1_lv = bg_7_1.Layout(fp_width=fp_width_7, fp_length=fp_length_7, coupler_gap=gap)
 #     chip_elements.append(i3.SRef(reference=bg_7_1_lv, position=(-0.2+(127/3)*(i+1+2*len(coupler_gap)), 3100-255+77+23), transformation=i3.Rotation(rotation=90)))
+
+##################################
+### Section Bragg grating test
+##################################
+# BG_Test_1: 4 devices
+fp_width_1=0.8
+fp_length_test=300.0
+
+bg_test_1 = BG_Test_1()
+bg_test_1_lv = bg_test_1.Layout(fp_width=fp_width_1, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_1_lv, position=(1800+50, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_1_lv, position=(1800+50 +20, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_2: 4 devices
+fp_width_2=1.0
+
+bg_test_2 = BG_Test_2()
+bg_test_2_lv = bg_test_2.Layout(fp_width=fp_width_2, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_2_lv, position=(1800+50 +20*2, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_2_lv, position=(1800+50 +20*3, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_3: 4 devices
+fp_width_3=1.0
+
+bg_test_3 = BG_Test_3()
+bg_test_3_lv = bg_test_3.Layout(fp_width=fp_width_3, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_3_lv, position=(1800+50 +20*4, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_3_lv, position=(1800+50 +20*5, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+# BG_4: 4 devices
+fp_width_4=0.8
+
+bg_test_4 = BG_Test_4()
+bg_test_4_lv = bg_test_4.Layout(fp_width=fp_width_4, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_4_lv, position=(1800+50 +20*6, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_4_lv, position=(1800+50 +20*7, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_5: 4 devices
+fp_width_5=0.8
+
+bg_test_5 = BG_Test_5()
+bg_test_5_lv = bg_test_5.Layout(fp_width=fp_width_5, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_5_lv, position=(1800+50 +20*8, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_5_lv, position=(1800+50 +20*9, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_6: 4 devices
+fp_width_6=1.0
+
+bg_test_6 = BG_Test_6()
+bg_test_6_lv = bg_test_6.Layout(fp_width=fp_width_6, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_6_lv, position=(1800+50 +20*10, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_6_lv, position=(1800+50 +20*11, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_7: 4 devices
+fp_width_7=1.0
+
+bg_test_7 = BG_Test_7()
+bg_test_7_lv = bg_test_7.Layout(fp_width=fp_width_7, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_7_lv, position=(1800+50 +20*12, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_7_lv, position=(1800+50 +20*13, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_8: 4 devices
+fp_width_8=1.0
+
+bg_test_8 = BG_Test_8()
+bg_test_8_lv = bg_test_8.Layout(fp_width=fp_width_8, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50 +20*14, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50 +20*15, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
+# BG_Sinusoidal: 4 devices
+fp_width_sinusoidal = 1.6
+
+bg_test_sinusoidal = BG_Test_Sinusoidal()
+bg_test_sinusoidal_lv = bg_test_sinusoidal.Layout(fp_width=fp_width_sinusoidal, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_sinusoidal_lv, position=(1800+50 +20*16, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_sinusoidal_lv, position=(1800+50 +20*17, 3000+154+1186), transformation=i3.Rotation(rotation=90)))
+
+
 
 ####################################
 ### Generate the main layout

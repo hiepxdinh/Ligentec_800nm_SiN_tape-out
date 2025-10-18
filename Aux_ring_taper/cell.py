@@ -92,9 +92,9 @@ class Aux_add_drop_ring_taper(i3.Circuit):
             i3.ConnectManhattan("linear_transition_aux_through:in0", "aux_ring:aux_through"),
             #
             i3.ConnectManhattan("aux_ring:in", "linear_transition_in:in0"),
-            i3.ConnectManhattan("aux_ring:through", "linear_transition_through:in0"),
+            i3.ConnectBend("aux_ring:through", "linear_transition_through:in0"),
             i3.ConnectManhattan("aux_ring:add", "linear_transition_add:in0"),
-            i3.ConnectManhattan("aux_ring:drop", "linear_transition_drop:in0"),
+            i3.ConnectBend("aux_ring:drop", "linear_transition_drop:in0"),
 
         ]
 

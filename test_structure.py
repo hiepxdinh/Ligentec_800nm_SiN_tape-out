@@ -10,6 +10,7 @@ sys.path.append("C:/pdk/Ligentec_SiN_2025/ipkiss")
 from bragg_grating_exspot import FP_BG_1_Exspot, Sinusoidal_BG_Exspot
 from waveguide_taper import Waveguide_Exspot, Waveguide_Exspot_2
 from Bragg_grating import SinusoidalGratingTaper, Sinusoidal_BG, SinusoidalGrating
+from Bragg_grating_test import BG_Test_Sinusoidal
 
 import ligentec_an800.all as pdk
 
@@ -21,7 +22,7 @@ chip_elements = list()
 ## For component testing
 ###########################
 
-test_component = Sinusoidal_BG()
+test_component = BG_Test_Sinusoidal()
 test_component_lv = test_component.Layout()
 # test_component_lv.visualize(annotate=True)
 test_component_lv.write_gdsii("gds_output/test_component_lv_2.gds")
