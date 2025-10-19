@@ -39,7 +39,7 @@ class BG_Test_1(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -122,7 +122,7 @@ class BG_Test_2(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -205,7 +205,7 @@ class BG_Test_3(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -288,7 +288,7 @@ class BG_Test_4(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -371,7 +371,7 @@ class BG_Test_5(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -454,7 +454,7 @@ class BG_Test_6(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -537,7 +537,7 @@ class BG_Test_7(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -620,7 +620,7 @@ class BG_Test_8(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide
@@ -707,7 +707,7 @@ class BG_Test_Sinusoidal(i3.Circuit):
         end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
         fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
         tip_width = i3.PositiveNumberProperty(default=0.3, doc="tip width of linear taper out")
-        linear_taper_out_length = i3.PositiveNumberProperty(default=200.0, doc="length of linear taper out")
+        linear_taper_out_length = i3.PositiveNumberProperty(default=250.0, doc="length of linear taper out")
 
         def _default_fp_waveguide(self):
             cell = self.cell.fp_waveguide

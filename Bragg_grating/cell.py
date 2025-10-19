@@ -404,6 +404,52 @@ class BG_8(i3.PCell):
                 },
             )
 
+array_9 = np.loadtxt("C:/Users/Administrator/Documents/GitHub/Ligentec_800nm_SiN_tape-out/Bragg_grating/Design_9_grating_params_2.csv", delimiter=',')
+BG_9_length_1 = array_9[:, 0]
+BG_9_width_1 = array_9[:, 2]
+BG_9_length_2 = array_9[:, 1]
+BG_9_width_2 = array_9[:, 3]
+
+class BG_9(i3.PCell):
+
+    class Layout(i3.LayoutView):
+        width_1 = i3.NonNegativeNumberProperty(default=1.0,doc="width of first waveguide")
+        length_1 = i3.NonNegativeNumberProperty(default=1.0,doc="length of first waveguide")
+        width_2 = i3.NonNegativeNumberProperty(default=1.0,doc="width of second waveguide")
+        length_2 = i3.NonNegativeNumberProperty(default=1.0,doc="length of second waveguide")
+
+        def _generate_instances(self, insts):
+            insts += i3.InstanceDict()
+            x_pos = 0
+            for idx in range(len(BG_9_width_1)):
+                width_1 = BG_9_width_1[idx]
+                length_1 = BG_9_length_1[idx]
+                width_2 = BG_9_width_2[idx]
+                length_2 = BG_9_length_2[idx]
+
+                wg1 = pdk.Straight(name=f"wg1_{idx}")
+                wg1_lv = wg1.Layout(width=width_1, length=length_1)
+                # print(f"wg1_{idx} ports:", wg1_lv.ports.keys())
+                wg2 = pdk.Straight(name=f"wg2_{idx}")
+                wg2_lv = wg2.Layout(width=width_2, length=length_2)
+                insts += i3.SRef(name=f"wg1_{idx}",reference=wg1_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_1
+                insts += i3.SRef(name=f"wg2_{idx}",reference=wg2_lv, flatten=True, position=(x_pos, 0))
+                x_pos += length_2
+
+                # print(insts)
+
+            return insts
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    f"wg1_0:in0": "in",  # Start of the waveguide chain
+                    f"wg2_{len(BG_8_width_1) - 1}:out0": "out",  # End of the last waveguide
+                },
+            )
+
 class FP_BG_1(i3.PCell):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
@@ -1161,6 +1207,98 @@ class FP_BG_8(i3.PCell):
                 },
             )
 
+class FP_BG_9(i3.PCell):
+    fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
+    fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
+    bus_waveguide = i3.ChildCellProperty(doc="bus_waveguide")
+    BG = i3.ChildCellProperty(doc="bragg grating")
+
+    def _default_fp_waveguide(self):
+        return pdk.Straight()
+
+    def _default_fp_linear_taper(self):
+        return pdk.Taper()
+
+    def _default_bus_waveguide(self):
+        return pdk.Sbend()
+
+    def _default_BG(self):
+        return BG_9()
+
+    class Layout(i3.LayoutView):
+        fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
+        fp_length = i3.PositiveNumberProperty(default=150.0, doc="length of fabry perot waveguide")
+        end_fp_taper_width = i3.PositiveNumberProperty(default=0.5, doc="width of end fp taper port")
+        fp_taper_length = i3.PositiveNumberProperty(default=50.0, doc="length of fp taper")
+        coupler_gap = i3.PositiveNumberProperty(default=2.0, doc="coupling gap between sbend and fp waveguide")
+
+        def _default_fp_waveguide(self):
+            cell = self.cell.fp_waveguide
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+                length=self.fp_length,
+            )
+            return lv
+
+        def _default_end_fp_taper_width(self):
+            return BG_9_width_2[len(array_9)-1]
+
+        print("BG_9:{}".format(BG_9_width_2[len(array_9) - 1]))
+
+        def _default_fp_linear_taper(self):
+            cell = self.cell.fp_linear_taper
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=self.end_fp_taper_width,
+                length=self.fp_taper_length,
+            )
+            return lv
+
+        def _default_bus_waveguide(self):
+            cell = self.cell.bus_waveguide
+            lv = cell.get_default_view(self)
+            lv.set(
+                width=self.fp_width,
+            )
+            return lv
+
+        def _generate_instances(self, insts):
+            fp_waveguide = self.fp_waveguide
+            fp_linear_taper = self.fp_linear_taper
+            bus_waveguide = self.bus_waveguide
+            BG = self.BG
+
+            insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
+            insts += i3.SRef(name="fp_linear_taper_in", reference=fp_linear_taper, flatten=True)
+            insts += i3.SRef(name="fp_linear_taper_out", reference=fp_linear_taper, flatten=True)
+            insts += i3.SRef(name="bus_waveguide_1", reference=bus_waveguide, flatten=True)
+            insts += i3.SRef(name="bus_waveguide_2", reference=bus_waveguide, flatten=True, transformation=i3.VMirror())
+            insts += i3.SRef(name="BG_in", reference=BG, flatten=True)
+            insts += i3.SRef(name="BG_out", reference=BG, flatten=True)
+
+            return i3.place_and_route(
+                insts=insts,
+                specs=[
+                    i3.Place("fp_waveguide", (0, 0)),
+                    i3.Place("fp_linear_taper_in", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
+                    i3.Place("fp_linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
+                    i3.Place("BG_in:out", (0,0), relative_to="fp_linear_taper_in:out0"),
+                    i3.Place("BG_out:out", (0, 0), relative_to="fp_linear_taper_out:out0", angle=180),
+                    i3.Place("bus_waveguide_1", (self.fp_length/2, -self.fp_width - self.coupler_gap), angle=-180),
+                    i3.Place("bus_waveguide_2", (0,0), relative_to="bus_waveguide_1:in0"),
+                    ]
+            )
+
+        def _generate_ports(self, ports):
+            return i3.expose_ports(
+                self.instances,
+                {
+                    "bus_waveguide_1:out0": "in0",
+                    "bus_waveguide_2:out0": "out0",
+                },
+            )
 
 class SinusoidalGrating(i3.PCell):
     class Layout(i3.LayoutView):

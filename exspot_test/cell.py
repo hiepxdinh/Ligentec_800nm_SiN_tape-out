@@ -5,6 +5,7 @@ import ipkiss3.all as i3
 class Exspot_Spiral_Square(i3.Circuit):
     exspot = i3.ChildCellProperty(doc="exspot")
     spiral = i3.ChildCellProperty(doc="spiral")
+    linear_taper = i3.ChildCellProperty(doc="linear_taper")
 
     def _default_exspot(self):
         return ligentec.AN800BB_ExSpot_SMF_C()
@@ -12,32 +13,62 @@ class Exspot_Spiral_Square(i3.Circuit):
     def _default_spiral(self):
         return ligentec.SpiralSquare()
 
+    def _default_linear_taper(self):
+        return ligentec.Taper()
+
     def _default_insts(self):
         return {"exspot_in": self.exspot,
                 "exspot_out": self.exspot,
                 "spiral": self.spiral,
+                "linear_taper_in":self.linear_taper,
+                "linear_taper_out":self.linear_taper,
                 }
 
     def _default_specs(self):
         x_spiral_length = self.spiral.get_default_view(i3.LayoutView).x_output
         # print(x_spiral_length)
         exspot_length = 620
-        chip_size = 2357.5
+        chip_size = 2357.5-10-38.97309
         return[
             i3.Place("spiral", position=(0.0, 0.0), angle=0),
             i3.Place("exspot_in", position=(chip_size/2-x_spiral_length, 0.0), angle=0, relative_to="spiral:in0"),
             i3.Place("exspot_out", position=(-chip_size/2+x_spiral_length+30,0.0), angle=180, relative_to="spiral:out0"),
-            i3.ConnectBend("spiral:in0", "exspot_out:in0"),
-            i3.ConnectBend("spiral:out0", "exspot_in:in0"),
+
+            i3.Place("linear_taper_in", position=(-15, 0.0), angle=180, relative_to="exspot_in:in0"),
+            i3.Place("linear_taper_out", position=(15, 0.0), angle=0,relative_to="exspot_out:in0"),
+            # i3.FlipH("linear_taper_out"),
+
+            i3.ConnectBend("linear_taper_in:in0", "exspot_in:in0"),
+            i3.ConnectBend("linear_taper_out:in0", "exspot_out:in0"),
+
+            i3.ConnectBend("linear_taper_in:out0", "spiral:out0"),
+            i3.ConnectBend("linear_taper_out:out0", "spiral:in0"),
         ]
 
     class Layout(i3.Circuit.Layout):
         spiral_length = i3.PositiveNumberProperty(default=100, doc="length of spiral")
 
+        width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
+        width_out = i3.PositiveNumberProperty(default=1.8, doc="width of output waveguide")
+        linear_taper_length = i3.PositiveNumberProperty(default=100, doc="length of linear taper")
+
         def _default_spiral(self):
             lo = self.cell.spiral.get_default_view(i3.LayoutView)
             lo.set(total_length=self.spiral_length)
+            lo.set(straight_width=self.width_out)
+            lo.set(bend_width=self.width_out)
+            lo.set(euler=1)
             return lo
+
+        def _default_linear_taper(self):
+            cell = self.cell.linear_taper
+            lv = cell.get_default_view(self)
+            lv.set(
+                in_width=self.width_in,
+                out_width=self.width_out,
+                length=self.linear_taper_length
+            )
+            return lv
 
 class Exspot_Spiral_Circular(i3.Circuit):
     exspot = i3.ChildCellProperty(doc="exspot")
@@ -70,4 +101,5 @@ class Exspot_Spiral_Circular(i3.Circuit):
         def _default_spiral(self):
             lo = self.cell.spiral.get_default_view(i3.LayoutView)
             lo.set(length=self.spiral_length)
+            lo.set(euler=True)
             return lo

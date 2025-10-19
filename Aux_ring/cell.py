@@ -236,7 +236,7 @@ class AddDropRacetrack(i3.PCell):
             return i3.HierarchicalModel.from_netlistview(self.netlist_view)
 
 
-class HeaterAddDropRacetrack(AddDropRacetrack):
+class HeaterAddDropRacetrack_1_2(AddDropRacetrack):
     """
     A racetrack resonator with heater coupled to two straight waveguides.
     No model not hierarchical netlist yet.
@@ -280,7 +280,7 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
         add_heater_width = i3.PositiveNumberProperty(doc="Width of the heater junction [um]")
 
         def validate_properties(self):
-            super(HeaterAddDropRacetrack.Layout, self).validate_properties()
+            super(HeaterAddDropRacetrack_1_2.Layout, self).validate_properties()
             max_junction_width = 2 * self._default_add_heater_width()
             min_junction_width = np.sin(45) * self.heater_width + 0.2
             if self.add_heater_width > max_junction_width:
@@ -361,7 +361,7 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
                 taper = metal_width != self.routing_width
                 taper_width = self.routing_width
             wire_length = self.wire_length
-            insts = super(HeaterAddDropRacetrack.Layout, self)._generate_instances(insts)
+            insts = super(HeaterAddDropRacetrack_1_2.Layout, self)._generate_instances(insts)
             routing_south_insts = {}
             routing_south_specs = []
             # left_shape, right_shape = find_side_elements(insts["dc"].reference)
@@ -383,7 +383,7 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
 
             for i in range(num_o_points):
                 x_0 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_0[i]))
-                y_0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0[i])) -0.3
+                y_0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0[i])) -self.gap0*4.5
                 left_points.append((x_0, y_0))
 
             for i in range(num_o_points):
@@ -393,7 +393,7 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
                 # left_points.append((x_1, y_1))
 
                 x_2 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_2[i]))
-                y_2 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_2[i])) -0.3
+                y_2 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_2[i])) -self.gap0*4.5
                 right_points.append((x_2, y_2))
 
                 # x_3 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_3[i]))
@@ -464,7 +464,259 @@ class HeaterAddDropRacetrack(AddDropRacetrack):
             return insts
 
         def _generate_ports(self, ports):
-            ports = super(HeaterAddDropRacetrack.Layout, self)._generate_ports(ports)
+            ports = super(HeaterAddDropRacetrack_1_2.Layout, self)._generate_ports(ports)
+            instances = self.instances
+            if "elec_via_ll" in instances:
+                inst_ports = ["elec_via_ll:dc0", "elec_via_lr:dc0"]
+            elif "taper_in" in instances:
+                inst_ports = ["taper_in:out0", "taper_out:out0"]
+            else:
+                inst_ports = ["vert_l:elec_in0", "vert_r:elec_out0"]
+            ports += i3.expose_ports(
+                self.instances,
+                {inst_pt: pt for inst_pt, pt in zip(inst_ports, ["elec_in0", "elec_out0"])},
+            )
+            return ports
+
+    class Netlist(i3.NetlistView):
+        def _generate_terms(self, terms):
+            terms += i3.OpticalTerm(name="in0", n_modes=2)
+            terms += i3.OpticalTerm(name="out0", n_modes=2)
+            terms += i3.OpticalTerm(name="in1", n_modes=2)
+            terms += i3.OpticalTerm(name="out1", n_modes=2)
+            terms += i3.ElectricalTerm(name="elec_in0")
+            terms += i3.ElectricalTerm(name="elec_out0")
+            return terms
+
+class HeaterAddDropRacetrack_3(AddDropRacetrack):
+    """
+    A racetrack resonator with heater coupled to two straight waveguides.
+    No model not hierarchical netlist yet.
+    """
+
+    _name_prefix = "HeaterAddDropRacetrack"
+    trace_template = i3.TraceTemplateProperty()
+
+    def _default_trace_template(self):
+        return pdk.HeaterTemplate(name=f"{self.name}_ring_tt")
+
+    class Layout(AddDropRacetrack.Layout):
+        _doc_properties = [
+            "bus0_width",
+            "bus1_width",
+            "radius",
+            "ring_width",
+            "bus0_length",
+            "bus1_length",
+            "heater_width",
+            "wire_length",
+            "routing_width",
+            "gap0",
+            "gap1",
+            "coupler_length",
+            "p1_module",
+            "add_heater_width",
+            "euler",
+        ]
+
+        p1_module = i3.BoolProperty(
+            doc="If True, it will use the P1 module layers (default set by the technology variant imported)"
+        )
+        heater_width = i3.NonNegativeNumberProperty(default=2, doc="Width of the Heater path [um]")
+        wire_length = i3.NonNegativeNumberProperty(
+            default=5.0,
+            doc="Length of wire routing south from heater with heater_width width [um]"
+            "\nNo wire nor taper if wire_length = 0.",
+        )
+        routing_width = i3.PositiveNumberProperty(default=8.0, doc="End width of DCTaper [um]")
+        add_heater_width = i3.PositiveNumberProperty(doc="Width of the heater junction [um]")
+
+        def validate_properties(self):
+            super(HeaterAddDropRacetrack_3.Layout, self).validate_properties()
+            max_junction_width = 2 * self._default_add_heater_width()
+            min_junction_width = np.sin(45) * self.heater_width + 0.2
+            if self.add_heater_width > max_junction_width:
+                raise ValueError(
+                    f"add_heater_width ({self.add_heater_width}) should be smaller than {max_junction_width}."
+                )
+            elif self.add_heater_width < min_junction_width:
+                raise ValueError(
+                    f"add_heater_width ({self.add_heater_width}) should be bigger than {min_junction_width}."
+                )
+            return True
+
+        def _default_p1_module(self):
+            return i3.TECH.OPTIONS["P1"]
+
+        def _default_add_heater_width(self):
+            return self.routing_width
+
+        def _default_trace_template(self):
+            lv = self.cell.trace_template.get_default_view(self)
+            lv.set(
+                core_width=self.ring_width,
+                p1_module=self.p1_module,
+                heater_width=self.heater_width,
+                _remove_X1=True,
+            )
+            return lv
+
+        # def _generate_elements(self, elems):
+        #     junction_width = self.add_heater_width
+        #     insts = self.instances
+        #     metal_hw = self.heater_width / 2.0
+        #     vert_insts = i3.InstanceDict([insts["vert_l"], insts["vert_r"]])
+        #     if self.trace_template.p1_module:
+        #         layer = i3.TECH.PPLAYER.P1P
+        #     else:
+        #         layer = i3.TECH.PPLAYER.M1P
+        #
+        #     vert_elems = i3.get_layer_elements(
+        #         i3.LayoutCell(name=self.name + "_dummy").Layout(instances=vert_insts),
+        #         [layer],
+        #     )
+        #     points = vert_elems.convex_hull().points
+        #     max_y = max(points[:, 1])
+        #     min_y = max_y - junction_width
+        #     idxs = np.where(points[:, 1] > min_y)[0]
+        #     points = points[idxs]
+        #
+        #     shape = i3.Shape(points=points)
+        #     points = shape.remove_identicals().points
+        #     orientation = shape.orientation()
+        #     if orientation == 1:
+        #         points = points[::-1]
+        #     min_pts = sorted(points, key=lambda p: p[1])[0:2]
+        #     min_pts = sorted(min_pts, key=lambda p: p[0])
+        #     min_pts_idx = sorted([index_of_point(p, points) for p in min_pts])
+        #     add_points = [
+        #         (min_pts[0][0] + metal_hw, min_y),
+        #         (min_pts[1][0] - metal_hw, min_y),
+        #     ]
+        #     if min_pts_idx[0] != 0:
+        #         points = np.roll(points, -2 * min_pts_idx[1])
+        #     points = np.concatenate([add_points, points])
+        #     angle_0=-15
+        #     x0 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_0))
+        #     y0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0)) -0.3
+        #     points = [(x0, y0), (x0 + 10, y0+10)]
+        #     elems += i3.Boundary(layer=layer, shape=points)
+        #     return elems
+
+        def _generate_instances(self, insts):
+            name = self.name
+            metal_width = self.trace_template.heater_width
+            if self.p1_module:
+                taper = metal_width != 8
+                taper_width = 8.0
+            else:
+                taper = metal_width != self.routing_width
+                taper_width = self.routing_width
+            wire_length = self.wire_length
+            insts = super(HeaterAddDropRacetrack_3.Layout, self)._generate_instances(insts)
+            routing_south_insts = {}
+            routing_south_specs = []
+            # left_shape, right_shape = find_side_elements(insts["dc"].reference)
+            # left_shape.start_face_angle = 135
+            # left_shape.end_face_angle = 45
+            # right_shape.start_face_angle = 45
+            # right_shape.end_face_angle =135
+
+            num_o_points = 1000
+
+            angle_0 = np.linspace(-15, -180, num_o_points)
+            angle_1  = np.linspace(300, 180, num_o_points)
+            angle_2 = np.linspace(15, 185, num_o_points)
+            angle_3 = np.linspace(90, 180, num_o_points)
+
+            left_points = []
+            mid_points = []
+            right_points = []
+
+            for i in range(num_o_points):
+                x_0 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_0[i]))
+                y_0 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_0[i])) -self.gap0*3.65
+                left_points.append((x_0, y_0))
+
+            for i in range(num_o_points):
+                x_1 = self.bus0_length/2 +self.radius * np.cos(deg2rad(angle_1[i]))
+                y_1 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_1[i]))
+
+                # left_points.append((x_1, y_1))
+
+                x_2 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_2[i]))
+                y_2 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_2[i])) -self.gap0*3.65
+                right_points.append((x_2, y_2))
+
+                # x_3 = self.bus0_length/2 + self.radius * np.cos(deg2rad(angle_3[i]))
+                # y_3 = self.bus0_width - self.gap0/2 + self.radius + self.ring_width + self.radius * np.sin(deg2rad(angle_3[i]))
+                # right_points.append((x_3, y_3))
+
+            left_shape = i3.Shape(points=left_points)
+            right_shape = i3.Shape(points=right_points)
+
+            right_wg = self.trace_template.cell(name=self.name + "_right_wg")
+            right_wg.Layout(shape=right_shape)
+
+            left_wg = self.trace_template.cell(name=self.name + "_left_wg")
+            left_wg.Layout(shape=left_shape)
+            insts += i3.SRef(name="vert_l", reference=left_wg, flatten=True)
+            # insts += i3.SRef(name="vert_m", reference=mid_wg, flatten=True)
+            insts += i3.SRef(name="vert_r", reference=right_wg, flatten=True)
+
+            if wire_length > 0.0:
+                half_width = metal_width / 2.0
+                elec_in = insts["vert_l"].ports["elec_in0"]
+                elec_out = insts["vert_r"].ports["elec_in0"]
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
+                wire = pdk.HeaterWaveguide(name=name + "_wire")
+                wire.Layout(
+                    core_width=0,
+                    heater_width=metal_width,
+                    shape=[(0.0, 0.0), (self.wire_length, 0.0)],
+                    p1_module=self.p1_module,
+                )
+                routing_south_insts.update({"wire_in": wire, "wire_out": wire})
+                routing_south_specs += [
+                    i3.Place("wire_in", relative_in, -15),
+                    i3.Place("wire_out", relative_out, 15),
+                ]
+
+                if taper:
+                    dc_taper = pdk.DCTaper(name=name + "_dc_taper")
+                    dc_taper_lay = dc_taper.Layout(
+                        in_width=metal_width,
+                        out_width=taper_width,
+                        p1_module=self.p1_module,
+                    )
+                    routing_south_insts.update({"taper_in": dc_taper, "taper_out": dc_taper})
+                    routing_south_specs += [
+                        i3.Join("wire_in:out0", "taper_in:in0"),
+                        i3.Join("wire_out:out0", "taper_out:in0"),
+                    ]
+                if self.p1_module:
+                    elec_in0 = relative_in + (0, -self.wire_length) + (0, -dc_taper_lay.length)
+                    elec_out0 = relative_out + (0, -self.wire_length) + (0, -dc_taper_lay.length)
+                    elec_via = pdk.ElecViaArray(name=self.name + "_elec")
+                    elec_via.Layout(n_o_vias=(9, 9), width=0.36, spacing=0.35, margin=0.98)
+                    routing_south_insts.update(
+                        {
+                            "elec_via_ll": elec_via,
+                            "elec_via_lr": elec_via,
+                        }
+                    )
+
+                    routing_south_specs += [
+                        i3.Place("elec_via_ll:dc0", elec_in0 + (0, -4)),
+                        i3.Place("elec_via_lr:dc0", elec_out0 + (0, -4)),
+                    ]
+
+                insts += i3.place_and_route(insts=routing_south_insts, specs=routing_south_specs)
+            return insts
+
+        def _generate_ports(self, ports):
+            ports = super(HeaterAddDropRacetrack_3.Layout, self)._generate_ports(ports)
             instances = self.instances
             if "elec_via_ll" in instances:
                 inst_ports = ["elec_via_ll:dc0", "elec_via_lr:dc0"]
@@ -748,7 +1000,195 @@ class HeaterNotchRacetrack(NotchRacetrack):
             terms += i3.ElectricalTerm(name="elec_out0")
             return terms
 
-class Aux_add_drop_ring(i3.PCell):
+# class Aux_add_drop_ring(i3.PCell):
+#     """
+#     Auxiliary coupled resonators
+#     """
+#
+#     # _name_prefix = "ring"
+#     #
+#     # name = NameProperty(locked=True)
+#
+#
+#     # straight = i3.ChildCellProperty(locked=True)
+#     main_ring = i3.ChildCellProperty(locked=True)
+#     aux_ring = i3.ChildCellProperty(locked=True)
+#
+#     dc_pad_array = i3.ChildCellProperty(locked=True)
+#     metal_wire_1 = i3.ChildCellProperty(locked=True)
+#     metal_wire_2 = i3.ChildCellProperty(locked=True)
+#     # metal_wire = i3.ChildCellProperty(locked=True)
+#     # metal_wire = i3.ChildCellProperty(locked=True)
+#
+#     # def _default_straight(self):
+#     #     return pdk.Straight(name=self.name + "straight")
+#
+#     def _default_main_ring(self):
+#         return HeaterAddDropRacetrack()
+#
+#     def _default_aux_ring(self):
+#         return HeaterNotchRacetrack()
+#
+#     def _default_dc_pad_array(self):
+#         return pdk.DCPadArray()
+#
+#     def _default_metal_wire_1(self):
+#         return pdk.DCBend()
+#
+#     def _default_metal_wire_2(self):
+#         return pdk.DCBend()
+#
+#     class Layout(i3.LayoutView):
+#
+#         _doc_properties = ["radius", "width", "length", "gap", "euler"]
+#
+#         main_radius = i3.PositiveNumberProperty(doc="Radius of main rings [um]")
+#         aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
+#         width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
+#         length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
+#         coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+#         ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)
+#         ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.8)
+#         euler = i3.IntProperty(
+#             default=0,
+#             doc="Use Euler Bend?",
+#             restriction=i3.RestrictValueList((0, 1)),
+#         )
+#
+#         # name_position = i3.Coord2Property(default =(0.0,0.0), doc="name position", locked=True)
+#         # name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
+#
+#         def validate_properties(self):
+#             validate_on_grid("width", self.width, self.__class__.__name__)
+#             return True
+#
+#         def _default_main_radius(self):
+#             return i3.TECH.TECH.MINIMUM_BEND_RADIUS
+#
+#         print("Minium bend radius: {}".format(i3.TECH.TECH.MINIMUM_BEND_RADIUS))
+#
+#         def _default_aux_radius(self):
+#             return i3.TECH.TECH.MINIMUM_BEND_RADIUS
+#
+#         # def _default_straight(self):
+#         #     lv = self.cell.straight.get_default_view(self)
+#         #     lv.set(width=self.width, length=self.length)
+#         #     return lv
+#
+#         def _default_main_ring(self):
+#             lv = self.cell.main_ring.get_default_view(self)
+#             lv.set(radius=self.main_radius)
+#             lv.set(gap0=self.coupler_gap)
+#             lv.set(ring_width=self.ring_width)
+#             return lv
+#
+#         def _default_aux_ring(self):
+#             lv = self.cell.aux_ring.get_default_view(self)
+#             lv.set(radius=self.aux_radius)
+#             lv.set(ring_width=self.ring_width)
+#             return lv
+#
+#         def _default_dc_pad_array(self):
+#             lv = self.cell.dc_pad_array.get_default_view(self)
+#             lv.set(n_o_pads=(1, 4))
+#             lv.set(pad_size=90.0)
+#             lv.set(pitch=200.0)
+#             # lv.set()
+#             return lv
+#
+#         def _default_metal_wire_1(self):
+#             lv = self.cell.metal_wire_1.get_default_view(self)
+#             # lv.set(n_o_pads=(1, 4))
+#             # lv.set(pad_size=90.0)
+#             # lv.set(pitch=200.0)
+#             # lv.set()
+#             electric_wire_shape = i3.Shape([(0,0), (629, 0), (629, 240), (625, 245)])
+#             lv.set(shape=electric_wire_shape)
+#             return lv
+#
+#         def _default_metal_wire_2(self):
+#             lv = self.cell.metal_wire_2.get_default_view(self)
+#             # lv.set(n_o_pads=(1, 4))
+#             # lv.set(pad_size=90.0)
+#             # lv.set(pitch=200.0)
+#             # lv.set()
+#             electric_wire_shape = i3.Shape([(0,0), (-129, 0), (-129, -400), (-125+600+180, -400), (-125+600+180, -400+440), (-125+600+180+2+4, -400+440+4+4)])
+#             lv.set(shape=electric_wire_shape)
+#             return lv
+#
+#         def _generate_instances(self, insts):
+#             ring_gap = self.ring_gap
+#             coupler_gap = self.coupler_gap
+#             ring_width = self.ring_width
+#             main_radius = self.main_radius
+#             aux_radius = self.aux_radius
+#             ring_width = self.ring_width
+#             length = self.length
+#
+#             main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
+#             aux_ring_height = coupler_gap +  ring_width + 2*aux_radius + ring_width
+#
+#             insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2}
+#             instances = insts_dict
+#
+#             specs = [
+#                 i3.Place("main_ring:center", (0.0, 0.0)),
+#                 i3.Place("aux_ring:center", (51.0 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.cos(np.deg2rad(0)),-49 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.sin(np.deg2rad(0))),
+#                          relative_to="main_ring:center", angle=90),
+#                 i3.Place("dc_pad_array", (-350,0)),
+#                 i3.Place("metal_wire_1", (-350, -300)),
+#                 i3.Place("metal_wire_2", (-350, -100)),
+#
+#                 i3.Place("metal_wire_3", (-350, -300+400+200+5)),
+#                 i3.FlipV("metal_wire_3"),
+#                 i3.Place("metal_wire_4", (-350, -100+200+5)),
+#                 i3.FlipV("metal_wire_4")
+#                 ]
+#
+#             # i3.Place("aux_ring:center",
+#             #          (50.0 + (main_radius + aux_radius + 2 * ring_width + ring_gap) * np.cos(np.deg2rad(0)),
+#             #           -50.0 + (main_radius + aux_radius + 2 * ring_width + ring_gap) * np.sin(np.deg2rad(0))),
+#             #          relative_to="main_ring:center", angle=90),
+#             # ]
+#
+#
+#             return i3.place_and_route(instances, specs)
+#
+#         # def _generate_elements(self, elems):
+#         #     """
+#         #     add labels at in/out put grating couplers regions
+#         #     """
+#         #     name_position = self.name_position
+#         #     fontsize = self.name_fontsize
+#         #
+#         #     elems += i3.PolygonText(
+#         #         layer=i3.TECH.PPLAYER.CELLNAME,
+#         #         coordinate=name_position,
+#         #         text=self.name,
+#         #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+#         #         font=i3.TEXT.FONT.DEFAULT,
+#         #         height=fontsize,
+#         #     )
+#         #     return elems
+#
+#         def _generate_ports(self, ports):
+#                 return i3.expose_ports(
+#                     self.instances,
+#                     {
+#                         "main_ring:in0": "in",
+#                         "main_ring:in1": "add",
+#                         "main_ring:out0": "through",
+#                         "main_ring:out1": "drop",
+#                         "aux_ring:in0": "aux_in",
+#                         "aux_ring:out0": "aux_through",
+#
+#                     },
+#                 )
+#
+#     class Netlist(i3.NetlistFromLayout):
+#         pass
+
+class Aux_add_drop_ring_1_2(i3.PCell):
     """
     Auxiliary coupled resonators
     """
@@ -761,18 +1201,18 @@ class Aux_add_drop_ring(i3.PCell):
     # straight = i3.ChildCellProperty(locked=True)
     main_ring = i3.ChildCellProperty(locked=True)
     aux_ring = i3.ChildCellProperty(locked=True)
-
     dc_pad_array = i3.ChildCellProperty(locked=True)
+    dc_pad_array_coupler = i3.ChildCellProperty(locked=True)
     metal_wire_1 = i3.ChildCellProperty(locked=True)
     metal_wire_2 = i3.ChildCellProperty(locked=True)
-    # metal_wire = i3.ChildCellProperty(locked=True)
+    metal_wire_coupler = i3.ChildCellProperty(locked=True)
     # metal_wire = i3.ChildCellProperty(locked=True)
 
     # def _default_straight(self):
     #     return pdk.Straight(name=self.name + "straight")
 
     def _default_main_ring(self):
-        return HeaterAddDropRacetrack()
+        return HeaterAddDropRacetrack_1_2()
 
     def _default_aux_ring(self):
         return HeaterNotchRacetrack()
@@ -780,11 +1220,17 @@ class Aux_add_drop_ring(i3.PCell):
     def _default_dc_pad_array(self):
         return pdk.DCPadArray()
 
+    def _default_dc_pad_array_coupler(self):
+        return pdk.DCPadArray()
+
     def _default_metal_wire_1(self):
-        return pdk.DCBend()
+        return pdk.MetalWire()
 
     def _default_metal_wire_2(self):
-        return pdk.DCBend()
+        return pdk.MetalWire()
+
+    def _default_metal_wire_coupler(self):
+        return pdk.MetalWire()
 
     class Layout(i3.LayoutView):
 
@@ -794,8 +1240,10 @@ class Aux_add_drop_ring(i3.PCell):
         aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
         width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
         length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
-        coupler_gap = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
-        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=1.0)
+        main_gap0 = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+        main_gap1 = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+        aux_gap0 = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=0.45)
         ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.8)
         euler = i3.IntProperty(
             default=0,
@@ -826,13 +1274,15 @@ class Aux_add_drop_ring(i3.PCell):
         def _default_main_ring(self):
             lv = self.cell.main_ring.get_default_view(self)
             lv.set(radius=self.main_radius)
-            lv.set(gap0=self.coupler_gap)
+            lv.set(gap0=self.main_gap0)
+            lv.set(gap1=self.main_gap1)
             lv.set(ring_width=self.ring_width)
             return lv
 
         def _default_aux_ring(self):
             lv = self.cell.aux_ring.get_default_view(self)
             lv.set(radius=self.aux_radius)
+            lv.set(gap0=self.aux_gap0)
             lv.set(ring_width=self.ring_width)
             return lv
 
@@ -840,7 +1290,15 @@ class Aux_add_drop_ring(i3.PCell):
             lv = self.cell.dc_pad_array.get_default_view(self)
             lv.set(n_o_pads=(1, 4))
             lv.set(pad_size=90.0)
-            lv.set(pitch=200.0)
+            lv.set(pitch=100.0)
+            # lv.set()
+            return lv
+
+        def _default_dc_pad_array_coupler(self):
+            lv = self.cell.dc_pad_array_coupler.get_default_view(self)
+            lv.set(n_o_pads=(1, 2))
+            lv.set(pad_size=90.0)
+            lv.set(pitch=100.0)
             # lv.set()
             return lv
 
@@ -850,8 +1308,9 @@ class Aux_add_drop_ring(i3.PCell):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0,0), (629, 0), (629, 240), (625, 245)])
+            electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
             lv.set(shape=electric_wire_shape)
+            lv.set(core_width=8.0)
             return lv
 
         def _default_metal_wire_2(self):
@@ -860,13 +1319,27 @@ class Aux_add_drop_ring(i3.PCell):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0,0), (-129, 0), (-129, -400), (-125+600+180, -400), (-125+600+180, -400+440), (-125+600+180+2+4, -400+440+4+4)])
+            electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
             lv.set(shape=electric_wire_shape)
+            lv.set(core_width=8.0)
+            return lv
+
+        def _default_metal_wire_coupler(self):
+            lv = self.cell.metal_wire_coupler.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
+            electric_wire_shape = i3.Shape(
+                [(0, -40), (200, -40), (200, -75), (265 - 1, -75), (265 - 1, -75 - 35)])  # For 90/100
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=8.0)
             return lv
 
         def _generate_instances(self, insts):
             ring_gap = self.ring_gap
-            coupler_gap = self.coupler_gap
+            coupler_gap = self.main_gap0
             ring_width = self.ring_width
             main_radius = self.main_radius
             aux_radius = self.aux_radius
@@ -876,21 +1349,256 @@ class Aux_add_drop_ring(i3.PCell):
             main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
             aux_ring_height = coupler_gap +  ring_width + 2*aux_radius + ring_width
 
-            insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2}
+            insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "dc_pad_array_coupler":self.dc_pad_array_coupler,
+                           "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2,
+                           "metal_wire_coupler":self.metal_wire_coupler, "metal_wire_coupler_2":self.metal_wire_coupler}
             instances = insts_dict
 
             specs = [
                 i3.Place("main_ring:center", (0.0, 0.0)),
                 i3.Place("aux_ring:center", (51.0 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.cos(np.deg2rad(0)),-49 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.sin(np.deg2rad(0))),
                          relative_to="main_ring:center", angle=90),
-                i3.Place("dc_pad_array", (-350,0)),
-                i3.Place("metal_wire_1", (-350, -300)),
-                i3.Place("metal_wire_2", (-350, -100)),
+                i3.Place("dc_pad_array", (-240,0)),
+                i3.Place("dc_pad_array_coupler", (-240+300, 0)),
+                i3.Place("metal_wire_1", (-350, -300)), # For 90/200
+                i3.Place("metal_wire_2", (-350, -100)), # For 90/200
 
-                i3.Place("metal_wire_3", (-350, -300+400+200+5)),
+                i3.Place("metal_wire_3", (-350, -300+400+200+5)), # For 90/200
                 i3.FlipV("metal_wire_3"),
-                i3.Place("metal_wire_4", (-350, -100+200+5)),
-                i3.FlipV("metal_wire_4")
+                i3.Place("metal_wire_4", (-350, -100+200+5)), # For 90/200
+                i3.FlipV("metal_wire_4"),
+                i3.Place("metal_wire_coupler", (-350+365, -100 + 200 + 5)), # For 90/200
+                i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200)), # For 90/200
+                i3.FlipV("metal_wire_coupler_2")
+
+                ]
+
+            # i3.Place("aux_ring:center",
+            #          (50.0 + (main_radius + aux_radius + 2 * ring_width + ring_gap) * np.cos(np.deg2rad(0)),
+            #           -50.0 + (main_radius + aux_radius + 2 * ring_width + ring_gap) * np.sin(np.deg2rad(0))),
+            #          relative_to="main_ring:center", angle=90),
+            # ]
+
+
+            return i3.place_and_route(instances, specs)
+
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     name_position = self.name_position
+        #     fontsize = self.name_fontsize
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.CELLNAME,
+        #         coordinate=name_position,
+        #         text=self.name,
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=fontsize,
+        #     )
+        #     return elems
+
+        def _generate_ports(self, ports):
+                return i3.expose_ports(
+                    self.instances,
+                    {
+                        "main_ring:in0": "in",
+                        "main_ring:in1": "add",
+                        "main_ring:out0": "through",
+                        "main_ring:out1": "drop",
+                        "aux_ring:in0": "aux_in",
+                        "aux_ring:out0": "aux_through",
+
+                    },
+                )
+
+    class Netlist(i3.NetlistFromLayout):
+        pass
+
+class Aux_add_drop_ring_3(i3.PCell):
+    """
+    Auxiliary coupled resonators
+    """
+
+    # _name_prefix = "ring"
+    #
+    # name = NameProperty(locked=True)
+
+
+    # straight = i3.ChildCellProperty(locked=True)
+    main_ring = i3.ChildCellProperty(locked=True)
+    aux_ring = i3.ChildCellProperty(locked=True)
+    dc_pad_array = i3.ChildCellProperty(locked=True)
+    dc_pad_array_coupler = i3.ChildCellProperty(locked=True)
+    metal_wire_1 = i3.ChildCellProperty(locked=True)
+    metal_wire_2 = i3.ChildCellProperty(locked=True)
+    metal_wire_coupler = i3.ChildCellProperty(locked=True)
+    # metal_wire = i3.ChildCellProperty(locked=True)
+
+    # def _default_straight(self):
+    #     return pdk.Straight(name=self.name + "straight")
+
+    def _default_main_ring(self):
+        return HeaterAddDropRacetrack_3()
+
+    def _default_aux_ring(self):
+        return HeaterNotchRacetrack()
+
+    def _default_dc_pad_array(self):
+        return pdk.DCPadArray()
+
+    def _default_dc_pad_array_coupler(self):
+        return pdk.DCPadArray()
+
+    def _default_metal_wire_1(self):
+        return pdk.MetalWire()
+
+    def _default_metal_wire_2(self):
+        return pdk.MetalWire()
+
+    def _default_metal_wire_coupler(self):
+        return pdk.MetalWire()
+
+    class Layout(i3.LayoutView):
+
+        _doc_properties = ["radius", "width", "length", "gap", "euler"]
+
+        main_radius = i3.PositiveNumberProperty(doc="Radius of main rings [um]")
+        aux_radius = i3.PositiveNumberProperty(doc="Radius of aux rings [um]")
+        width = i3.PositiveNumberProperty(doc="Width of all the access waveguides [um]", default=1.8)
+        length = i3.PositiveNumberProperty(doc="Length of the straight waveguides [um]", default=100.0)
+        main_gap0 = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+        main_gap1 = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+        aux_gap0 = i3.PositiveNumberProperty(doc="Gap between ring and coupler [um]", default=1.0)
+        ring_gap = i3.PositiveNumberProperty(doc="Gap between two rings [um]", default=0.45)
+        ring_width = i3.PositiveNumberProperty(doc="Width of the arc waveguides [um]", default=1.8)
+        euler = i3.IntProperty(
+            default=0,
+            doc="Use Euler Bend?",
+            restriction=i3.RestrictValueList((0, 1)),
+        )
+
+        # name_position = i3.Coord2Property(default =(0.0,0.0), doc="name position", locked=True)
+        # name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
+
+        def validate_properties(self):
+            validate_on_grid("width", self.width, self.__class__.__name__)
+            return True
+
+        def _default_main_radius(self):
+            return i3.TECH.TECH.MINIMUM_BEND_RADIUS
+
+        print("Minium bend radius: {}".format(i3.TECH.TECH.MINIMUM_BEND_RADIUS))
+
+        def _default_aux_radius(self):
+            return i3.TECH.TECH.MINIMUM_BEND_RADIUS
+
+        # def _default_straight(self):
+        #     lv = self.cell.straight.get_default_view(self)
+        #     lv.set(width=self.width, length=self.length)
+        #     return lv
+
+        def _default_main_ring(self):
+            lv = self.cell.main_ring.get_default_view(self)
+            lv.set(radius=self.main_radius)
+            lv.set(gap0=self.main_gap0)
+            lv.set(gap1=self.main_gap1)
+            lv.set(ring_width=self.ring_width)
+            return lv
+
+        def _default_aux_ring(self):
+            lv = self.cell.aux_ring.get_default_view(self)
+            lv.set(radius=self.aux_radius)
+            lv.set(gap0=self.aux_gap0)
+            lv.set(ring_width=self.ring_width)
+            return lv
+
+        def _default_dc_pad_array(self):
+            lv = self.cell.dc_pad_array.get_default_view(self)
+            lv.set(n_o_pads=(1, 4))
+            lv.set(pad_size=90.0)
+            lv.set(pitch=100.0)
+            # lv.set()
+            return lv
+
+        def _default_dc_pad_array_coupler(self):
+            lv = self.cell.dc_pad_array_coupler.get_default_view(self)
+            lv.set(n_o_pads=(1, 2))
+            lv.set(pad_size=90.0)
+            lv.set(pitch=100.0)
+            # lv.set()
+            return lv
+
+        def _default_metal_wire_1(self):
+            lv = self.cell.metal_wire_1.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=8.0)
+            return lv
+
+        def _default_metal_wire_2(self):
+            lv = self.cell.metal_wire_2.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=8.0)
+            return lv
+
+        def _default_metal_wire_coupler(self):
+            lv = self.cell.metal_wire_coupler.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
+            electric_wire_shape = i3.Shape(
+                [(0, -40), (200, -40), (200, -75), (265 - 1, -75), (265 - 1, -75 - 35)])  # For 90/100
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=8.0)
+            return lv
+
+        def _generate_instances(self, insts):
+            ring_gap = self.ring_gap
+            coupler_gap = self.main_gap0
+            ring_width = self.ring_width
+            main_radius = self.main_radius
+            aux_radius = self.aux_radius
+            ring_width = self.ring_width
+            length = self.length
+
+            main_ring_height = coupler_gap + ring_width + 2*main_radius + ring_width
+            aux_ring_height = coupler_gap +  ring_width + 2*aux_radius + ring_width
+
+            insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "dc_pad_array_coupler":self.dc_pad_array_coupler,
+                           "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2,
+                           "metal_wire_coupler":self.metal_wire_coupler, "metal_wire_coupler_2":self.metal_wire_coupler}
+            instances = insts_dict
+
+            specs = [
+                i3.Place("main_ring:center", (0.0, 0.0)),
+                i3.Place("aux_ring:center", (51.0 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.cos(np.deg2rad(0)),-49 + ring_width + (main_radius + aux_radius + ring_width + ring_gap) * np.sin(np.deg2rad(0))),
+                         relative_to="main_ring:center", angle=90),
+                i3.Place("dc_pad_array", (-240,0)),
+                i3.Place("dc_pad_array_coupler", (-240+300, 0)),
+                i3.Place("metal_wire_1", (-350, -300)), # For 90/200
+                i3.Place("metal_wire_2", (-350, -100)), # For 90/200
+
+                i3.Place("metal_wire_3", (-350, -300+400+200+5)), # For 90/200
+                i3.FlipV("metal_wire_3"),
+                i3.Place("metal_wire_4", (-350, -100+200+5)), # For 90/200
+                i3.FlipV("metal_wire_4"),
+                i3.Place("metal_wire_coupler", (-350+365, -100 + 200 + 5)), # For 90/200
+                i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200)), # For 90/200
+                i3.FlipV("metal_wire_coupler_2")
+
                 ]
 
             # i3.Place("aux_ring:center",

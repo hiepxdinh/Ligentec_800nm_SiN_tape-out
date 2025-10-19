@@ -98,7 +98,7 @@ class Waveguide_Exspot_2(i3.Circuit):
                 "out_taper": self.taper,
                 "linear_transition_in": self.linear_transition,
                 "linear_transition_in_2": self.linear_transition_2,
-                "linear_transition_out": self.linear_transition,
+                "linear_transition_out": self.linear_transition_2,
                 }
 
     def _default_specs(self):

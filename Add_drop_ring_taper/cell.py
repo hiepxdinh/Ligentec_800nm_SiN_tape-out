@@ -60,10 +60,10 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
 
-            i3.Place('in_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/4+127/2), angle=0, relative_to="ring:in0"),
-            i3.Place('out_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/4), angle=0, relative_to="ring:in0"),
-            i3.Place('add_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4-127/2), angle=0, relative_to="ring:in1"),
-            i3.Place('drop_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4), angle=0, relative_to="ring:in1"),
+            i3.Place('in_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/4+127 +96.1/2-17.1), angle=0, relative_to="ring:in0"),
+            i3.Place('out_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/2-128.6/2+ 127/2), angle=0, relative_to="ring:in0"),
+            i3.Place('add_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4-127-96.1/2+17.1), angle=0, relative_to="ring:in1"),
+            i3.Place('drop_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/2+128.6/2- 127/2), angle=0, relative_to="ring:in1"),
 
             i3.Place('linear_transition_in', position=(-115,0), angle=0, relative_to="in_taper:in0"),
             i3.Place('linear_transition_out', position=(-115,0), angle=0, relative_to="out_taper:in0"),
@@ -76,23 +76,22 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             i3.ConnectBend("drop_taper:in0", "linear_transition_drop:out0"),
             # # #
             i3.ConnectManhattan("ring:in0", "linear_transition_in:in0",
-            control_points=[i3.H(i3.START+105),
+            control_points=[i3.H(i3.START+175),
                             ],
             ),
             i3.ConnectBend("ring:out0", "linear_transition_out:in0"),
             i3.ConnectManhattan("ring:in1", "linear_transition_add:in0",
-            control_points=[i3.H(i3.START - 105),
+            control_points=[i3.H(i3.START - 175),
                            ],
             ),
-            i3.ConnectBend("ring:out1", "linear_transition_drop:in0",
-            ),
+            i3.ConnectBend("ring:out1", "linear_transition_drop:in0"),
         ]
 
     class Layout(i3.Circuit.Layout):
         # horizontal_spacing = i3.PositiveNumberProperty(default=9000, doc="horizontal spacing between input and output inverse_taper couplers")
         ring_radius = i3.PositiveNumberProperty(default=50.0, doc="radius of the ring")
         ring_width = i3.PositiveNumberProperty(default=1.0, doc="width of the ring")
-        # ring_gap = i3.PositiveNumberProperty(default=0.7, doc="the gap ")
+        ring_gap = i3.PositiveNumberProperty(default=0.7, doc="the gap ")
         # ring_position_x=i3.NumberProperty (default=0.0, doc="the x position of ring")
         # ring_position_y=i3.NumberProperty (default=0.0, doc="the y position of ring")
         # ebl_field_size = i3.PositiveNumberProperty(default=100.0, doc="the ebl writing field size")
@@ -102,11 +101,12 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
         width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
         linear_taper_length = i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
-
         def _default_ring(self):
             lo = self.cell.ring.get_default_view(i3.LayoutView)
             lo.set(radius=self.ring_radius)
             lo.set(ring_width=self.ring_width)
+            lo.set(gap0=self.ring_gap)
+            lo.set(gap1=self.ring_gap)
             return lo
 
         # def _default_trace_template_in(self):
