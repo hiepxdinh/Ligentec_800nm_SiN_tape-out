@@ -115,7 +115,7 @@ class Aux_add_drop_ring_taper_1_2(i3.Circuit):
         main_radius = i3.PositiveNumberProperty(default=50.0,doc="Radius of main rings [um]")
         aux_radius = i3.PositiveNumberProperty(default=50.0,doc="Radius of aux rings [um]")
 
-        name_position = i3.Coord2Property(default =(0.0,0.0), doc="name position", locked=True)
+        name_position = i3.Coord2Property(default=(-5.0, -50.0), doc="name position", locked=True)
         name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
 
         width_in = i3.PositiveNumberProperty(default=1.8, doc="width of input waveguide")
@@ -154,22 +154,23 @@ class Aux_add_drop_ring_taper_1_2(i3.Circuit):
             )
             return lv
 
-        # def _generate_elements(self, elems):
-        #     """
-        #     add labels at in/out put grating couplers regions
-        #     """
-        #     name_position = self.name_position
-        #     fontsize = self.name_fontsize
-        #
-        #     elems += i3.PolygonText(
-        #         layer=i3.TECH.PPLAYER.CELLNAME,
-        #         coordinate=name_position,
-        #         text=self.name,
-        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-        #         font=i3.TEXT.FONT.DEFAULT,
-        #         height=fontsize,
-        #     )
-        #     return elems
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            name_position = self.name_position
+            fontsize = self.name_fontsize
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=name_position,
+                text="AUX_RING_1_2",
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=fontsize,
+                transformation=i3.Rotation(rotation=90)+i3.HMirror()
+            )
+            return elems
 
 class Aux_add_drop_ring_taper_3(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
@@ -289,7 +290,7 @@ class Aux_add_drop_ring_taper_3(i3.Circuit):
         main_radius = i3.PositiveNumberProperty(default=50.0, doc="Radius of main rings [um]")
         aux_radius = i3.PositiveNumberProperty(default=50.0, doc="Radius of aux rings [um]")
 
-        name_position = i3.Coord2Property(default=(0.0, 0.0), doc="name position", locked=True)
+        name_position = i3.Coord2Property(default=(-5.0, -50.0), doc="name position", locked=True)
         name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
 
         width_in = i3.PositiveNumberProperty(default=1.8, doc="width of input waveguide")
@@ -328,19 +329,20 @@ class Aux_add_drop_ring_taper_3(i3.Circuit):
             )
             return lv
 
-        # def _generate_elements(self, elems):
-        #     """
-        #     add labels at in/out put grating couplers regions
-        #     """
-        #     name_position = self.name_position
-        #     fontsize = self.name_fontsize
-        #
-        #     elems += i3.PolygonText(
-        #         layer=i3.TECH.PPLAYER.CELLNAME,
-        #         coordinate=name_position,
-        #         text=self.name,
-        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-        #         font=i3.TEXT.FONT.DEFAULT,
-        #         height=fontsize,
-        #     )
-        #     return elems
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            name_position = self.name_position
+            fontsize = self.name_fontsize
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=name_position,
+                text="AUX_RING_3",
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=fontsize,
+                transformation=i3.Rotation(rotation=90)+i3.HMirror()
+            )
+            return elems

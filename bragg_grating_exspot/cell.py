@@ -73,6 +73,42 @@ class FP_BG_1_Exspot(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_1_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_1_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
+
 class FP_BG_2_Exspot(i3.Circuit):
 
     edge_coupler = i3.ChildCellProperty(doc="edge coupler")
@@ -142,6 +178,42 @@ class FP_BG_2_Exspot(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_2_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_2_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
 
 class FP_BG_3_Exspot(i3.Circuit):
 
@@ -213,6 +285,42 @@ class FP_BG_3_Exspot(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_3_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_3_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
+
 class FP_BG_4_Exspot(i3.Circuit):
 
     edge_coupler = i3.ChildCellProperty(doc="edge coupler")
@@ -282,6 +390,42 @@ class FP_BG_4_Exspot(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_4_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_4_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
 
 class FP_BG_5_Exspot(i3.Circuit):
 
@@ -353,6 +497,42 @@ class FP_BG_5_Exspot(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_5_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_5_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
+
 class FP_BG_6_Exspot(i3.Circuit):
 
     edge_coupler = i3.ChildCellProperty(doc="edge coupler")
@@ -422,6 +602,42 @@ class FP_BG_6_Exspot(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_6_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_6_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
 
 class FP_BG_7_Exspot(i3.Circuit):
 
@@ -495,6 +711,44 @@ class FP_BG_7_Exspot(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_7_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_7_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
+
+
+
 class FP_BG_8_Exspot(i3.Circuit):
 
     edge_coupler = i3.ChildCellProperty(doc="edge coupler")
@@ -565,6 +819,42 @@ class FP_BG_8_Exspot(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_8_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_8_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
 
 class FP_BG_9_Exspot(i3.Circuit):
 
@@ -637,6 +927,42 @@ class FP_BG_9_Exspot(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+120, in_y+10),
+                text="BG_DESIGN_9_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-120, out_y+10),
+                text="BG_DESIGN_9_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
+
 class Sinusoidal_BG_Exspot(i3.Circuit):
 
     edge_coupler = i3.ChildCellProperty(doc="edge coupler")
@@ -707,4 +1033,40 @@ class Sinusoidal_BG_Exspot(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            in_port = self.instances["in_coupler"].ports["in0"]
+            in_text_position = in_port.position
+            in_x = in_port.position.x
+            in_y = in_port.position.y
+
+            out_port = self.instances["out_coupler"].ports["in0"]
+            out_text_position = out_port.position
+            out_x = out_port.position.x
+            out_y = out_port.position.y
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(in_x+125, in_y+10),
+                text="BG_Sinusoidal_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=(out_x-125, out_y+10),
+                text="BG_Sinusoidal_FP_" +str(self.fp_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+
+            return elems
 

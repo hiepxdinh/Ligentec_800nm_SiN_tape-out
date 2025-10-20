@@ -107,6 +107,23 @@ class All_pass_ring_Exspot(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="RR_200_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+            return elems
+
 class All_pass_ring_Exspot_50GHz(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
     ring = i3.ChildCellProperty(doc="ring resonator")
@@ -122,11 +139,20 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
 
     linear_transition = i3.ChildCellProperty(doc="linear transition waveguide")
 
+    dc_pad_array = i3.ChildCellProperty(locked=True)
+    metal_wire = i3.ChildCellProperty(locked=True)
+
     def _default_taper(self):
         return pdk.AN800BB_ExSpot_SMF_C()
 
     def _default_ring(self):
-        return pdk.NotchRacetrack()
+        return pdk.HeaterNotchRacetrack()
+
+    def _default_dc_pad_array(self):
+        return pdk.DCPadArray()
+
+    def _default_metal_wire(self):
+        return pdk.MetalWire()
 
     # def _default_trace_template_in(self):
     #     return pdk.WireWaveguideTemplate()
@@ -144,6 +170,9 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
                 "out_taper": self.taper,
                 "linear_transition_in": self.linear_transition,
                 "linear_transition_out": self.linear_transition,
+                "dc_pad_array": self.dc_pad_array,
+                "metal_wire": self.metal_wire,
+                "metal_wire_2": self.metal_wire
                 }
 
     def _default_specs(self):
@@ -159,6 +188,12 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
+
+            i3.Place("dc_pad_array", position=(self.ring_position_x+46+4, self.ring_position_y-400), angle=90),
+
+            i3.Place("metal_wire", position=(self.ring_position_x+46+4, self.ring_position_y-400), angle=90),
+            i3.Place("metal_wire_2", position=(self.ring_position_x+46+4, self.ring_position_y-400), angle=90),
+            i3.FlipV("metal_wire_2"),
 
             i3.ConnectBend("linear_transition_in:out0", "in_taper:in0"),
             i3.ConnectBend("linear_transition_out:out0", "out_taper:in0"),
@@ -193,7 +228,27 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             lo.set(radius=self.ring_radius)
             lo.set(ring_width=self.ring_width)
             lo.set(gap0=self.ring_gap)
+            lo.set(heater_width=2.0)
             return lo
+
+        def _default_dc_pad_array(self):
+            lv = self.cell.dc_pad_array.get_default_view(self)
+            lv.set(n_o_pads=(1, 2))
+            lv.set(pad_size=90.0)
+            lv.set(pitch=100.0)
+            # lv.set()
+            return lv
+
+        def _default_metal_wire(self):
+            lv = self.cell.metal_wire.get_default_view(self)
+            lv.set(core_width=15)
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            electric_wire_shape = i3.Shape([(0,50), (300-25, 50), (300-25, 150+130+5.5+0.22+0.426+46+4), (295-25-3.5, 150+130+5.5+0.22+0.426+46+4)]) # For 90/200
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=15.0)
+            return lv
 
         # def _default_trace_template_in(self):
         #     lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
@@ -215,6 +270,23 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100-500)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="RR_50_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10
+                # transformation=i3.VMirror()
+            )
+            return elems
+
 class All_pass_ring_Exspot_100GHz(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
     ring = i3.ChildCellProperty(doc="ring resonator")
@@ -230,11 +302,20 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
 
     linear_transition = i3.ChildCellProperty(doc="linear transition waveguide")
 
+    dc_pad_array = i3.ChildCellProperty(locked=True)
+    metal_wire = i3.ChildCellProperty(locked=True)
+
     def _default_taper(self):
         return pdk.AN800BB_ExSpot_SMF_C()
 
     def _default_ring(self):
-        return pdk.NotchRacetrack()
+        return pdk.HeaterNotchRacetrack()
+
+    def _default_dc_pad_array(self):
+        return pdk.DCPadArray()
+
+    def _default_metal_wire(self):
+        return pdk.MetalWire()
 
     # def _default_trace_template_in(self):
     #     return pdk.WireWaveguideTemplate()
@@ -254,6 +335,9 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
                 "out_taper": self.taper,
                 "linear_transition_in": self.linear_transition,
                 "linear_transition_out": self.linear_transition,
+                "dc_pad_array": self.dc_pad_array,
+                "metal_wire": self.metal_wire,
+                "metal_wire_2": self.metal_wire
                 }
 
     def _default_specs(self):
@@ -269,6 +353,12 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
+
+            i3.Place("dc_pad_array", position=(self.ring_position_x + 46 + 4, self.ring_position_y - 250), angle=90),
+
+            i3.Place("metal_wire", position=(self.ring_position_x + 46 + 4, self.ring_position_y - 250), angle=90),
+            i3.Place("metal_wire_2", position=(self.ring_position_x + 46 + 4, self.ring_position_y - 250), angle=90),
+            i3.FlipV("metal_wire_2"),
 
             i3.ConnectBend("linear_transition_in:out0", "in_taper:in0"),
             i3.ConnectBend("linear_transition_out:out0", "out_taper:in0"),
@@ -298,12 +388,35 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
         width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
         linear_taper_length = i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
+        name_position = i3.Coord2Property(default=(-5.0, -50.0), doc="name position", locked=True)
+        name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
+
         def _default_ring(self):
             lo = self.cell.ring.get_default_view(i3.LayoutView)
             lo.set(radius=self.ring_radius)
             lo.set(ring_width=self.ring_width)
             lo.set(gap0=self.ring_gap)
+            lo.set(heater_width=2.0)
             return lo
+
+        def _default_dc_pad_array(self):
+            lv = self.cell.dc_pad_array.get_default_view(self)
+            lv.set(n_o_pads=(1, 2))
+            lv.set(pad_size=90.0)
+            lv.set(pitch=100.0)
+            # lv.set()
+            return lv
+
+        def _default_metal_wire(self):
+            lv = self.cell.metal_wire.get_default_view(self)
+            lv.set(core_width=15)
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            electric_wire_shape = i3.Shape([(0,50), (300-25-50-20-11, 50), (300-25-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074), (295-25-3.5-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074)]) # For 90/200
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=15.0)
+            return lv
 
         # def _default_trace_template_in(self):
         #     lo=self.cell.trace_template_in.get_default_view(i3.LayoutView)
@@ -325,6 +438,24 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            name_position = self.name_position
+            fontsize = self.name_fontsize
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100-250)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="RR_100_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=fontsize,
+                # transformation=i3.VMirror()
+            )
+            return elems
 
 class All_pass_ring_Exspot_200GHz(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
@@ -437,6 +568,23 @@ class All_pass_ring_Exspot_200GHz(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="RR_200_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+            return elems
+
 class All_pass_ring_Exspot_Aux(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
     ring = i3.ChildCellProperty(doc="ring resonator")
@@ -467,8 +615,6 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
     def _default_linear_transition(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
-
-
 
     def _default_insts(self):
         return {"ring": self.ring,
@@ -521,6 +667,10 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
         width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
         linear_taper_length = i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
+        name_position = i3.Coord2Property(default=(-5.0, -50.0), doc="name position", locked=True)
+        name_fontsize = i3.PositiveNumberProperty(default=10.0, doc="black box font size", locked=True)
+
+
         def _default_ring(self):
             lo = self.cell.ring.get_default_view(i3.LayoutView)
             lo.set(radius=self.ring_radius)
@@ -547,6 +697,27 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            name_position = self.name_position
+            fontsize = self.name_fontsize
+            ring_position = (self.ring_position_x, self.ring_position_y)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="AUX_60UM",
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=fontsize,
+                transformation=i3.Rotation(rotation=90)+i3.HMirror()
+            )
+            return elems
+
+
 
 class All_pass_ring_Exspot_Test(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
@@ -585,6 +756,10 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
                 "out_taper": self.taper,
                 "linear_transition_in": self.linear_transition,
                 "linear_transition_out": self.linear_transition,
+                # "linear_transition_in_ref": self.linear_transition,
+                # "linear_transition_out_ref": self.linear_transition,
+                # "in_taper_ref": self.taper,
+                # "out_taper_ref": self.taper,
                 }
 
     def _default_specs(self):
@@ -602,9 +777,10 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
             i3.FlipH("linear_transition_in"),
             i3.Place("linear_transition_out", position=(0, 115), angle=90, relative_to="out_taper:in0"),
             i3.FlipH("linear_transition_out"),
+
             i3.ConnectBend("linear_transition_in:out0", "in_taper:in0"),
             i3.ConnectBend("linear_transition_out:out0", "out_taper:in0"),
-            # #
+
             i3.ConnectManhattan(
                 "ring:in0", "linear_transition_out:in0",
                 # control_points=[i3.V(i3.START+200)
@@ -617,7 +793,6 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
                 #                 ],
                 # bend_radius=50,
             ),
-
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -660,3 +835,20 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200-260)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="RR_200_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+            return elems

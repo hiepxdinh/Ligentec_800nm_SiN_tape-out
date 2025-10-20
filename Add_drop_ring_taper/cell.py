@@ -46,10 +46,14 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
                 "out_taper": self.taper,
                 "add_taper": self.taper,
                 "drop_taper": self.taper,
+                "in_taper_ref": self.taper,
+                "out_taper_ref": self.taper,
                 "linear_transition_in": self.linear_transition,
                 "linear_transition_out": self.linear_transition,
                 "linear_transition_add": self.linear_transition,
                 "linear_transition_drop": self.linear_transition,
+                "linear_transition_in_ref": self.linear_transition,
+                "linear_transition_out_ref": self.linear_transition,
                 }
 
     def _default_specs(self):
@@ -64,16 +68,24 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             i3.Place('out_taper', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/2-128.6/2+ 127/2), angle=0, relative_to="ring:in0"),
             i3.Place('add_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4-127-96.1/2+17.1), angle=0, relative_to="ring:in1"),
             i3.Place('drop_taper', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/2+128.6/2- 127/2), angle=0, relative_to="ring:in1"),
+            #
+            i3.Place('in_taper_ref', position=(2350/2-620-100-200+200-75-25,-120-2.732/2+127/4+127 +96.1/2-17.1+ 127), angle=0,relative_to="ring:in0"),
+            i3.Place('out_taper_ref', position=(2350/2-620-100-200+200-75-25,+120+2.732/2-127/4-127-96.1/2+17.1 - 127), angle=0,relative_to="ring:in1"),
 
             i3.Place('linear_transition_in', position=(-115,0), angle=0, relative_to="in_taper:in0"),
             i3.Place('linear_transition_out', position=(-115,0), angle=0, relative_to="out_taper:in0"),
             i3.Place('linear_transition_add', position=(-115,0), angle=0, relative_to="add_taper:in0"),
             i3.Place('linear_transition_drop', position=(-115,0), angle=0, relative_to="drop_taper:in0"),
 
+            i3.Place('linear_transition_in_ref', position=(-115,0), angle=0, relative_to="in_taper_ref:in0"),
+            i3.Place('linear_transition_out_ref', position=(-115,0), angle=0, relative_to="out_taper_ref:in0"),
+            #
             i3.ConnectBend("in_taper:in0", "linear_transition_in:out0"),
             i3.ConnectBend("out_taper:in0", "linear_transition_out:out0"),
             i3.ConnectBend("add_taper:in0", "linear_transition_add:out0"),
             i3.ConnectBend("drop_taper:in0", "linear_transition_drop:out0"),
+            i3.ConnectBend("in_taper_ref:in0", "linear_transition_in_ref:out0"),
+            i3.ConnectBend("out_taper_ref:in0", "linear_transition_out_ref:out0"),
             # # #
             i3.ConnectManhattan("ring:in0", "linear_transition_in:in0",
             control_points=[i3.H(i3.START+175),
@@ -85,6 +97,10 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
                            ],
             ),
             i3.ConnectBend("ring:out1", "linear_transition_drop:in0"),
+            i3.ConnectManhattan("linear_transition_in_ref:in0", "linear_transition_out_ref:in0",
+            control_points=[i3.V(i3.START - 350+30),
+                            ],
+            ),
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -128,6 +144,23 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
                 length=self.linear_taper_length
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.CELLNAME,
+                coordinate=ring_position,
+                text="RR_200_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                transformation=i3.VMirror()
+            )
+            return elems
 
 class Add_drop_ring_Exspot_100GHz(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")

@@ -1206,7 +1206,9 @@ class Aux_add_drop_ring_1_2(i3.PCell):
     metal_wire_1 = i3.ChildCellProperty(locked=True)
     metal_wire_2 = i3.ChildCellProperty(locked=True)
     metal_wire_coupler = i3.ChildCellProperty(locked=True)
-    # metal_wire = i3.ChildCellProperty(locked=True)
+    heater_coupler = i3.ChildCellProperty(locked=True)
+    taper_coupler = i3.ChildCellProperty(locked=True)
+    wire_coupler = i3.ChildCellProperty(locked=True)
 
     # def _default_straight(self):
     #     return pdk.Straight(name=self.name + "straight")
@@ -1230,6 +1232,15 @@ class Aux_add_drop_ring_1_2(i3.PCell):
         return pdk.MetalWire()
 
     def _default_metal_wire_coupler(self):
+        return pdk.MetalWire()
+
+    def _default_heater_coupler(self):
+        return pdk.MetalWire()
+
+    def _default_taper_coupler(self):
+        return pdk.DCTaper()
+
+    def _default_wire_coupler(self):
         return pdk.MetalWire()
 
     class Layout(i3.LayoutView):
@@ -1310,7 +1321,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set()
             electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
             lv.set(shape=electric_wire_shape)
-            lv.set(core_width=8.0)
+            lv.set(core_width=15.0)
             return lv
 
         def _default_metal_wire_2(self):
@@ -1321,7 +1332,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set()
             electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
             lv.set(shape=electric_wire_shape)
-            lv.set(core_width=8.0)
+            lv.set(core_width=15.0)
             return lv
 
         def _default_metal_wire_coupler(self):
@@ -1332,10 +1343,45 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set()
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
             electric_wire_shape = i3.Shape(
-                [(0, -40), (200, -40), (200, -75), (265 - 1, -75), (265 - 1, -75 - 35)])  # For 90/100
+                [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
             lv.set(shape=electric_wire_shape)
-            lv.set(core_width=8.0)
+            lv.set(core_width=15.0)
             return lv
+
+        def _default_heater_coupler(self):
+            lv = self.cell.heater_coupler.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
+            def ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100, num_points=500):
+                angles = np.linspace(np.deg2rad(start_deg), np.deg2rad(end_deg), num_points)
+                x = radius * np.cos(angles)
+                y = radius * np.sin(angles)
+                return [(round(xi, 3), round(yi, 3)) for xi, yi in zip(x, y)]
+
+            # Example use
+            points = ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100)
+            # points.append((-self.main_radius*np.sin(np.deg2rad(180))-39, -220*np.cos(np.deg2rad(180))))
+            # print(points)
+            electric_wire_shape = i3.Shape(points=points)
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=2.0)
+            return lv
+
+        def _default_taper_coupler(self):
+            lv = self.cell.taper_coupler.get_default_view(self)
+            return lv
+
+        def _default_wire_coupler(self):
+            lv = self.cell.wire_coupler.get_default_view(self)
+            lv.set(core_width=2.0)
+            shape=[(0.0, 0.0), (5.0, 0.0)]
+            lv.set(shape=shape)
+            return lv
+
+
 
         def _generate_instances(self, insts):
             ring_gap = self.ring_gap
@@ -1351,7 +1397,13 @@ class Aux_add_drop_ring_1_2(i3.PCell):
 
             insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "dc_pad_array_coupler":self.dc_pad_array_coupler,
                            "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2,
-                           "metal_wire_coupler":self.metal_wire_coupler, "metal_wire_coupler_2":self.metal_wire_coupler}
+                           "metal_wire_coupler":self.metal_wire_coupler, "metal_wire_coupler_2":self.metal_wire_coupler,
+                           "heater_coupler": self.heater_coupler,
+                           "taper_coupler_1": self.taper_coupler,
+                           "taper_coupler_2": self.taper_coupler,
+                           "wire_coupler_1": self.wire_coupler,
+                           "wire_coupler_2": self.wire_coupler
+                           }
             instances = insts_dict
 
             specs = [
@@ -1368,8 +1420,15 @@ class Aux_add_drop_ring_1_2(i3.PCell):
                 i3.Place("metal_wire_4", (-350, -100+200+5)), # For 90/200
                 i3.FlipV("metal_wire_4"),
                 i3.Place("metal_wire_coupler", (-350+365, -100 + 200 + 5)), # For 90/200
-                i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200)), # For 90/200
-                i3.FlipV("metal_wire_coupler_2")
+                i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200-4)), # For 90/200
+                i3.FlipV("metal_wire_coupler_2"),
+
+                i3.Place("heater_coupler", (-300+520+7.7-175-2.6-0.1, 2.6), angle=-90),  # For 90/200
+
+                i3.Place("taper_coupler_1", (217+55+1,-34), angle=165),  # For 90/200
+                i3.Place("taper_coupler_2", (217+55+1, 39), angle=-165),  # For 90/200
+                i3.Place("wire_coupler_1", (217 + 55+5, -35), angle=165),  # For 90/200
+                i3.Place("wire_coupler_2", (217 + 55+5, 40), angle=-165),  # For 90/200
 
                 ]
 
@@ -1434,7 +1493,9 @@ class Aux_add_drop_ring_3(i3.PCell):
     metal_wire_1 = i3.ChildCellProperty(locked=True)
     metal_wire_2 = i3.ChildCellProperty(locked=True)
     metal_wire_coupler = i3.ChildCellProperty(locked=True)
-    # metal_wire = i3.ChildCellProperty(locked=True)
+    heater_coupler = i3.ChildCellProperty(locked=True)
+    taper_coupler = i3.ChildCellProperty(locked=True)
+    wire_coupler = i3.ChildCellProperty(locked=True)
 
     # def _default_straight(self):
     #     return pdk.Straight(name=self.name + "straight")
@@ -1458,6 +1519,15 @@ class Aux_add_drop_ring_3(i3.PCell):
         return pdk.MetalWire()
 
     def _default_metal_wire_coupler(self):
+        return pdk.MetalWire()
+
+    def _default_heater_coupler(self):
+        return pdk.MetalWire()
+
+    def _default_taper_coupler(self):
+        return pdk.DCTaper()
+
+    def _default_wire_coupler(self):
         return pdk.MetalWire()
 
     class Layout(i3.LayoutView):
@@ -1538,7 +1608,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set()
             electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
             lv.set(shape=electric_wire_shape)
-            lv.set(core_width=8.0)
+            lv.set(core_width=15.0)
             return lv
 
         def _default_metal_wire_2(self):
@@ -1549,7 +1619,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set()
             electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
             lv.set(shape=electric_wire_shape)
-            lv.set(core_width=8.0)
+            lv.set(core_width=15.0)
             return lv
 
         def _default_metal_wire_coupler(self):
@@ -1560,10 +1630,44 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set()
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
             electric_wire_shape = i3.Shape(
-                [(0, -40), (200, -40), (200, -75), (265 - 1, -75), (265 - 1, -75 - 35)])  # For 90/100
+                [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
             lv.set(shape=electric_wire_shape)
-            lv.set(core_width=8.0)
+            lv.set(core_width=15.0)
             return lv
+
+        def _default_heater_coupler(self):
+            lv = self.cell.heater_coupler.get_default_view(self)
+            # lv.set(n_o_pads=(1, 4))
+            # lv.set(pad_size=90.0)
+            # lv.set(pitch=200.0)
+            # lv.set()
+            # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
+            def ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100, num_points=500):
+                angles = np.linspace(np.deg2rad(start_deg), np.deg2rad(end_deg), num_points)
+                x = radius * np.cos(angles)
+                y = radius * np.sin(angles)
+                return [(round(xi, 3), round(yi, 3)) for xi, yi in zip(x, y)]
+
+            # Example use
+            points = ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100)
+            # points.append((-self.main_radius*np.sin(np.deg2rad(180))-39, -220*np.cos(np.deg2rad(180))))
+            # print(points)
+            electric_wire_shape = i3.Shape(points=points)
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=2.0)
+            return lv
+
+        def _default_taper_coupler(self):
+            lv = self.cell.taper_coupler.get_default_view(self)
+            return lv
+
+        def _default_wire_coupler(self):
+            lv = self.cell.wire_coupler.get_default_view(self)
+            lv.set(core_width=2.0)
+            shape=[(0.0, 0.0), (5.0, 0.0)]
+            lv.set(shape=shape)
+            return lv
+
 
         def _generate_instances(self, insts):
             ring_gap = self.ring_gap
@@ -1579,7 +1683,12 @@ class Aux_add_drop_ring_3(i3.PCell):
 
             insts_dict = { "main_ring":self.main_ring, "aux_ring":self.aux_ring, "dc_pad_array":self.dc_pad_array, "dc_pad_array_coupler":self.dc_pad_array_coupler,
                            "metal_wire_1":self.metal_wire_1, "metal_wire_2":self.metal_wire_2, "metal_wire_3":self.metal_wire_1, "metal_wire_4":self.metal_wire_2,
-                           "metal_wire_coupler":self.metal_wire_coupler, "metal_wire_coupler_2":self.metal_wire_coupler}
+                           "metal_wire_coupler":self.metal_wire_coupler, "metal_wire_coupler_2":self.metal_wire_coupler,
+                           "heater_coupler":self.heater_coupler,
+                           "taper_coupler_1":self.taper_coupler,
+                           "taper_coupler_2": self.taper_coupler,
+                           "wire_coupler_1":self.wire_coupler,
+                            "wire_coupler_2": self.wire_coupler}
             instances = insts_dict
 
             specs = [
@@ -1596,8 +1705,15 @@ class Aux_add_drop_ring_3(i3.PCell):
                 i3.Place("metal_wire_4", (-350, -100+200+5)), # For 90/200
                 i3.FlipV("metal_wire_4"),
                 i3.Place("metal_wire_coupler", (-350+365, -100 + 200 + 5)), # For 90/200
-                i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200)), # For 90/200
-                i3.FlipV("metal_wire_coupler_2")
+                i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200-4)), # For 90/200
+                i3.FlipV("metal_wire_coupler_2"),
+
+                i3.Place("heater_coupler", (-300+520+7.7-175-2.6-0.1, 2.6), angle=-90),  # For 90/200
+
+                i3.Place("taper_coupler_1", (217+55+1,-34), angle=165),  # For 90/200
+                i3.Place("taper_coupler_2", (217+55+1, 39), angle=-165),  # For 90/200
+                i3.Place("wire_coupler_1", (217 + 55+5, -35), angle=165),  # For 90/200
+                i3.Place("wire_coupler_2", (217 + 55+5, 40), angle=-165),  # For 90/200
 
                 ]
 
