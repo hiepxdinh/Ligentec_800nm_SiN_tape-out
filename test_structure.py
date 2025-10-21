@@ -21,6 +21,8 @@ import ligentec_an800.all as pdk
 from grating_coupler_test import  All_pass_ring_GC
 from All_pass_ring_taper import All_pass_ring_Exspot_Test
 
+from Aux_ring import Aux_add_drop_ring_1_2
+
 import ipkiss3.all as i3
 import numpy as np
 
@@ -31,6 +33,6 @@ chip_elements = list()
 ## For component testing
 ###########################
 
-test_component =pdk.HeaterWaveguide()
+test_component =Aux_add_drop_ring_1_2()
 test_component_lv = test_component.Layout(p1_module=True)
 test_component_lv.write_gdsii("gds_output/test_component_lv_2.gds")

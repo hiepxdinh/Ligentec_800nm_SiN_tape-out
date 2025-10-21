@@ -1353,8 +1353,8 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
             electric_wire_shape = i3.Shape(
                 [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
-            # lv.set(shape=electric_wire_shape)
-            # lv.set(core_width=15.0)
+            lv.set(shape=electric_wire_shape)
+            lv.set(core_width=15.0)
             return lv
 
         def _default_heater_coupler(self):
@@ -1392,6 +1392,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             shape=[(0.0, 0.0), (5.0, 0.0)]
             lv.set(shape=shape)
             lv.set(p1_module=True)
+            lv.set(core_width=2)
             return lv
 
         def _default_ring_elecvia(self):
@@ -1453,8 +1454,8 @@ class Aux_add_drop_ring_1_2(i3.PCell):
                 i3.Place("wire_coupler_1", (217 + 55+5, -35), angle=165),  # For 90/200
                 i3.Place("wire_coupler_2", (217 + 55+5, 40), angle=-165),  # For 90/200
 
-                i3.Place("ring_elecvia_1", (217+55+1-5-1.9,-34+2), angle=165),
-                i3.Place("ring_elecvia_2", (217+55+1-5-1.9, 39-2), angle=-165),
+                i3.Place("ring_elecvia_1", (217 + 55 + 1 - 5 - 1.9, -34 + 2), angle=165),
+                i3.Place("ring_elecvia_2", (217 + 55 + 1 - 5 - 1.9, 39 - 2), angle=-165),
 
                 ]
 

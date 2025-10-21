@@ -84,7 +84,7 @@ h_separation = 500.0
 v_separation = 35.0
 coupler_gap = [1.0, 1.0, 1.0, 1.0, 1.0]
 offset = 125
-gap_50ghz = [0.3, 0.4, 0.5]
+gap_50ghz = [0.4, 0.5, 0.6]
 ap_50ghz_ring_1 = All_pass_ring_Exspot_50GHz(ring_position_x=175, ring_position_y=0, output_offset=0)
 ap_50ghz_ring_1_lv = ap_50ghz_ring_1.Layout(ring_radius=radius_50ghz, ring_width=1.8, ring_gap=gap_50ghz[0])
 # ring_lv.visualize(annotate=True)
@@ -111,7 +111,7 @@ h_separation_2 = 300.0
 v_separation = 127/3
 offset = 325
 out_taper_position = 150
-gap_100ghz = [0.3, 0.4, 0.5, 0.6]
+gap_100ghz = [0.4, 0.5, 0.6, 0.7]
 # for i, gap in enumerate(gap_list):
 #     name = "All_Pass_Ring_{}".format(radius)
 ap_100ghz_ring_1 = All_pass_ring_Exspot_100GHz(ring_position_x=1*h_separation_2-400+50-7.5, ring_position_y=(2)*v_separation, output_offset=offset, out_taper_position = out_taper_position)
