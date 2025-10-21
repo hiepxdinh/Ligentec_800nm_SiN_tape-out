@@ -30,51 +30,68 @@ class Chip_Size_Layer_Frame(i3.PCell):
             return i3.TECH.PPLAYER.NONE.BBOX
 
         def _generate_elements(self, elems):
-            X = self.size.x
-            Y = self.size.y
+            width, height = self.size
+            radius = 100
 
-            if self.with_ebl_writing_grid:
-                # # Include dummy features at the origin
-                # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
-                #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, 10)]),
-                #                  line_width=self.boundary_line_width)
-                #
-                # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
-                #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, 10)]),
-                #                  line_width=self.boundary_line_width)
+            # Chip edge
+            elems += i3.Translation((width/2, height/2)).apply(i3.Rectangle(
+                layer=self.boundary_doc_layer,
+                box_size=self.size,
+            ))
 
-                # Add EBL writing grid
-                n_rows = int(Y / self.ebl_writing_size[1])
-                n_cols = int(X / self.ebl_writing_size[0])
-                for i in range(n_rows - 1):
-                    elems += i3.Path(layer=self.boundary_doc_layer,
-                                     shape=i3.Shape([(0, (i + 1) * self.ebl_writing_size[1]),
-                                                     (n_cols * self.ebl_writing_size[0],
-                                                      (i + 1) * self.ebl_writing_size[1])]),
-                                     line_width=self.boundary_line_width)
-                for i in range(n_cols - 1):
-                    elems += i3.Path(layer=self.boundary_doc_layer,
-                                     shape=i3.Shape([((i + 1) * self.ebl_writing_size[0], 0),
-                                                     ((i + 1) * self.ebl_writing_size[0],
-                                                      n_rows * self.ebl_writing_size[1])]),
-                                     line_width=self.boundary_line_width)
+            return elems
 
-            elems += i3.RectanglePath(layer=self.boundary_doc_layer,
-                                      center=0.5 * self.size,
-                                      box_size=(X - self.boundary_line_width,
-                                                Y - self.boundary_line_width),
-                                      line_width=self.boundary_line_width)
+        def _generate_instances(self, insts):
+            width, height = self.size
 
-            elems += i3.Label(layer=self.boundary_doc_layer,
-                              text=self.owner,
-                              height=15.0,
-                              coordinate=(0.5 * X, Y - 20),
-                              alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.TOP)
-                              )
+            return insts
+
+        # def _generate_elements(self, elems):
+        #     X = self.size.x
+        #     Y = self.size.y
+
+            # if self.with_ebl_writing_grid:
+            #     # # Include dummy features at the origin
+            #     # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
+            #     #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
+            #     #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
+            #     #                                  (self.boundary_line_width * 0.5, 10)]),
+            #     #                  line_width=self.boundary_line_width)
+            #     #
+            #     # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
+            #     #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
+            #     #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
+            #     #                                  (self.boundary_line_width * 0.5, 10)]),
+            #     #                  line_width=self.boundary_line_width)
+            #
+            #     # Add EBL writing grid
+            #     n_rows = int(Y / self.ebl_writing_size[1])
+            #     n_cols = int(X / self.ebl_writing_size[0])
+            #     for i in range(n_rows - 1):
+            #         elems += i3.Path(layer=self.boundary_doc_layer,
+            #                          shape=i3.Shape([(0, (i + 1) * self.ebl_writing_size[1]),
+            #                                          (n_cols * self.ebl_writing_size[0],
+            #                                           (i + 1) * self.ebl_writing_size[1])]),
+            #                          line_width=self.boundary_line_width)
+            #     for i in range(n_cols - 1):
+            #         elems += i3.Path(layer=self.boundary_doc_layer,
+            #                          shape=i3.Shape([((i + 1) * self.ebl_writing_size[0], 0),
+            #                                          ((i + 1) * self.ebl_writing_size[0],
+            #                                           n_rows * self.ebl_writing_size[1])]),
+            #                          line_width=self.boundary_line_width)
+            #
+            # elems += i3.RectanglePath(layer=self.boundary_doc_layer,
+            #                           center=0.5 * self.size,
+            #                           box_size=(X - self.boundary_line_width,
+            #                                     Y - self.boundary_line_width),
+            #                           line_width=self.boundary_line_width)
+            #
+            # elems += i3.Label(layer=self.boundary_doc_layer,
+            #                   text=self.owner,
+            #                   height=15.0,
+            #                   coordinate=(0.5 * X, Y - 20),
+            #                   alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.TOP)
+            #                   )
 
             return elems
 
@@ -174,53 +191,70 @@ class Chip_Handling_Size_Frame(i3.PCell):
             return i3.TECH.PPLAYER.NONE.BBOX
 
         def _generate_elements(self, elems):
-            X = self.size.x
-            Y = self.size.y
+            width, height = self.size
+            radius = 100
 
-            if self.with_ebl_writing_grid:
-                # # Include dummy features at the origin
-                # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
-                #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, 10)]),
-                #                  line_width=self.boundary_line_width)
-                #
-                # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
-                #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
-                #                                  (self.boundary_line_width * 0.5, 10)]),
-                #                  line_width=self.boundary_line_width)
-
-                # Add EBL writing grid
-                n_rows = int(Y / self.ebl_writing_size[1])
-                n_cols = int(X / self.ebl_writing_size[0])
-                for i in range(n_rows - 1):
-                    elems += i3.Path(layer=self.boundary_doc_layer,
-                                     shape=i3.Shape([(0, (i + 1) * self.ebl_writing_size[1]),
-                                                     (n_cols * self.ebl_writing_size[0],
-                                                      (i + 1) * self.ebl_writing_size[1])]),
-                                     line_width=self.boundary_line_width)
-                for i in range(n_cols - 1):
-                    elems += i3.Path(layer=self.boundary_doc_layer,
-                                     shape=i3.Shape([((i + 1) * self.ebl_writing_size[0], 0),
-                                                     ((i + 1) * self.ebl_writing_size[0],
-                                                      n_rows * self.ebl_writing_size[1])]),
-                                     line_width=self.boundary_line_width)
-
-            elems += i3.RectanglePath(layer=self.boundary_doc_layer,
-                                      center=0.5 * self.size,
-                                      box_size=(X - self.boundary_line_width,
-                                                Y - self.boundary_line_width),
-                                      line_width=self.boundary_line_width)
-
-            elems += i3.Label(layer=self.boundary_doc_layer,
-                              text=self.owner,
-                              height=15.0,
-                              coordinate=(0.5 * X, Y - 20),
-                              alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.TOP)
-                              )
+            # Chip edge
+            elems += i3.Translation((width/2, height/2)).apply(i3.Rectangle(
+                layer=self.boundary_doc_layer,
+                box_size=self.size,
+            ))
 
             return elems
+
+        def _generate_instances(self, insts):
+            width, height = self.size
+
+            return insts
+
+        # def _generate_elements(self, elems):
+        #     X = self.size.x
+        #     Y = self.size.y
+        #
+        #     if self.with_ebl_writing_grid:
+        #         # # Include dummy features at the origin
+        #         # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
+        #         #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
+        #         #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
+        #         #                                  (self.boundary_line_width * 0.5, 10)]),
+        #         #                  line_width=self.boundary_line_width)
+        #         #
+        #         # elems += i3.Path(layer=i3.TECH.PPLAYER.WG.TRENCH,
+        #         #                  shape=i3.Shape([(10, self.boundary_line_width * 0.5),
+        #         #                                  (self.boundary_line_width * 0.5, self.boundary_line_width * 0.5),
+        #         #                                  (self.boundary_line_width * 0.5, 10)]),
+        #         #                  line_width=self.boundary_line_width)
+        #
+        #         # Add EBL writing grid
+        #         n_rows = int(Y / self.ebl_writing_size[1])
+        #         n_cols = int(X / self.ebl_writing_size[0])
+        #         for i in range(n_rows - 1):
+        #             elems += i3.Path(layer=self.boundary_doc_layer,
+        #                              shape=i3.Shape([(0, (i + 1) * self.ebl_writing_size[1]),
+        #                                              (n_cols * self.ebl_writing_size[0],
+        #                                               (i + 1) * self.ebl_writing_size[1])]),
+        #                              line_width=self.boundary_line_width)
+        #         for i in range(n_cols - 1):
+        #             elems += i3.Path(layer=self.boundary_doc_layer,
+        #                              shape=i3.Shape([((i + 1) * self.ebl_writing_size[0], 0),
+        #                                              ((i + 1) * self.ebl_writing_size[0],
+        #                                               n_rows * self.ebl_writing_size[1])]),
+        #                              line_width=self.boundary_line_width)
+        #
+        #     elems += i3.RectanglePath(layer=self.boundary_doc_layer,
+        #                               center=0.5 * self.size,
+        #                               box_size=(X - self.boundary_line_width,
+        #                                         Y - self.boundary_line_width),
+        #                               line_width=self.boundary_line_width)
+        #
+        #     elems += i3.Label(layer=self.boundary_doc_layer,
+        #                       text=self.owner,
+        #                       height=15.0,
+        #                       coordinate=(0.5 * X, Y - 20),
+        #                       alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.TOP)
+        #                       )
+        #
+        #     return elems
 
         # def _generate_instances(self, insts):
             # if self.with_reference_waveguides:
@@ -305,19 +339,22 @@ class CHS_FRAME_10500_4850_HALF(Chip_Handling_Size_Frame):
     _name_prefix = "CHS_FRAME_10500_4850_HALF"
 
     class Layout(Chip_Handling_Size_Frame.Layout):
-        size = i3.Size2Property(default=(10500-10, (4850-10)/2 - 125/2), doc="frame size", locked=True)
+        size = i3.Size2Property(default=(10500-20, (4850-20)/2 - 120/2), doc="frame size", locked=True)
 
 
 class CHS_FRAME_10500_HALF_4850_HALF(Chip_Handling_Size_Frame):
     _name_prefix = "CHS_FRAME_10500_HALF_4850_HALF"
 
     class Layout(Chip_Handling_Size_Frame.Layout):
-        size = i3.Size2Property(default=((10500-10)/2 - 125/2, (4850-10)/2 - 125/2), doc="frame size", locked=True)
+        size = i3.Size2Property(default=((10500-20)/2 - 120/2, (4850-210)/2 - 120/2), doc="frame size", locked=True)
 
 
 class FRAME_10500_4850_WITH_EBL_GRID(Chip_Handling_Size_Frame):
     _name_prefix = "FRAME_10500_4850_EBL"
 
     class Layout(Chip_Handling_Size_Frame.Layout):
-        size = i3.Size2Property(default=(10500, 4850/2 - 125/2), doc="frame size", locked=True)
+        size = i3.Size2Property(default=(10500, 4850/2 - 120/2), doc="frame size", locked=True)
         with_ebl_writing_grid = i3.BoolProperty(default=True, doc="include EBL writing grid on the frame", locked=True)
+
+
+

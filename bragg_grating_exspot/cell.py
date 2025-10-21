@@ -88,8 +88,8 @@ class FP_BG_1_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_1_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -98,8 +98,8 @@ class FP_BG_1_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_1_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -194,8 +194,8 @@ class FP_BG_2_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_2_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -204,8 +204,8 @@ class FP_BG_2_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_2_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -300,8 +300,8 @@ class FP_BG_3_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_3_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -310,8 +310,8 @@ class FP_BG_3_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_3_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -406,8 +406,8 @@ class FP_BG_4_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_4_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -416,8 +416,8 @@ class FP_BG_4_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_4_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -512,8 +512,8 @@ class FP_BG_5_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_5_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -522,8 +522,8 @@ class FP_BG_5_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_5_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -618,8 +618,8 @@ class FP_BG_6_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_6_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -628,8 +628,8 @@ class FP_BG_6_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_6_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -726,8 +726,8 @@ class FP_BG_7_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_7_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -736,8 +736,8 @@ class FP_BG_7_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_7_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -835,8 +835,8 @@ class FP_BG_8_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_8_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -845,8 +845,8 @@ class FP_BG_8_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_8_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -942,8 +942,8 @@ class FP_BG_9_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+120, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+120, in_y+10+10),
                 text="BG_DESIGN_9_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -952,8 +952,8 @@ class FP_BG_9_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-120, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-120, out_y+10+10),
                 text="BG_DESIGN_9_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -1049,8 +1049,8 @@ class Sinusoidal_BG_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+125, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+125, in_y+10+10),
                 text="BG_Sinusoidal_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -1059,8 +1059,8 @@ class Sinusoidal_BG_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-125, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-125, out_y+10+10),
                 text="BG_Sinusoidal_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,

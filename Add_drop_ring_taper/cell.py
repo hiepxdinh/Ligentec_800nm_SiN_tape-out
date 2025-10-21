@@ -152,7 +152,7 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             ring_position = (self.ring_position_x+45, self.ring_position_y-100+200)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
                 text="RR_200_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),

@@ -34,7 +34,7 @@ class Waveguide_Exspot(i3.Circuit):
     def _default_specs(self):
         return[
             i3.Place("in_taper", position = (0,0), angle = 180),
-            i3.Place("out_taper", position = (10000-750,0), angle = 0),
+            i3.Place("out_taper", position = (10000-750+20,0), angle = 0),
             i3.Place("linear_transition_in", position = (15,0), angle = 0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
             i3.ConnectBend("in_taper:in0", "linear_transition_in:in0"),
@@ -82,8 +82,8 @@ class Waveguide_Exspot(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(in_x+60, in_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(in_x+60, in_y+10+10),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -92,8 +92,8 @@ class Waveguide_Exspot(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-60, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-60, out_y+10+10),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -140,7 +140,7 @@ class Waveguide_Exspot_2(i3.Circuit):
     def _default_specs(self):
         return[
             i3.Place("in_taper", position = (0,0), angle = 180),
-            i3.Place("out_taper", position = (10000-750,50), angle = 0),
+            i3.Place("out_taper", position = (10000-750+20,50), angle = 0),
             i3.Place("linear_transition_in", position=(15, 0), angle=0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_in_2", position = (175,50), angle = 0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
@@ -199,7 +199,7 @@ class Waveguide_Exspot_2(i3.Circuit):
             out_y = out_port.position.y
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=(in_x+110-50, in_y+25),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
@@ -209,8 +209,8 @@ class Waveguide_Exspot_2(i3.Circuit):
             )
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
-                coordinate=(out_x-110+50, out_y+10),
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(out_x-110+50, out_y+10+10),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
@@ -250,8 +250,8 @@ class Waveguide_Exspot_Ref(i3.Circuit):
 
     def _default_specs(self):
         return[
-            i3.Place("in_taper", position = (0,0), angle = 180),
-            i3.Place("out_taper", position = (2350-750-485+2.5,0), angle = 0),
+            i3.Place("in_taper", position = (0-17.5,0), angle = 180),
+            i3.Place("out_taper", position = (2350-750-485+2.5+10,0), angle = 0),
             i3.Place("linear_transition_in", position = (15,0), angle = 0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
             i3.ConnectBend("in_taper:in0", "linear_transition_in:in0"),
@@ -261,7 +261,7 @@ class Waveguide_Exspot_Ref(i3.Circuit):
 
     class Layout(i3.Circuit.Layout):
         width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
-        width_out = i3.PositiveNumberProperty(default=1.5, doc="width of output waveguide")
+        width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
         linear_taper_length=i3.PositiveNumberProperty(default=100, doc="length of linear taper")
 
         def _default_trace_template_in(self):

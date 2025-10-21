@@ -90,13 +90,13 @@ class All_pass_ring_GC(i3.Circuit):
         #
         # v_separation = i3.NumberProperty(default=0.7, doc="the gap ")
         width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
-        width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
+        width_out = i3.PositiveNumberProperty(default=1.8, doc="width of output waveguide")
 
 
         def _default_ring(self):
             lo = self.cell.ring_in.get_default_view(i3.LayoutView)
             # lo.set(radius=self.ring_radius)
-            # lo.set(gap0=self.ring_gap)
+            lo.set(gap0=self.ring_gap)
             return lo
 
         # def _default_trace_template_in(self):
@@ -117,6 +117,7 @@ class All_pass_ring_GC(i3.Circuit):
                 out_width=self.width_out
             )
             return lv
+
 
 class All_pass_ring_GC_2(i3.Circuit):
     taper = i3.ChildCellProperty(doc="inverse_taper coupler")
@@ -190,13 +191,14 @@ class All_pass_ring_GC_2(i3.Circuit):
         # ebl_field_size = i3.PositiveNumberProperty(default=100.0, doc="the ebl writing field size")
         #
         # v_separation = i3.NumberProperty(default=0.7, doc="the gap ")
-        width_in = i3.PositiveNumberProperty(default=1.0, doc="width of input waveguide")
+        width_in = i3.PositiveNumberProperty(default=1.8, doc="width of input waveguide")
         width_out = i3.PositiveNumberProperty(default=1.0, doc="width of output waveguide")
 
 
         def _default_ring(self):
             lo = self.cell.ring.get_default_view(i3.LayoutView)
             lo.set(radius=self.ring_radius)
+            lo.set(ring_width = self.width_in)
             lo.set(gap0=self.ring_gap)
             return lo
 
@@ -218,3 +220,20 @@ class All_pass_ring_GC_2(i3.Circuit):
                 out_width=self.width_out
             )
             return lv
+
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (0,0)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(0, 18),
+                text="R_G" +str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+            return elems

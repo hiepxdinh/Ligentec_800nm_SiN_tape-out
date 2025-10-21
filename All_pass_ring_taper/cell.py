@@ -114,7 +114,7 @@ class All_pass_ring_Exspot(i3.Circuit):
             ring_position = (self.ring_position_x+45, self.ring_position_y-100+200)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
                 text="RR_200_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
@@ -182,9 +182,9 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
         return [
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
-            i3.Place('in_taper', position=(-700 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
+            i3.Place('in_taper', position=(-700-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300+25-7.5- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300+25-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -245,7 +245,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0,50), (300-25, 50), (300-25, 150+130+5.5+0.22+0.426+46+4), (295-25-3.5, 150+130+5.5+0.22+0.426+46+4)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0,50), (300-25, 50), (300-25, 150+130+5.5+0.22+0.426+46+4), (295-25-3.5-3, 150+130+5.5+0.22+0.426+46+4)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             return lv
@@ -277,7 +277,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             ring_position = (self.ring_position_x+45, self.ring_position_y-100-500)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
                 text="RR_50_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
@@ -347,9 +347,9 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
         return [
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
-            i3.Place('in_taper', position=(-700 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
+            i3.Place('in_taper', position=(-700-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300+25-7.5- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300+25-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -413,7 +413,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0,50), (300-25-50-20-11, 50), (300-25-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074), (295-25-3.5-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0,50), (300-25-50-20-11, 50), (300-25-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074), (295-25-3.5-50-20-11-3, 150+130+5.5+0.22+0.426+46+4-170+2.074)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             return lv
@@ -447,7 +447,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             ring_position = (self.ring_position_x+45, self.ring_position_y-100-250)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
                 text="RR_100_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
@@ -505,9 +505,9 @@ class All_pass_ring_Exspot_200GHz(i3.Circuit):
         return [
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
-            i3.Place('in_taper', position=(-700-25 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
+            i3.Place('in_taper', position=(-700-25-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300-7.5- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -575,7 +575,7 @@ class All_pass_ring_Exspot_200GHz(i3.Circuit):
             ring_position = (self.ring_position_x+45, self.ring_position_y-100)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
                 text="RR_200_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
@@ -631,9 +631,9 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
         return [
             i3.Place('ring', position=ring_position, angle=0),
             i3.FlipV('ring'),
-            i3.Place('in_taper', position=(-700-25 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
+            i3.Place('in_taper', position=(-700-25-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300-7.5- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -704,16 +704,16 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
             """
             name_position = self.name_position
             fontsize = self.name_fontsize
-            ring_position = (self.ring_position_x, self.ring_position_y)
+            ring_position = (self.ring_position_x+50, self.ring_position_y-150)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="AUX_60UM",
+                text="AUX_60UM_G"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=fontsize,
-                transformation=i3.Rotation(rotation=90)+i3.HMirror()
+                # transformation=i3.Rotation(rotation=90)+i3.HMirror()
             )
             return elems
 
@@ -836,6 +836,46 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
             )
             return lv
 
+        # def _generate_instances(self, insts):
+        #     ring_position = (self.ring_position_x, self.ring_position_y)
+        #
+        #     insts += i3.SRef(name="linear_transition_in", reference=self.linear_transition, flatten=True)
+        #     insts += i3.SRef(name="linear_transition_out", reference=self.linear_transition, flatten=True)
+        #     insts += i3.SRef(name="ring", reference=self.ring, flatten=True)
+        #     insts += i3.SRef(name="in_taper", reference=self.taper, flatten=True)
+        #     insts += i3.SRef(name="out_taper", reference=self.taper, flatten=True)
+        #     return i3.place_and_route(
+        #         insts=insts,
+        #         specs=[
+        #                     i3.Place('ring', position=ring_position, angle=0),
+        #                     i3.FlipV('ring'),
+        #                     i3.Place('in_taper', position=(+100-50+127/2,-420), angle=90, relative_to="ring:in0"),
+        #                     i3.FlipH("in_taper"),
+        #                     i3.Place('out_taper', position=(-100+50-127/2, -420), angle=-90, relative_to="ring:out0"),
+        #                     #
+        #                     i3.Place("linear_transition_in",position=(0, 115), angle=90, relative_to="in_taper:in0"),
+        #                     i3.FlipH("linear_transition_in"),
+        #                     i3.Place("linear_transition_out", position=(0, 115), angle=90, relative_to="out_taper:in0"),
+        #                     i3.FlipH("linear_transition_out"),
+        #
+        #                     i3.ConnectBend("linear_transition_in:out0", "in_taper:in0"),
+        #                     i3.ConnectBend("linear_transition_out:out0", "out_taper:in0"),
+        #
+        #                     i3.ConnectManhattan(
+        #                         "ring:in0", "linear_transition_out:in0",
+        #                         # control_points=[i3.V(i3.START+200)
+        #                         #                 ],
+        #                         # bend_radius=50,
+        #                     ),
+        #                     i3.ConnectManhattan(
+        #                         "ring:out0", "linear_transition_in:in0",
+        #                         # control_points=[i3.V(i3.START+200)
+        #                         #                 ],
+        #                         # bend_radius=50,
+        #                     ),
+        #         ]
+        #     )
+
         def _generate_elements(self, elems):
             """
             add labels at in/out put grating couplers regions
@@ -843,7 +883,7 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
             ring_position = (self.ring_position_x+45, self.ring_position_y-100+200-260)
 
             elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.CELLNAME,
+                layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
                 text="RR_200_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
