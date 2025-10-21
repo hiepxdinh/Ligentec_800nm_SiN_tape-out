@@ -245,7 +245,7 @@ class Exspot_Spiral_Circular_GC(i3.Circuit):
         return[
             i3.Place("spiral", position=(0.0, 0.0), angle=0),
             i3.Place("exspot_in", position=(-225.0, 120.0), angle=180, relative_to="spiral:in0"),
-            i3.Place("exspot_out", position=(150.0, 120.0), angle=0, relative_to="spiral:in0"),
+            i3.Place("exspot_out", position=(150.0-40-10, 120.0), angle=0, relative_to="spiral:in0"),
 
             i3.Place("linear_taper_in", position=(20, 0.0), angle=0, relative_to="exspot_in:in0"),
 

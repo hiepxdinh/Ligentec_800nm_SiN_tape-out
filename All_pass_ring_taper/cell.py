@@ -229,6 +229,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             lo.set(ring_width=self.ring_width)
             lo.set(gap0=self.ring_gap)
             lo.set(heater_width=2.0)
+            lo.set(p1_module=True)
             return lo
 
         def _default_dc_pad_array(self):
@@ -397,6 +398,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             lo.set(ring_width=self.ring_width)
             lo.set(gap0=self.ring_gap)
             lo.set(heater_width=2.0)
+            lo.set(p1_module=True)
             return lo
 
         def _default_dc_pad_array(self):

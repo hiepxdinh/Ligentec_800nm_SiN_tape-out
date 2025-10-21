@@ -31,6 +31,6 @@ chip_elements = list()
 ## For component testing
 ###########################
 
-test_component =CSL_FRAME_10500_4850()
-test_component_lv = test_component.Layout()
+test_component =pdk.HeaterWaveguide()
+test_component_lv = test_component.Layout(p1_module=True)
 test_component_lv.write_gdsii("gds_output/test_component_lv_2.gds")
