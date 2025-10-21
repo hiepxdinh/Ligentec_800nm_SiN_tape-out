@@ -31,7 +31,7 @@ from exspot_test import Exspot_Spiral_Square, Exspot_Spiral_Circular_GC, Exspot_
 
 from Bragg_grating_test_lensed_fiber_bb import BG_Test_1_lensed_fiber, BG_Test_2_lensed_fiber, BG_Test_3_lensed_fiber, BG_Test_4_lensed_fiber
 from Bragg_grating_test_lensed_fiber_bb import BG_Test_5_lensed_fiber, BG_Test_6_lensed_fiber, BG_Test_7_lensed_fiber, BG_Test_8_lensed_fiber
-from grating_coupler_test import All_pass_ring_GC, All_pass_ring_GC_2, All_pass_ring_GC_3
+from grating_coupler_test import All_pass_ring_GC, All_pass_ring_GC_2, All_pass_ring_GC_3, All_pass_ring_GC_4
 # #######################################
 # # Global parameters
 # ######################################
@@ -350,15 +350,15 @@ spiral_test_2um_4_lv = spiral_test_2um_4.Layout(spiral_length=9000, width_out=1.
 # spiral_test_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=spiral_test_2um_4_lv, position=(-3000+3625+8500-480+275+50+100+50+40+50+900-75-33+10-10, 2500+1367+9.25+5-19.486+225+225-38.973-3.75), transformation=i3.Rotation(rotation=-90)))
 
-#Circular spiral test
-
+# #Circular spiral test
+#
 spiral_circular_test_2um_1 = Exspot_Spiral_Circular_GC()
 spiral_circular_test_2um_1_lv = spiral_circular_test_2um_1.Layout(spiral_length=5000)
 # spiral_test_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=spiral_circular_test_2um_1_lv, position=(-3000+3625+8500-480+275+50+100+50+40+50+900+210+5-35, 2500+1367+9.25+5-19.486+225+225+50), transformation=i3.Rotation(rotation=-90)))
 
 spiral_circular_test_2um_1_2 = Exspot_Spiral_Circular_GC()
-spiral_circular_test_2um_1_2_lv = spiral_circular_test_2um_1_2.Layout(spiral_length=5000)
+spiral_circular_test_2um_1_2_lv = spiral_circular_test_2um_1_2.Layout(spiral_length=10000)
 # spiral_test_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=spiral_circular_test_2um_1_2_lv, position=(-3000+3625+8500-480+275+50+100+50+40+50+900+210+5-35, 2500+1367+9.25+5-19.486+225+225+50-1550-40), transformation=i3.Rotation(rotation=-90)))
 
@@ -369,7 +369,7 @@ spiral_circular_test_2um_2_lv = spiral_circular_test_2um_2.Layout(spiral_length=
 chip_elements.append(i3.SRef(reference=spiral_circular_test_2um_2_lv, position=(-3000+3625+8500-480+275+50+100+50+40+50+900+210-485-23, 2500+1367+9.25+5-19.486+225+225+50), transformation=i3.Rotation(rotation=-90)))
 
 spiral_circular_test_2um_2_2 = Exspot_Spiral_Circular_GC()
-spiral_circular_test_2um_2_2_lv = spiral_circular_test_2um_2_2.Layout(spiral_length=7500)
+spiral_circular_test_2um_2_2_lv = spiral_circular_test_2um_2_2.Layout(spiral_length=10000)
 # spiral_test_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=spiral_circular_test_2um_2_2_lv, position=(-3000+3625+8500-480+275+50+100+50+40+50+900+210-485-23, 2500+1367+9.25+5-19.486+225+225+50-1550-40), transformation=i3.Rotation(rotation=-90)))
 
@@ -381,7 +381,7 @@ chip_elements.append(i3.SRef(reference=spiral_circular_test_2um_3_lv, position=(
 
 
 spiral_circular_test_2um_4 = Exspot_Spiral_Circular_GC()
-spiral_circular_test_2um_4_lv = spiral_circular_test_2um_4.Layout(spiral_length=15000)
+spiral_circular_test_2um_4_lv = spiral_circular_test_2um_4.Layout(spiral_length=12500)
 # spiral_test_lv.visualize(annotate=True)
 chip_elements.append(i3.SRef(reference=spiral_circular_test_2um_4_lv, position=(-3000+3625+8500-480+275+50+100+50+40+50+900+210-485-8500-150-20, 2500+1367+9.25+5-19.486+225+225+50-1500-95-10), transformation=i3.Rotation(rotation=-90)))
 
@@ -516,11 +516,11 @@ chip_elements.append(i3.SRef(reference=bg_8_3_lv, position=(-3000+7010-100-35-25
 fp_width_9=[0.8, 1.0]
 fp_length_9=5000.0
 
-bg_9_1 = FP_BG_4_Exspot(device_length=device_length_long)
+bg_9_1 = FP_BG_9_Exspot(device_length=device_length_long)
 bg_9_1_lv = bg_9_1.Layout(fp_width=fp_width_9[0], fp_length=fp_length_9, coupler_gap=coupler_gap)
 chip_elements.append(i3.SRef(reference=bg_9_1_lv, position=(-3000+7010-100-35-25-1100, 100+127*20/3+0.4)))
 
-bg_9_2 = FP_BG_4_Exspot(device_length=device_length_long)
+bg_9_2 = FP_BG_9_Exspot(device_length=device_length_long)
 bg_9_2_lv = bg_9_2.Layout(fp_width=fp_width_9[0], fp_length=fp_length_9, coupler_gap=coupler_gap)
 chip_elements.append(i3.SRef(reference=bg_9_2_lv, position=(-3000+7010-100-35-25-1100, 100+127*21/3+0.4)))
 
@@ -733,57 +733,97 @@ chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50-1050-32 +
 ring_test_1_gc = All_pass_ring_GC_2()
 ring_test_1_gc_lv = ring_test_1_gc.Layout(ring_gap=0.3)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_test_1_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+50-45, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25)))
+chip_elements.append(i3.SRef(reference=ring_test_1_gc_lv, position=(2455, 4757.5)))
 
 ring_test_2_gc = All_pass_ring_GC_2()
 ring_test_2_gc_lv = ring_test_2_gc.Layout(ring_gap=0.4)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_test_2_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+50-45, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400-25-25+20)))
+chip_elements.append(i3.SRef(reference=ring_test_2_gc_lv, position=(2455, 4627.5)))
 
 ring_test_3_gc = All_pass_ring_GC_2()
 ring_test_3_gc_lv = ring_test_3_gc.Layout(ring_gap=0.5)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_test_3_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050-45, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25)))
+chip_elements.append(i3.SRef(reference=ring_test_3_gc_lv, position=(3455, 4757.5)))
 
 ring_test_4_gc = All_pass_ring_GC_2()
 ring_test_4_gc_lv = ring_test_4_gc.Layout(ring_gap=0.6)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_test_4_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050-45, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400-25-25+20)))
+chip_elements.append(i3.SRef(reference=ring_test_4_gc_lv, position=(3455, 4627.5)))
 
 
 ring_test_5_gc = All_pass_ring_GC_2()
 ring_test_5_gc_lv = ring_test_5_gc.Layout(ring_gap=0.7)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_test_5_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050+1050-45, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25)))
+chip_elements.append(i3.SRef(reference=ring_test_5_gc_lv, position=(4505, 4757.5)))
 
 ring_test_6_gc = All_pass_ring_GC_2()
 ring_test_6_gc_lv = ring_test_6_gc.Layout(ring_gap=0.8)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_test_6_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050+1050-45, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400-25-25+20)))
+chip_elements.append(i3.SRef(reference=ring_test_6_gc_lv, position=(4505, 4627.5)))
 
-#### Ring test width
-
-
-ring_width_test_1_gc = All_pass_ring_GC_3()
-ring_width_test_1_gc_lv = ring_width_test_1_gc.Layout(ring_gap=0.65, ring_width=1.68)
+# #### Ring test width
+ring_width_test_1_gc = All_pass_ring_GC_4()
+ring_width_test_1_gc_lv = ring_width_test_1_gc.Layout(ring_gap=0.65, ring_width=1.68, bus_length=25)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050+1050-45-3600+6900+1500-750, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25-290-100-1500-40), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(8055, 2827.5-45), transformation=i3.Rotation(rotation=90)))
 
-ring_width_test_1_gc = All_pass_ring_GC_3()
-ring_width_test_1_gc_lv = ring_width_test_1_gc.Layout(ring_gap=0.65, ring_width=1.70)
+ring_width_test_1_gc = All_pass_ring_GC_4()
+ring_width_test_1_gc_lv = ring_width_test_1_gc.Layout(ring_gap=0.65, ring_width=1.69, bus_length=25)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050+1050-45-3600+100+6900+1500-750, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25-290-100-1500-40), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(8155, 2827.5-45), transformation=i3.Rotation(rotation=90)))
+
+ring_width_test_1_gc = All_pass_ring_GC_4()
+ring_width_test_1_gc_lv = ring_width_test_1_gc.Layout(ring_gap=0.65, ring_width=1.70, bus_length=50)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(8555, 2827.5), transformation=i3.Rotation(rotation=90)))
+
+ring_width_test_1_gc = All_pass_ring_GC_4()
+ring_width_test_1_gc_lv = ring_width_test_1_gc.Layout(ring_gap=0.65, ring_width=1.71, bus_length=50)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(8655, 2827.5), transformation=i3.Rotation(rotation=90)))
 
 
 ring_radius_test_1_gc = All_pass_ring_GC_3()
-ring_radius_test_1_gc_lv = ring_radius_test_1_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.76)
+ring_radius_test_1_gc_lv = ring_radius_test_1_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.72)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_width_test_1_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050+1050-45-3600+500+6900+1500-500, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25-290-100-1500-40), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=ring_radius_test_1_gc_lv, position=(9305, 2827.5), transformation=i3.Rotation(rotation=90)))
 
 ring_radius_test_2_gc = All_pass_ring_GC_3()
-ring_radius_test_2_gc_lv = ring_radius_test_2_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.78)
+ring_radius_test_2_gc_lv = ring_radius_test_2_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.73)
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ring_radius_test_2_gc_lv, position=(6595-5500+400-40-1000+5000-450+400+400+400+400+400+400+50-2800-2200-1400-95-250+300-10+1450+1050+1050-45-3600+100+500+6900+1500-500, 1500+1600+500+275-50-17.5+25-725+200+1400-420-30+400+150-25-25-290-100-1500-40), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=ring_radius_test_2_gc_lv, position=(9405, 2827.5), transformation=i3.Rotation(rotation=90)))
+
+ring_radius_test_3_gc = All_pass_ring_GC_3()
+ring_radius_test_3_gc_lv = ring_radius_test_3_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.74)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_radius_test_3_gc_lv, position=(9305, 4327.5), transformation=i3.Rotation(rotation=90)))
+#
+ring_radius_test_4_gc = All_pass_ring_GC_3()
+ring_radius_test_4_gc_lv = ring_radius_test_4_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.75)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_radius_test_4_gc_lv, position=(9405, 4327.5), transformation=i3.Rotation(rotation=90)))
+
+
+ring_radius_test_5_gc = All_pass_ring_GC_4()
+ring_radius_test_5_gc_lv = ring_radius_test_5_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.76, bus_length=50)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_radius_test_5_gc_lv, position=(8955, 2827.5-37.5), transformation=i3.Rotation(rotation=90)))
+
+ring_radius_test_6_gc = All_pass_ring_GC_4()
+ring_radius_test_6_gc_lv = ring_radius_test_6_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.77, bus_length=50)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_radius_test_6_gc_lv, position=(9055, 2827.5-37.5), transformation=i3.Rotation(rotation=90)))
+
+ring_radius_test_7_gc = All_pass_ring_GC_3()
+ring_radius_test_7_gc_lv = ring_radius_test_7_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.78)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_radius_test_7_gc_lv, position=(8905+60, 4227.5+120), transformation=i3.Rotation(rotation=90)))
+
+ring_radius_test_8_gc = All_pass_ring_GC_3()
+ring_radius_test_8_gc_lv = ring_radius_test_8_gc.Layout(ring_gap=0.65, ring_radius=23.3, ring_width=1.79)
+# ring_lv.visualize(annotate=True)
+chip_elements.append(i3.SRef(reference=ring_radius_test_8_gc_lv, position=(9005+60, 4227.5+120), transformation=i3.Rotation(rotation=90)))
+
 
 ####################################
 ### Generate the main layout

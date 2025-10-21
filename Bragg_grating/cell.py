@@ -446,7 +446,7 @@ class BG_9(i3.PCell):
                 self.instances,
                 {
                     f"wg1_0:in0": "in",  # Start of the waveguide chain
-                    f"wg2_{len(BG_8_width_1) - 1}:out0": "out",  # End of the last waveguide
+                    f"wg2_{len(BG_9_width_1) - 1}:out0": "out",  # End of the last waveguide
                 },
             )
 

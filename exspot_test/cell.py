@@ -277,6 +277,23 @@ class Exspot_Spiral_Circular_GC(i3.Circuit):
             )
             return lv
 
+        def _generate_elements(self, elems):
+            """
+            add labels at in/out put grating couplers regions
+            """
+            ring_position = (0,0)
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(-150, 18),
+                text="SPIRAL" +str(self.spiral_length),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=10,
+                # transformation=i3.VMirror()
+            )
+            return elems
+
 class Exspot_Spiral_Circular(i3.Circuit):
     exspot = i3.ChildCellProperty(doc="exspot")
     spiral = i3.ChildCellProperty(doc="spiral")

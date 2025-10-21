@@ -237,6 +237,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             lv.set(n_o_pads=(1, 2))
             lv.set(pad_size=90.0)
             lv.set(pitch=100.0)
+            lv.set(p1_module=True)
             # lv.set()
             return lv
 
@@ -249,6 +250,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             electric_wire_shape = i3.Shape([(0,50), (300-25, 50), (300-25, 150+130+5.5+0.22+0.426+46+4), (295-25-3.5-3, 150+130+5.5+0.22+0.426+46+4)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         # def _default_trace_template_in(self):
@@ -406,6 +408,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             lv.set(n_o_pads=(1, 2))
             lv.set(pad_size=90.0)
             lv.set(pitch=100.0)
+            lv.set(p1_module=True)
             # lv.set()
             return lv
 
@@ -418,6 +421,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             electric_wire_shape = i3.Shape([(0,50), (300-25-50-20-11, 50), (300-25-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074), (295-25-3.5-50-20-11-3, 150+130+5.5+0.22+0.426+46+4-170+2.074)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         # def _default_trace_template_in(self):

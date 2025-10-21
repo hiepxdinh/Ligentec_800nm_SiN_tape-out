@@ -1311,6 +1311,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             lv.set(n_o_pads=(1, 4))
             lv.set(pad_size=90.0)
             lv.set(pitch=100.0)
+            lv.set(p1_module=True)
             # lv.set()
             return lv
 
@@ -1319,6 +1320,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             lv.set(n_o_pads=(1, 2))
             lv.set(pad_size=90.0)
             lv.set(pitch=100.0)
+            lv.set(p1_module=True)
             # lv.set()
             return lv
 
@@ -1331,6 +1333,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         def _default_metal_wire_2(self):
@@ -1342,6 +1345,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         def _default_metal_wire_coupler(self):
@@ -1355,6 +1359,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
                 [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         def _default_heater_coupler(self):
@@ -1623,6 +1628,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             lv.set(n_o_pads=(1, 4))
             lv.set(pad_size=90.0)
             lv.set(pitch=100.0)
+            lv.set(p1_module=True)
             # lv.set()
             return lv
 
@@ -1631,6 +1637,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             lv.set(n_o_pads=(1, 2))
             lv.set(pad_size=90.0)
             lv.set(pitch=100.0)
+            lv.set(p1_module=True)
             # lv.set()
             return lv
 
@@ -1643,6 +1650,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         def _default_metal_wire_2(self):
@@ -1654,6 +1662,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         def _default_metal_wire_coupler(self):
@@ -1667,6 +1676,7 @@ class Aux_add_drop_ring_3(i3.PCell):
                 [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
+            lv.set(p1_module=True)
             return lv
 
         def _default_heater_coupler(self):
