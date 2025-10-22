@@ -99,25 +99,25 @@ class BG_Test_1_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_1",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_1",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_2_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -204,25 +204,25 @@ class BG_Test_2_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_2",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_2",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_3_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -309,25 +309,25 @@ class BG_Test_3_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_3",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_3",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_4_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -414,25 +414,25 @@ class BG_Test_4_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_4",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_4",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_5_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -519,25 +519,25 @@ class BG_Test_5_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_5",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_5",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_6_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -624,25 +624,25 @@ class BG_Test_6_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_6",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_6",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_7_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -729,25 +729,25 @@ class BG_Test_7_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_7",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_7",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_8_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -834,25 +834,25 @@ class BG_Test_8_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_8",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_8",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_9_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -939,25 +939,25 @@ class BG_Test_9_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_9",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_9",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
 
 class BG_Test_Sin_lense(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -1047,22 +1047,22 @@ class BG_Test_Sin_lense(i3.Circuit):
             )
             return lv
 
-        def _generate_elements(self, elems):
-            """
-            add labels at in/out put grating couplers regions
-            """
-            in_port = self.instances["lensed_fiber"].ports["in0"]
-            in_text_position = in_port.position
-            in_x = in_port.position.x
-            in_y = in_port.position.y
-
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x-100,in_y),
-                text="BG_8",
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=10,
-                # transformation=i3.VMirror()
-            )
-            return elems
+        # def _generate_elements(self, elems):
+        #     """
+        #     add labels at in/out put grating couplers regions
+        #     """
+        #     in_port = self.instances["lensed_fiber"].ports["in0"]
+        #     in_text_position = in_port.position
+        #     in_x = in_port.position.x
+        #     in_y = in_port.position.y
+        #
+        #     elems += i3.PolygonText(
+        #         layer=i3.TECH.PPLAYER.X1P,
+        #         coordinate=(in_x-100,in_y),
+        #         text="BG_8",
+        #         alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+        #         font=i3.TEXT.FONT.DEFAULT,
+        #         height=10,
+        #         # transformation=i3.VMirror()
+        #     )
+        #     return elems
