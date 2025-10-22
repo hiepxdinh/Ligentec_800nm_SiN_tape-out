@@ -247,7 +247,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0,50), (300-25, 50), (300-25, 150+130+5.5+0.22+0.426+46+4), (295-25-3.5-3, 150+130+5.5+0.22+0.426+46+4)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0,50), (300-25, 50), (300-25, 150+130+5.5+0.22+0.426+46-9), (295-25-3.5-3, 150+130+5.5+0.22+0.426+46-9)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -282,7 +282,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="RR_50_G" +str(self.ring_gap),
+                text="RR_50_GHZ_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=10
@@ -418,7 +418,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0,50), (300-25-50-20-11, 50), (300-25-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074), (295-25-3.5-50-20-11-3, 150+130+5.5+0.22+0.426+46+4-170+2.074)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0,50), (300-25-50-20-11, 50), (300-25-50-20-11, 150+130+5.5+0.22+0.426+46+4-170+2.074-8), (295-25-3.5-50-20-11-3, 150+130+5.5+0.22+0.426+46+4-170+2.074-8)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -455,7 +455,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="RR_100_G" +str(self.ring_gap),
+                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=fontsize,
@@ -583,7 +583,7 @@ class All_pass_ring_Exspot_200GHz(i3.Circuit):
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="RR_200_G" +str(self.ring_gap),
+                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=10,
@@ -710,12 +710,12 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
             """
             name_position = self.name_position
             fontsize = self.name_fontsize
-            ring_position = (self.ring_position_x+50, self.ring_position_y-150)
+            ring_position = (self.ring_position_x+65, self.ring_position_y-150)
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="AUX_60UM_G"+str(self.ring_gap),
+                text="AUX_RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=fontsize,
@@ -886,12 +886,12 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
             """
             add labels at in/out put grating couplers regions
             """
-            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200-260)
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200-260+40)
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="RR_200_G" +str(self.ring_gap),
+                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=10,

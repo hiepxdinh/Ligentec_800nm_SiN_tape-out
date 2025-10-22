@@ -231,7 +231,7 @@ class All_pass_ring_GC_2(i3.Circuit):
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=(-100, 18),
-                text="R_G" +str(self.ring_gap),
+                text="RR_W_" + str(self.width_in) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=10,
@@ -356,8 +356,8 @@ class All_pass_ring_GC_3(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(-100, 18),
-                text="R_W" +str(self.ring_width),
+                coordinate=(0, 20),
+                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=10,
@@ -481,8 +481,8 @@ class All_pass_ring_GC_4(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(-80, 18),
-                text="R_W" +str(self.ring_width),
+                coordinate=(0, 20),
+                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=10,
