@@ -1,5 +1,6 @@
 import sys
 
+from matplotlib.pyplot import annotate
 from setuptools.command.rotate import rotate
 
 sys.path.append("C:/pdk/Ligentec_SiN_2025/ipkiss")
@@ -29,8 +30,9 @@ from bragg_grating_exspot import FP_BG_1_Exspot, FP_BG_2_Exspot, FP_BG_3_Exspot,
 from Bragg_grating_test import BG_Test_1, BG_Test_2, BG_Test_3, BG_Test_4, BG_Test_5, BG_Test_6, BG_Test_7, BG_Test_8, BG_Test_Sinusoidal
 from exspot_test import Exspot_Spiral_Square, Exspot_Spiral_Circular_GC, Exspot_Spiral_Square_2
 
-from Bragg_grating_test_lensed_fiber_bb import BG_Test_1_lensed_fiber, BG_Test_2_lensed_fiber, BG_Test_3_lensed_fiber, BG_Test_4_lensed_fiber
-from Bragg_grating_test_lensed_fiber_bb import BG_Test_5_lensed_fiber, BG_Test_6_lensed_fiber, BG_Test_7_lensed_fiber, BG_Test_8_lensed_fiber
+from Bragg_grating_test_lensed_fiber_bb import BG_Test_1_lense, BG_Test_2_lense
+from Bragg_grating_test_lensed_fiber_bb import BG_Test_3_lense, BG_Test_4_lense
+from Bragg_grating_test_lensed_fiber_bb import BG_Test_5_lense, BG_Test_6_lense, BG_Test_7_lense, BG_Test_8_lense, BG_Test_9_lense, BG_Test_Sin_lense
 from grating_coupler_test import All_pass_ring_GC, All_pass_ring_GC_2, All_pass_ring_GC_3, All_pass_ring_GC_4
 # #######################################
 # # Global parameters
@@ -237,19 +239,19 @@ gap_list = [0.3, 0.4, 0.5, 0.6]
 ad_ring_1 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, gap_offset=0)
 ad_ring_1_lv = ad_ring_1.Layout(ring_radius=radius, ring_width=1.8, ring_gap=gap_list[0])
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ad_ring_1_lv, position=(2395, 3615+155-307.5-17.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
+chip_elements.append(i3.SRef(reference=ad_ring_1_lv, position=(2395-51.282, 3615+155-307.5-17.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
 ad_ring_3 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, gap_offset=0.1)
 ad_ring_3_lv = ad_ring_3.Layout(ring_radius=radius, ring_width=1.8, ring_gap=gap_list[1])
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ad_ring_3_lv, position=(3445, 3615+155-307.5-17.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
+chip_elements.append(i3.SRef(reference=ad_ring_3_lv, position=(3445-52.882-32.5, 3615+155-307.5-17.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
 ad_ring_2 = Add_drop_ring_Exspot_200GHz(ring_position_x=0, ring_position_y=0, gap_offset=0.2)
 ad_ring_2_lv = ad_ring_2.Layout(ring_radius=radius, ring_width=1.8, ring_gap=gap_list[2])
 # ring_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=ad_ring_2_lv, position=(4345, 3615-52.5-100-17.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
+chip_elements.append(i3.SRef(reference=ad_ring_2_lv, position=(4345+30.158+00.36, 3615-52.5-100-17.5), transformation=i3.Rotation(rotation=90)+i3.VMirror()))
 
-# #
+#
 ##################################
 ### Section for aux ring
 ##################################
@@ -548,100 +550,112 @@ sinusoidal_bg_3_lv = sinusoidal_bg_3.Layout(fp_width=1.6, fp_length=3450, couple
 chip_elements.append(i3.SRef(reference=sinusoidal_bg_3_lv, position=(-3000+7010-100-35-325-25, 100+127*26/3+0.8+0.4)))
 #
 
-# #
+# # #
 ##################################
 ### Section Bragg grating test lensed fiber
 ##################################
+fp_length_test=50.0
+
 # BG_Test_1: 4 devices
 fp_width_1=0.8
-fp_length_test=10.0
 
-bg_test_1 = BG_Test_1_lensed_fiber()
+
+bg_test_1 = BG_Test_1_lense()
 bg_test_1_lv = bg_test_1.Layout(fp_width=fp_width_1, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_1, position=(1800+50-1050-32-450+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_1_lv, position=(1800+50-1050-32-450+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_1, position=(1800+50-1050-32-450 +20+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_1_lv, position=(1800+50-1050-32-450 +20+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 
 # BG_2: 4 devices
 fp_width_2=1.0
 
-bg_test_2 = BG_Test_2_lensed_fiber()
+bg_test_2 = BG_Test_2_lense()
 bg_test_2_lv = bg_test_2.Layout(fp_width=fp_width_2, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_2_lv, position=(1800+50-1050-32-450 +20*2+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_2_lv, position=(1800+50-1050-32-450 +20*2+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_2_lv, position=(1800+50-1050-32-450 +20*3+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_2_lv, position=(1800+50-1050-32-450 +20*3+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-
+#
 # BG_3: 4 devices
 fp_width_3=1.0
 
-bg_test_3 = BG_Test_3_lensed_fiber()
+bg_test_3 = BG_Test_3_lense()
 bg_test_3_lv = bg_test_3.Layout(fp_width=fp_width_3, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_3_lv, position=(1800+50-1050-32-450 +20*4+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_3_lv, position=(1800+50-1050-32-450 +20*4+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_3_lv, position=(1800+50-1050-32-450 +20*5+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_3_lv, position=(1800+50-1050-32-450 +20*5+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 # BG_4: 4 devices
 fp_width_4=0.8
 
-bg_test_4 = BG_Test_4_lensed_fiber()
+bg_test_4 = BG_Test_4_lense()
 bg_test_4_lv = bg_test_4.Layout(fp_width=fp_width_4, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_4_lv, position=(1800+50-1050-32-450 +20*6+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_4_lv, position=(1800+50-1050-32-450 +20*6+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_4_lv, position=(1800+50-1050-32-450 +20*7+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_4_lv, position=(1800+50-1050-32-450 +20*7+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 
 # BG_5: 4 devices
 fp_width_5=0.8
 
-bg_test_5 = BG_Test_5_lensed_fiber()
+bg_test_5 = BG_Test_5_lense()
 bg_test_5_lv = bg_test_5.Layout(fp_width=fp_width_5, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_5_lv, position=(1800+50-1050-32-450 +20*8+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_5_lv, position=(1800+50-1050-32-450 +20*8+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_5_lv, position=(1800+50-1050-32-450 +20*9+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_5_lv, position=(1800+50-1050-32-450 +20*9+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 
 # BG_6: 4 devices
 fp_width_6=1.0
 
-bg_test_6 = BG_Test_6_lensed_fiber()
+bg_test_6 = BG_Test_6_lense()
 bg_test_6_lv = bg_test_6.Layout(fp_width=fp_width_6, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_6_lv, position=(1800+50-1050-32-450 +20*10+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_6_lv, position=(1800+50-1050-32-450 +20*10+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_6_lv, position=(1800+50-1050-32-450 +20*11+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_6_lv, position=(1800+50-1050-32-450 +20*11+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 
 # BG_7: 4 devices
 fp_width_7=1.0
 
-bg_test_7 = BG_Test_7_lensed_fiber()
+bg_test_7 = BG_Test_7_lense()
 bg_test_7_lv = bg_test_7.Layout(fp_width=fp_width_7, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_7_lv, position=(1800+50-1050-32-450 +20*12+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_7_lv, position=(1800+50-1050-32-450 +20*12+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_7_lv, position=(1800+50-1050-32-450 +20*13 + 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_7_lv, position=(1800+50-1050-32-450 +20*13 + 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 
 # BG_8: 4 devices
 fp_width_8=1.0
 
-bg_test_8 = BG_Test_8_lensed_fiber()
+bg_test_8 = BG_Test_8_lense()
 bg_test_8_lv = bg_test_8.Layout(fp_width=fp_width_8, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50-1050-32-450 +20*14+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50-1050-32-450 +20*14+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50-1050-32-450 +20*15+ 1050+90-66.5, 3000+154+1186-50+20+10), transformation=i3.Rotation(rotation=90)))
+chip_elements.append(i3.SRef(reference=bg_test_8_lv, position=(1800+50-1050-32-450 +20*15+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
+
+# BG_8: 4 devices
+fp_width_9=1.0
+
+bg_test_9 = BG_Test_9_lense()
+bg_test_9_lv = bg_test_9.Layout(fp_width=fp_width_9, fp_length=fp_length_test)
+chip_elements.append(i3.SRef(reference=bg_test_9_lv, position=(1800+50-1050-32-450 +20*16+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
+
+chip_elements.append(i3.SRef(reference=bg_test_9_lv, position=(1800+50-1050-32-450 +20*17+ 1050+90-66.5, 3000+154+1186-50+20+10-40), transformation=i3.Rotation(rotation=90)))
 
 
 # BG_Sinusoidal: 4 devices
 fp_width_sinusoidal = 1.6
 
-bg_test_sinusoidal = BG_Test_Sinusoidal()
+bg_test_sinusoidal = BG_Test_Sin_lense()
 bg_test_sinusoidal_lv = bg_test_sinusoidal.Layout(fp_width=fp_width_sinusoidal, fp_length=fp_length_test)
-chip_elements.append(i3.SRef(reference=bg_test_sinusoidal_lv, position=(1800+50-1050-32 +20*16-66.5, 3000+154+1186-50+10), transformation=i3.Rotation(rotation=90)))
+# bg_test_sinusoidal_lv.visualize(annotate=True)
+# chip_elements.append(i3.SRef(reference=bg_test_sinusoidal_lv, position=(1800+50-1050-32-450 +20*18+ 1050+90-66.5, 3000+154+1186-50+10), transformation=i3.Rotation(rotation=90)))
+#
+# chip_elements.append(i3.SRef(reference=bg_test_sinusoidal_lv, position=(1800+50-1050-32-450 +20*19+ 1050+90-66.5, 3000+154+1186-50+10), transformation=i3.Rotation(rotation=90)))
 
-chip_elements.append(i3.SRef(reference=bg_test_sinusoidal_lv, position=(1800+50-1050-32 +20*17-66.5, 3000+154+1186-50+10), transformation=i3.Rotation(rotation=90)))
-
-
+#
 ##################################
 ### Section Bragg grating test
 ##################################
