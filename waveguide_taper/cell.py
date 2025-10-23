@@ -34,7 +34,7 @@ class Waveguide_Exspot(i3.Circuit):
     def _default_specs(self):
         return[
             i3.Place("in_taper", position = (0,0), angle = 180),
-            i3.Place("out_taper", position = (10000-750+20,0), angle = 0),
+            i3.Place("out_taper", position = (10000-750+20+20,0), angle = 0),
             i3.Place("linear_transition_in", position = (15,0), angle = 0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
             i3.ConnectBend("in_taper:in0", "linear_transition_in:in0"),
@@ -140,7 +140,7 @@ class Waveguide_Exspot_2(i3.Circuit):
     def _default_specs(self):
         return[
             i3.Place("in_taper", position = (0,0), angle = 180),
-            i3.Place("out_taper", position = (10000-750+20,50), angle = 0),
+            i3.Place("out_taper", position = (10000-750+20+20,50), angle = 0),
             i3.Place("linear_transition_in", position=(15, 0), angle=0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_in_2", position = (175,50), angle = 0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
@@ -251,7 +251,7 @@ class Waveguide_Exspot_Ref(i3.Circuit):
     def _default_specs(self):
         return[
             i3.Place("in_taper", position = (0-17.5,0), angle = 180),
-            i3.Place("out_taper", position = (2350-750-485+2.5+10,0), angle = 0),
+            i3.Place("out_taper", position = (2350-750-485+2.5+10+10,0), angle = 0),
             i3.Place("linear_transition_in", position = (15,0), angle = 0, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-15, 0), angle = 180, relative_to="out_taper:in0"),
             i3.ConnectBend("in_taper:in0", "linear_transition_in:in0"),

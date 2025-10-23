@@ -75,8 +75,8 @@ class Aux_add_drop_ring_taper_1_2(i3.Circuit):
             i3.Place('in_taper', position=(-600+1500-250-75-75+50+50, -100+212-127+55.12-127), angle=0, relative_to="aux_ring:through"),
             i3.Place('drop_taper', position=(-500+1500-250-75-75+50+50, 0-239+127-55.12+127), angle=0, relative_to="aux_ring:add"),
             i3.Place('add_taper', position=(-600+1500-250-75-75+50+50, 100-212+127-55.12+127), angle=0, relative_to="aux_ring:drop"),
-            i3.Place('aux_in_taper', position=(-900-55.5+1500+127-250-75-75-1.08+50+50-73.84, 50-127/2), angle=0, relative_to="aux_ring:aux_in"),
-            i3.Place('aux_through_taper', position=(-900-55.5+1500+127-250-75-75-1.08+50+50-73.84, -50+127/2), angle=0, relative_to="aux_ring:aux_through"),
+            i3.Place('aux_in_taper', position=(-900-55.5+1500+127-250-75-75-1.08+50+50-73.84+0.88, 50-127/2), angle=0, relative_to="aux_ring:aux_in"),
+            i3.Place('aux_through_taper', position=(-900-55.5+1500+127-250-75-75-1.08+50+50-73.84+0.88, -50+127/2), angle=0, relative_to="aux_ring:aux_through"),
 
             i3.Place("linear_transition_in", position=(-115, 0), angle=0, relative_to="in_taper:in0"),
             # i3.FlipH("linear_transition_in"),
@@ -266,10 +266,10 @@ class Aux_add_drop_ring_taper_3(i3.Circuit):
                      position=(-600 + 1500 - 250 - 75 - 75 + 50 + 50, 100 - 212 + 127 - 55.12 + 127), angle=0,
                      relative_to="aux_ring:drop"),
             i3.Place('aux_in_taper',
-                     position=(-900 - 55.5 + 1500 + 127 - 250 - 75 - 75 - 1.08 + 50 + 50 - 73.84, 50 - 127 / 2),
+                     position=(-900 - 55.5 + 1500 + 127 - 250 - 75 - 75 - 1.08 + 50 + 50 - 73.84+0.85, 50 - 127 / 2),
                      angle=0, relative_to="aux_ring:aux_in"),
             i3.Place('aux_through_taper',
-                     position=(-900 - 55.5 + 1500 + 127 - 250 - 75 - 75 - 1.08 + 50 + 50 - 73.84,
+                     position=(-900 - 55.5 + 1500 + 127 - 250 - 75 - 75 - 1.08 + 50 + 50 - 73.84+0.85,
                                -50 + 127 / 2), angle=0, relative_to="aux_ring:aux_through"),
 
             i3.Place('in_ref_taper',

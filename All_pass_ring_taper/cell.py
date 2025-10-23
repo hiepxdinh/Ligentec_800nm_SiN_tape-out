@@ -184,7 +184,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
             i3.FlipV('ring'),
             i3.Place('in_taper', position=(-700-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300+25-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300+25-7.5+10+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -352,7 +352,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
             i3.FlipV('ring'),
             i3.Place('in_taper', position=(-700-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300+25-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300+25-7.5+10+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -513,7 +513,7 @@ class All_pass_ring_Exspot_200GHz(i3.Circuit):
             i3.FlipV('ring'),
             i3.Place('in_taper', position=(-700-25-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300-7.5+10+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),
@@ -639,7 +639,7 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
             i3.FlipV('ring'),
             i3.Place('in_taper', position=(-700-25-17.5 - self.ring_position_x , 0), angle=0, relative_to="ring:in0"),
             i3.FlipH("in_taper"),
-            i3.Place('out_taper', position=(300-7.5+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
+            i3.Place('out_taper', position=(300-7.5+10+10- self.ring_position_x, -self.output_offset - self.out_taper_position), angle=0, relative_to="ring:out0"),
 
             i3.Place("linear_transition_in",position=(115, 0), angle=180, relative_to="in_taper:in0"),
             i3.Place("linear_transition_out", position=(-115, 0), angle=0, relative_to="out_taper:in0"),

@@ -328,32 +328,32 @@ class Chip_Handling_Size_Frame(i3.PCell):
         # empty
         pass
 
-class CSL_FRAME_10500_4850(Chip_Size_Layer_Frame):
-    _name_prefix = "FRAME_10500_4850"
+class CSL_FRAME_10520_4870(Chip_Size_Layer_Frame):
+    _name_prefix = "FRAME_10520_4870"
 
     class Layout(Chip_Size_Layer_Frame.Layout):
-        size = i3.Size2Property(default=(10500, 4850), doc="frame size", locked=True)
+        size = i3.Size2Property(default=(10520, 4870), doc="frame size", locked=True)
 
 
-class CHS_FRAME_10500_4850_HALF(Chip_Handling_Size_Frame):
+class CHS_FRAME_10520_4870_HALF(Chip_Handling_Size_Frame):
     _name_prefix = "CHS_FRAME_10500_4850_HALF"
 
     class Layout(Chip_Handling_Size_Frame.Layout):
-        size = i3.Size2Property(default=(10500-20, (4850-20)/2 - 120/2), doc="frame size", locked=True)
+        size = i3.Size2Property(default=(10520-20, (4870-20)/2 - 120/2), doc="frame size", locked=True)
 
 
-class CHS_FRAME_10500_HALF_4850_HALF(Chip_Handling_Size_Frame):
+class CHS_FRAME_10520_HALF_4870_HALF(Chip_Handling_Size_Frame):
     _name_prefix = "CHS_FRAME_10500_HALF_4850_HALF"
 
     class Layout(Chip_Handling_Size_Frame.Layout):
-        size = i3.Size2Property(default=((10500-20)/2 - 120/2, (4850-210)/2 - 120/2), doc="frame size", locked=True)
+        size = i3.Size2Property(default=((10520-20)/2 - 120/2, (4870-210)/2 - 120/2), doc="frame size", locked=True)
 
 
-class FRAME_10500_4850_WITH_EBL_GRID(Chip_Handling_Size_Frame):
+class FRAME_10520_4870_WITH_EBL_GRID(Chip_Handling_Size_Frame):
     _name_prefix = "FRAME_10500_4850_EBL"
 
     class Layout(Chip_Handling_Size_Frame.Layout):
-        size = i3.Size2Property(default=(10500, 4850/2 - 120/2), doc="frame size", locked=True)
+        size = i3.Size2Property(default=(10520, 4870/2 - 120/2), doc="frame size", locked=True)
         with_ebl_writing_grid = i3.BoolProperty(default=True, doc="include EBL writing grid on the frame", locked=True)
 
 

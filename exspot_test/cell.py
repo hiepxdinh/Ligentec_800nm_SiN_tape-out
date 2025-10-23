@@ -28,7 +28,7 @@ class Exspot_Spiral_Square(i3.Circuit):
         x_spiral_length = self.spiral.get_default_view(i3.LayoutView).x_output
         # print(x_spiral_length)
         exspot_length = 620
-        chip_size = 2357.5-10-38.97309+20+7.5
+        chip_size = 2357.5-10-38.97309+20+7.5+10
         return[
             i3.Place("spiral", position=(225, 0.0), angle=0),
             i3.Place("exspot_in", position=(chip_size/2-x_spiral_length+225, 0.0), angle=0, relative_to="spiral:in0"),
@@ -136,7 +136,7 @@ class Exspot_Spiral_Square_2(i3.Circuit):
         x_spiral_length = self.spiral.get_default_view(i3.LayoutView).x_output
         # print(x_spiral_length)
         exspot_length = 620
-        chip_size = 2357.5-10-38.97309+20+7.5
+        chip_size = 2357.5-10-38.97309+20+7.5+10
         return[
             i3.Place("spiral", position=(225, 0.0), angle=0),
             i3.Place("exspot_in", position=(chip_size/2-x_spiral_length+225-38.973, 0.0), angle=0, relative_to="spiral:in0"),
