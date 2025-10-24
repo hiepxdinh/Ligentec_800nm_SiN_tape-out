@@ -12,6 +12,8 @@ import numpy as np
 from Bragg_grating import BG_1, BG_2, BG_3, BG_4, BG_5, BG_6, BG_7, BG_8, SinusoidalGrating, SinusoidalGratingTaper
 from Bragg_grating import array_1, array_2, array_3, array_4, array_5, array_6, array_7, array_8
 from Bragg_grating import BG_1_width_2, BG_2_width_2, BG_3_width_2, BG_4_width_2, BG_5_width_2, BG_6_width_2, BG_7_width_2, BG_8_width_2
+from Bragg_grating import BG_1_width_1, BG_2_width_1, BG_3_width_1, BG_4_width_1, BG_5_width_1, BG_6_width_1, BG_7_width_1, BG_8_width_1, BG_9_width_1
+
 
 class BG_Test_1(i3.Circuit):
     fp_waveguide = i3.ChildCellProperty(doc="fabry perot waveguide")
@@ -97,7 +99,7 @@ class BG_Test_1(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_1_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -214,7 +216,7 @@ class BG_Test_2(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_2_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -331,7 +333,7 @@ class BG_Test_3(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_3_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -448,7 +450,7 @@ class BG_Test_4(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_4_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -565,7 +567,7 @@ class BG_Test_5(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_5_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -682,7 +684,7 @@ class BG_Test_6(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_6_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -799,7 +801,7 @@ class BG_Test_7(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_7_width_1[0],
                 out_width=0.2,
                 length=50,
             )
@@ -916,7 +918,7 @@ class BG_Test_8(i3.Circuit):
             cell = self.cell.terminator
             lv = cell.get_default_view(i3.LayoutView)
             lv.set(
-                in_width=self.fp_width,
+                in_width=BG_8_width_1[0],
                 out_width=0.2,
                 length=50,
             )
