@@ -265,6 +265,7 @@ class Exspot_Spiral_Circular_GC(i3.Circuit):
             lo = self.cell.spiral.get_default_view(i3.LayoutView)
             lo.set(length=self.spiral_length)
             lo.set(radius=50)
+            lo.set(spacing=2)
             return lo
 
         def _default_linear_taper(self):

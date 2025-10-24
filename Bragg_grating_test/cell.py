@@ -19,6 +19,7 @@ class BG_Test_1(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -36,6 +37,10 @@ class BG_Test_1(i3.Circuit):
 
     def _default_grating(self):
         return BG_1()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.Circuit.Layout):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -88,18 +93,30 @@ class BG_Test_1(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator=self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -108,7 +125,8 @@ class BG_Test_1(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -118,6 +136,7 @@ class BG_Test_2(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -135,6 +154,10 @@ class BG_Test_2(i3.Circuit):
 
     def _default_grating(self):
         return BG_2()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -187,18 +210,30 @@ class BG_Test_2(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -207,7 +242,8 @@ class BG_Test_2(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -217,6 +253,7 @@ class BG_Test_3(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -234,6 +271,10 @@ class BG_Test_3(i3.Circuit):
 
     def _default_grating(self):
         return BG_3()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -286,18 +327,30 @@ class BG_Test_3(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -306,7 +359,8 @@ class BG_Test_3(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -316,6 +370,7 @@ class BG_Test_4(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -333,6 +388,10 @@ class BG_Test_4(i3.Circuit):
 
     def _default_grating(self):
         return BG_4()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -385,18 +444,30 @@ class BG_Test_4(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -405,7 +476,8 @@ class BG_Test_4(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -415,6 +487,7 @@ class BG_Test_5(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -432,6 +505,10 @@ class BG_Test_5(i3.Circuit):
 
     def _default_grating(self):
         return BG_5()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -484,18 +561,30 @@ class BG_Test_5(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -504,7 +593,8 @@ class BG_Test_5(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -514,6 +604,7 @@ class BG_Test_6(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -531,6 +622,10 @@ class BG_Test_6(i3.Circuit):
 
     def _default_grating(self):
         return BG_6()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -583,18 +678,30 @@ class BG_Test_6(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -603,7 +710,8 @@ class BG_Test_6(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -613,6 +721,7 @@ class BG_Test_7(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -630,6 +739,10 @@ class BG_Test_7(i3.Circuit):
 
     def _default_grating(self):
         return BG_7()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -682,18 +795,30 @@ class BG_Test_7(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -702,7 +827,8 @@ class BG_Test_7(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 
@@ -712,6 +838,7 @@ class BG_Test_8(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     tip_extension = i3.ChildCellProperty("tip extension")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -729,6 +856,10 @@ class BG_Test_8(i3.Circuit):
 
     def _default_grating(self):
         return BG_8()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")
@@ -781,18 +912,30 @@ class BG_Test_8(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         def _generate_instances(self, insts):
             fp_waveguide = self.fp_waveguide
             fp_linear_taper = self.fp_linear_taper
             grating = self.grating
             linear_taper_out = self.linear_taper_out
             tip_extension = self.tip_extension
+            terminator = self.terminator
 
             insts += i3.SRef(name="fp_waveguide", reference=fp_waveguide, flatten=True)
             insts += i3.SRef(name="fp_linear_taper", reference=fp_linear_taper, flatten=True)
             insts += i3.SRef(name="linear_taper_out", reference=linear_taper_out, flatten=True)
             insts += i3.SRef(name="grating", reference=grating, flatten=True)
             insts += i3.SRef(name="tip_extension", reference=tip_extension, flatten=True)
+            insts += i3.SRef(name="terminator", reference=terminator, flatten=True)
 
             return i3.place_and_route(
                 insts=insts,
@@ -801,7 +944,8 @@ class BG_Test_8(i3.Circuit):
                     i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
                     i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
                     i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
-                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0")
+                    i3.Place("tip_extension", (0, 0), relative_to="linear_taper_out:out0"),
+                    i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
                 ]
             )
 

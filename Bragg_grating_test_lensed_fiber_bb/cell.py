@@ -21,6 +21,8 @@ class BG_Test_1_lense(i3.Circuit):
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
 
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
     def _default_fp_waveguide(self):
         return pdk.Straight()
 
@@ -29,6 +31,10 @@ class BG_Test_1_lense(i3.Circuit):
         return pdk.Taper()
 
     def _default_linear_taper_out(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
+    def _default_terminator(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
 
@@ -44,17 +50,20 @@ class BG_Test_1_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator":self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to= "grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -96,6 +105,16 @@ class BG_Test_1_lense(i3.Circuit):
                 in_width=self.fp_width,
                 out_width=1.8,
                 length=self.linear_taper_out_length,
+            )
+            return lv
+
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
             )
             return lv
 
@@ -125,6 +144,8 @@ class BG_Test_2_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -136,6 +157,11 @@ class BG_Test_2_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -149,17 +175,20 @@ class BG_Test_2_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -201,6 +230,16 @@ class BG_Test_2_lense(i3.Circuit):
                 in_width=self.fp_width,
                 out_width=1.8,
                 length=self.linear_taper_out_length,
+            )
+            return lv
+
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
             )
             return lv
 
@@ -230,6 +269,8 @@ class BG_Test_3_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -241,6 +282,11 @@ class BG_Test_3_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -254,17 +300,20 @@ class BG_Test_3_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -309,6 +358,16 @@ class BG_Test_3_lense(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         # def _generate_elements(self, elems):
         #     """
         #     add labels at in/out put grating couplers regions
@@ -335,6 +394,8 @@ class BG_Test_4_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -346,6 +407,11 @@ class BG_Test_4_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -359,17 +425,20 @@ class BG_Test_4_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -414,6 +483,16 @@ class BG_Test_4_lense(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         # def _generate_elements(self, elems):
         #     """
         #     add labels at in/out put grating couplers regions
@@ -440,6 +519,8 @@ class BG_Test_5_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -451,6 +532,11 @@ class BG_Test_5_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -464,17 +550,20 @@ class BG_Test_5_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -519,6 +608,16 @@ class BG_Test_5_lense(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         # def _generate_elements(self, elems):
         #     """
         #     add labels at in/out put grating couplers regions
@@ -545,6 +644,8 @@ class BG_Test_6_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -556,6 +657,11 @@ class BG_Test_6_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -569,17 +675,20 @@ class BG_Test_6_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -624,6 +733,16 @@ class BG_Test_6_lense(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         # def _generate_elements(self, elems):
         #     """
         #     add labels at in/out put grating couplers regions
@@ -650,6 +769,8 @@ class BG_Test_7_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -661,6 +782,11 @@ class BG_Test_7_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -674,17 +800,20 @@ class BG_Test_7_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -729,6 +858,16 @@ class BG_Test_7_lense(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         # def _generate_elements(self, elems):
         #     """
         #     add labels at in/out put grating couplers regions
@@ -755,6 +894,8 @@ class BG_Test_8_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -766,6 +907,11 @@ class BG_Test_8_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -779,17 +925,20 @@ class BG_Test_8_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -834,6 +983,16 @@ class BG_Test_8_lense(i3.Circuit):
             )
             return lv
 
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
+            )
+            return lv
+
         # def _generate_elements(self, elems):
         #     """
         #     add labels at in/out put grating couplers regions
@@ -860,6 +1019,8 @@ class BG_Test_9_lense(i3.Circuit):
     fp_linear_taper = i3.ChildCellProperty(doc="linear taper")
     linear_taper_out = i3.ChildCellProperty(doc="linear taper")
     lensed_fiber = i3.ChildCellProperty(doc="lensed fiber")
+    terminator = i3.ChildCellProperty(doc="lensed fiber")
+
 
     def _default_fp_waveguide(self):
         return pdk.Straight()
@@ -871,6 +1032,11 @@ class BG_Test_9_lense(i3.Circuit):
     def _default_linear_taper_out(self):
         # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
         return pdk.Taper()
+
+    def _default_terminator(self):
+        # return pdk.LinearTaperFromPort(start_trace_template = self.trace_template_in, end_trace_template = self.trace_template_out)
+        return pdk.Taper()
+
 
     def _default_lensed_fiber(self):
         return pdk.AN800BB_EdgeCoupler_Lensed_C()
@@ -884,17 +1050,20 @@ class BG_Test_9_lense(i3.Circuit):
                 "linear_taper_out": self.linear_taper_out,
                 "lensed_fiber": self.lensed_fiber,
                 "grating": self.grating,
+                "terminator": self.terminator
                 }
 
     def _default_specs(self):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
-            i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("linear_taper_out", (0, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating:out", (0, 0), relative_to="fp_linear_taper:out0"),
             i3.ConnectBend("linear_taper_out:out0", "lensed_fiber:in0"),
             i3.ConnectBend("linear_taper_out:in0", "fp_waveguide:out0"),
+            i3.Place("terminator", (0, 0), angle=180, relative_to="grating:in"),
+
         ]
 
     class Layout(i3.Circuit.Layout):
@@ -936,6 +1105,16 @@ class BG_Test_9_lense(i3.Circuit):
                 in_width=self.fp_width,
                 out_width=1.8,
                 length=self.linear_taper_out_length,
+            )
+            return lv
+
+        def _default_terminator(self):
+            cell = self.cell.terminator
+            lv = cell.get_default_view(i3.LayoutView)
+            lv.set(
+                in_width=self.fp_width,
+                out_width=0.2,
+                length=50,
             )
             return lv
 
@@ -996,7 +1175,7 @@ class BG_Test_Sin_lense(i3.Circuit):
         return [
             i3.Place("fp_waveguide", (0, 0)),
             i3.Place("fp_linear_taper", (0, 0), angle=180, relative_to="fp_waveguide:in0"),
-            i3.Place("lensed_fiber", (125, 0), angle=0, relative_to="fp_waveguide:out0"),
+            i3.Place("lensed_fiber", (115, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("linear_taper_out", (25 - 15, 0), angle=0, relative_to="fp_waveguide:out0"),
             i3.Place("grating", (0, 0), angle=180, relative_to="fp_linear_taper:out"),
             i3.Place("fp_linear_taper_2", (0, 0), angle=0, relative_to="grating:out"),
