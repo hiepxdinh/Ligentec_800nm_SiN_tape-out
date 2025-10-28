@@ -2,7 +2,7 @@ import ligentec_an800.all as pdk
 
 import ipkiss3.all as i3
 
-from Bragg_grating import FP_BG_1, FP_BG_2, FP_BG_3, FP_BG_4, FP_BG_5, FP_BG_6, FP_BG_7, FP_BG_8, FP_BG_9, Sinusoidal_BG
+from Bragg_grating import FP_BG_1, FP_BG_2, FP_BG_3, FP_BG_4, FP_BG_5, FP_BG_6, FP_BG_7, FP_BG_8, FP_BG_9, Sinusoidal_BG_Fixed
 
 class FP_BG_1_Exspot(i3.Circuit):
 
@@ -977,7 +977,7 @@ class Sinusoidal_BG_Exspot(i3.Circuit):
         return pdk.Taper()
 
     def _default_fp_grating(self):
-        return Sinusoidal_BG()
+        return Sinusoidal_BG_Fixed()
 
     def _default_insts(self):
         return {

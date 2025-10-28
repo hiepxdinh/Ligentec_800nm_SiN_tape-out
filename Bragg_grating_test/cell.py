@@ -9,7 +9,7 @@ import ligentec_an800.all as pdk
 import ipkiss3.all as i3
 import numpy as np
 
-from Bragg_grating import BG_1, BG_2, BG_3, BG_4, BG_5, BG_6, BG_7, BG_8, SinusoidalGrating, SinusoidalGratingTaper
+from Bragg_grating import BG_1, BG_2, BG_3, BG_4, BG_5, BG_6, BG_7, BG_8, SinusoidalGrating_Fixed, SinusoidalGratingTaper_Fixed
 from Bragg_grating import array_1, array_2, array_3, array_4, array_5, array_6, array_7, array_8
 from Bragg_grating import BG_1_width_2, BG_2_width_2, BG_3_width_2, BG_4_width_2, BG_5_width_2, BG_6_width_2, BG_7_width_2, BG_8_width_2
 from Bragg_grating import BG_1_width_1, BG_2_width_1, BG_3_width_1, BG_4_width_1, BG_5_width_1, BG_6_width_1, BG_7_width_1, BG_8_width_1, BG_9_width_1
@@ -970,10 +970,10 @@ class BG_Test_Sinusoidal(i3.Circuit):
         return pdk.Taper()
 
     def _default_grating(self):
-        return SinusoidalGrating()
+        return SinusoidalGrating_Fixed()
 
     def _default_grating_taper(self):
-        return SinusoidalGratingTaper()
+        return SinusoidalGratingTaper_Fixed()
 
     class Layout(i3.LayoutView):
         fp_width = i3.PositiveNumberProperty(default=1.0, doc="width of fabry perot waveguide")

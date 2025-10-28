@@ -9,7 +9,7 @@ import ligentec_an800.all as pdk
 import ipkiss3.all as i3
 import numpy as np
 
-from Bragg_grating import BG_1, BG_2, BG_3, BG_4, BG_5, BG_6, BG_7, BG_8, SinusoidalGrating, SinusoidalGratingTaper, BG_9
+from Bragg_grating import BG_1, BG_2, BG_3, BG_4, BG_5, BG_6, BG_7, BG_8, SinusoidalGrating_Fixed, SinusoidalGratingTaper_Fixed, BG_9
 from Bragg_grating import array_1, array_2, array_3, array_4, array_5, array_6, array_7, array_8, array_9
 from Bragg_grating import BG_1_width_2, BG_2_width_2, BG_3_width_2, BG_4_width_2, BG_5_width_2, BG_6_width_2, BG_7_width_2, BG_8_width_2, BG_9_width_2
 from Bragg_grating import BG_1_width_2, BG_2_width_2, BG_3_width_2, BG_4_width_2, BG_5_width_2, BG_6_width_2, BG_7_width_2, BG_8_width_2, BG_9_width_2

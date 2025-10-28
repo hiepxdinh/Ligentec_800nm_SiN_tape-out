@@ -828,4 +828,4 @@ chip_design = i3.LayoutCell(name = "TOP")
 
 chip_layout = chip_design.Layout(elements=chip_elements)
 
-chip_layout.write_gdsii("gds_output/ligentec_all-components_9.4.gds")
+chip_layout.write_gdsii("gds_output/ligentec_all-components_9.6.gds")

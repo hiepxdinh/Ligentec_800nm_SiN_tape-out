@@ -64,13 +64,14 @@ def find_top_connector_elements(dc):
     arcbend2_inst = dc.instances["arcbend2"]
 
     points = []
-    right_points = _get_points(arcbend1_inst, angle=60)
+    right_points = _get_points(arcbend1_inst, angle=30)
     right_points_reversed = right_points[::-1]
     points.extend(right_points_reversed)
-    left_points = _get_points(arcbend2_inst, angle=-15)
+    left_points = _get_points(arcbend2_inst, angle=15)
     left_points_reversed = left_points[::1]
     points.extend(left_points_reversed)
     return i3.Shape(points=points)
+
 
 class AddDropRacetrack(i3.PCell):
     """
@@ -374,9 +375,9 @@ class HeaterAddDropRacetrack_1_2(AddDropRacetrack):
 
             num_o_points = 1000
 
-            angle_0 = np.linspace(-15, -180, num_o_points)
+            angle_0 = np.linspace(-30, -180, num_o_points)
             angle_1  = np.linspace(300, 180, num_o_points)
-            angle_2 = np.linspace(15, 185, num_o_points)
+            angle_2 = np.linspace(30, 185, num_o_points)
             angle_3 = np.linspace(90, 180, num_o_points)
 
             left_points = []
@@ -418,8 +419,10 @@ class HeaterAddDropRacetrack_1_2(AddDropRacetrack):
                 half_width = metal_width / 2.0
                 elec_in = insts["vert_l"].ports["elec_in0"]
                 elec_out = insts["vert_r"].ports["elec_in0"]
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
+                # relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
+                # relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (0, half_width)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (0, half_width)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -429,8 +432,10 @@ class HeaterAddDropRacetrack_1_2(AddDropRacetrack):
                 )
                 routing_south_insts.update({"wire_in": wire, "wire_out": wire})
                 routing_south_specs += [
-                    i3.Place("wire_in", relative_in, -15),
-                    i3.Place("wire_out", relative_out, 15),
+                    # i3.Place("wire_in", relative_in, -15),
+                    # i3.Place("wire_out", relative_out, 15),
+                    i3.Place("wire_in", relative_in, 180),
+                    i3.Place("wire_out", relative_out, 180),
                 ]
 
                 if taper:
@@ -458,8 +463,10 @@ class HeaterAddDropRacetrack_1_2(AddDropRacetrack):
                     )
 
                     routing_south_specs += [
-                        i3.Place("elec_via_ll:dc0", elec_in0 + (0+10+1.5, -4+5+4), angle=-15),
-                        i3.Place("elec_via_lr:dc0", elec_out0 + (0+10+1.5, -4+5+5+5), angle=15),
+                        # i3.Place("elec_via_ll:dc0", elec_in0 + (0+10+1.5, -4+5+4), angle=-15),
+                        # i3.Place("elec_via_lr:dc0", elec_out0 + (0+10+1.5, -4+5+5+5), angle=15),
+                        i3.Place("elec_via_ll:dc0", elec_in0 + (-12, 8), angle=180),
+                        i3.Place("elec_via_lr:dc0", elec_out0 + (-12, 8), angle=180),
                     ]
 
                 insts += i3.place_and_route(insts=routing_south_insts, specs=routing_south_specs)
@@ -626,9 +633,9 @@ class HeaterAddDropRacetrack_3(AddDropRacetrack):
 
             num_o_points = 1000
 
-            angle_0 = np.linspace(-15, -180, num_o_points)
+            angle_0 = np.linspace(-30, -180, num_o_points)
             angle_1  = np.linspace(300, 180, num_o_points)
-            angle_2 = np.linspace(15, 185, num_o_points)
+            angle_2 = np.linspace(30, 185, num_o_points)
             angle_3 = np.linspace(90, 180, num_o_points)
 
             left_points = []
@@ -670,8 +677,10 @@ class HeaterAddDropRacetrack_3(AddDropRacetrack):
                 half_width = metal_width / 2.0
                 elec_in = insts["vert_l"].ports["elec_in0"]
                 elec_out = insts["vert_r"].ports["elec_in0"]
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
+                # relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
+                # relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (0, half_width)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (0, half_width)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -681,8 +690,10 @@ class HeaterAddDropRacetrack_3(AddDropRacetrack):
                 )
                 routing_south_insts.update({"wire_in": wire, "wire_out": wire})
                 routing_south_specs += [
-                    i3.Place("wire_in", relative_in, -15),
-                    i3.Place("wire_out", relative_out, 15),
+                    # i3.Place("wire_in", relative_in, -15),
+                    # i3.Place("wire_out", relative_out, 15),
+                    i3.Place("wire_in", relative_in, 180),
+                    i3.Place("wire_out", relative_out, 180),
                 ]
 
                 if taper:
@@ -710,8 +721,10 @@ class HeaterAddDropRacetrack_3(AddDropRacetrack):
                     )
 
                     routing_south_specs += [
-                        i3.Place("elec_via_ll:dc0", elec_in0 + (0+10+1.5, -4+5+4), angle=-15),
-                        i3.Place("elec_via_lr:dc0", elec_out0 + (0+10+1.5, -4+5+5+5), angle=15),
+                        # i3.Place("elec_via_ll:dc0", elec_in0 + (0+10+1.5, -4+5+4), angle=-15),
+                        # i3.Place("elec_via_lr:dc0", elec_out0 + (0+10+1.5, -4+5+5+5), angle=15),
+                        i3.Place("elec_via_ll:dc0", elec_in0 + (-12, 8), angle=180),
+                        i3.Place("elec_via_lr:dc0", elec_out0 + (-12, 8), angle=180),
                     ]
 
                 insts += i3.place_and_route(insts=routing_south_insts, specs=routing_south_specs)
@@ -931,8 +944,10 @@ class HeaterNotchRacetrack(NotchRacetrack):
                 half_width = metal_width / 2.0
                 elec_in = insts["top_ring"].ports["elec_in0"]
                 elec_out = insts["top_ring"].ports["elec_out0"]
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width - 0.75, 0.75)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 0.75, - 0.75)
+                # relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width - 0.75, 0.75)
+                # relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 0.75, - 0.75)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width-2, 0)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width-2, 0)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -942,8 +957,10 @@ class HeaterNotchRacetrack(NotchRacetrack):
                 )
                 routing_south_insts.update({"wire_in": wire, "wire_out": wire})
                 routing_south_specs += [
-                    i3.Place("wire_in", relative_in, 30),
-                    i3.Place("wire_out", relative_out, 150),
+                    # i3.Place("wire_in", relative_in, 30),
+                    # i3.Place("wire_out", relative_out, 150),
+                    i3.Place("wire_in", relative_in, -90),
+                    i3.Place("wire_out", relative_out, -90),
                 ]
 
                 if taper:
@@ -971,8 +988,10 @@ class HeaterNotchRacetrack(NotchRacetrack):
                     )
 
                     routing_south_specs += [
-                        i3.Place("elec_via_ll:dc0", elec_in0 + (0+10.25, -4+10+2+6),30),
-                        i3.Place("elec_via_lr:dc0", elec_out0 + (0-10.25, -4+10+2+6),150),
+                        # i3.Place("elec_via_ll:dc0", elec_in0 + (0+10.25, -4+10+2+6),30),
+                        # i3.Place("elec_via_lr:dc0", elec_out0 + (0-10.25, -4+10+2+6),150),
+                        i3.Place("elec_via_ll:dc0", elec_in0 + (0, -4)),
+                        i3.Place("elec_via_lr:dc0", elec_out0 + (0, -4)),
                     ]
 
                 insts += i3.place_and_route(insts=routing_south_insts, specs=routing_south_specs)
@@ -1330,7 +1349,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5-48+0.5, 0), (629.5-48+0.5, 240.25-45)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -1342,7 +1361,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180-1.5, -300), (-125+600+180-1.5, -400+440+37.5)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -1356,7 +1375,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set()
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
             electric_wire_shape = i3.Shape(
-                [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
+                [(0, -40), (200, -40), (245-0.5-3, -40), (245-0.5-3, -50)])  # For 90/100
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -1369,14 +1388,14 @@ class Aux_add_drop_ring_1_2(i3.PCell):
             # lv.set(pitch=200.0)
             # lv.set()
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
-            def ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100, num_points=500):
-                angles = np.linspace(np.deg2rad(start_deg), np.deg2rad(end_deg), num_points)
+            def ring_arc_points(radius=self.main_radius, start_deg=60, end_deg=120, num_points=500):
+                angles = np.linspace(start_deg*np.pi/180, end_deg*np.pi/180, num_points)
                 x = radius * np.cos(angles)
                 y = radius * np.sin(angles)
                 return [(round(xi, 3), round(yi, 3)) for xi, yi in zip(x, y)]
 
             # Example use
-            points = ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100)
+            points = ring_arc_points(radius=self.main_radius, start_deg=75, end_deg=105)
             # points.append((-self.main_radius*np.sin(np.deg2rad(180))-39, -220*np.cos(np.deg2rad(180))))
             # print(points)
             electric_wire_shape = i3.Shape(points=points)
@@ -1387,6 +1406,7 @@ class Aux_add_drop_ring_1_2(i3.PCell):
 
         def _default_taper_coupler(self):
             lv = self.cell.taper_coupler.get_default_view(self)
+            lv.set(in_width=2)
             lv.set(out_width=8)
             lv.set(p1_module=True)
             return lv
@@ -1452,15 +1472,16 @@ class Aux_add_drop_ring_1_2(i3.PCell):
                 i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200-4)), # For 90/200
                 i3.FlipV("metal_wire_coupler_2"),
 
-                i3.Place("heater_coupler", (-300+520+7.7-175-2.6-0.1, 2.6), angle=-90),  # For 90/200
+                i3.Place("heater_coupler", (-300+520+7.7-175-2.6-0.1, 1.3+0.85), angle=-90),  # For 90/200
 
-                i3.Place("taper_coupler_1", (217+55+1,-34), angle=165),  # For 90/200
-                i3.Place("taper_coupler_2", (217+55+1, 39), angle=-165),  # For 90/200
-                i3.Place("wire_coupler_1", (217 + 55+5, -35), angle=165),  # For 90/200
-                i3.Place("wire_coupler_2", (217 + 55+5, 40), angle=-165),  # For 90/200
+                i3.Place("wire_coupler_1", (1*np.cos(15*np.pi/180), 1-1*np.sin(15*np.pi/180)), angle=180, relative_to="heater_coupler:in0"),  # For 90/200
+                i3.Place("wire_coupler_2", (1*np.cos(15*np.pi/180), -1+1*np.sin(15*np.pi/180)), angle=-180, relative_to="heater_coupler:out0"),  # For 90/200
 
-                i3.Place("ring_elecvia_1", (217 + 55 + 1 - 5 - 1.9, -34 + 2), angle=165),
-                i3.Place("ring_elecvia_2", (217 + 55 + 1 - 5 - 1.9, 39 - 2), angle=-165),
+                i3.Place("taper_coupler_1", (0, 0), angle=180, relative_to="wire_coupler_1:out0"),  # For 90/200
+                i3.Place("taper_coupler_2", (0, 0), angle=-180, relative_to="wire_coupler_2:out0"),  # For 90/200
+
+                i3.Place("ring_elecvia_1", (-4, 0), angle=180, relative_to="taper_coupler_1:out0"),
+                i3.Place("ring_elecvia_2", (-4, 0), angle=-180, relative_to="taper_coupler_2:out0"),
 
                 ]
 
@@ -1647,7 +1668,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5, 0), (629.25, 240.25), (623.5, 242)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0+65+40,195), (0+65+40,0), (629.5-48+0.5, 0), (629.5-48+0.5, 240.25-45)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -1659,7 +1680,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set(pad_size=90.0)
             # lv.set(pitch=200.0)
             # lv.set()
-            electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180, -300), (-125+600+180, -400+440), (-125+600+180+2+4-1, -400+440+4+4-0.75)]) # For 90/200
+            electric_wire_shape = i3.Shape([(0+155,50), (-129+150, 50), (-129+150, -300), (-125+600+180-1.5, -300), (-125+600+180-1.5, -400+440+37.5)]) # For 90/200
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -1673,7 +1694,7 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set()
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
             electric_wire_shape = i3.Shape(
-                [(0, -40), (200, -40), (200, -68), (255 - 1+2, -68)])  # For 90/100
+                [(0, -40), (200, -40), (245-0.5-3, -40), (245-0.5-3, -50)])  # For 90/100
             lv.set(shape=electric_wire_shape)
             lv.set(core_width=15.0)
             lv.set(p1_module=True)
@@ -1686,14 +1707,14 @@ class Aux_add_drop_ring_3(i3.PCell):
             # lv.set(pitch=200.0)
             # lv.set()
             # electric_wire_shape = i3.Shape([(0, 0), (200, 0), (200, -75), (265-1, -75), (265-1, -75-35)]) # For 90/200
-            def ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100, num_points=500):
-                angles = np.linspace(np.deg2rad(start_deg), np.deg2rad(end_deg), num_points)
+            def ring_arc_points(radius=self.main_radius, start_deg=60, end_deg=120, num_points=500):
+                angles = np.linspace(start_deg*np.pi/180, end_deg*np.pi/180, num_points)
                 x = radius * np.cos(angles)
                 y = radius * np.sin(angles)
                 return [(round(xi, 3), round(yi, 3)) for xi, yi in zip(x, y)]
 
             # Example use
-            points = ring_arc_points(radius=self.main_radius, start_deg=80, end_deg=100)
+            points = ring_arc_points(radius=self.main_radius, start_deg=75, end_deg=105)
             # points.append((-self.main_radius*np.sin(np.deg2rad(180))-39, -220*np.cos(np.deg2rad(180))))
             # print(points)
             electric_wire_shape = i3.Shape(points=points)
@@ -1705,6 +1726,7 @@ class Aux_add_drop_ring_3(i3.PCell):
         def _default_taper_coupler(self):
             lv = self.cell.taper_coupler.get_default_view(self)
             lv.set(out_width=8)
+            lv.set(in_width=2)
             lv.set(p1_module=True)
             return lv
 
@@ -1768,15 +1790,16 @@ class Aux_add_drop_ring_3(i3.PCell):
                 i3.Place("metal_wire_coupler_2", (-350 + 365, -100 + 200 + 5-200-4)), # For 90/200
                 i3.FlipV("metal_wire_coupler_2"),
 
-                i3.Place("heater_coupler", (-300+520+7.7-175-2.6-0.1, 2.6), angle=-90),  # For 90/200
+                i3.Place("heater_coupler", (-300+520+7.7-175-2.6-0.1, 1.3+0.85), angle=-90),  # For 90/200
 
-                i3.Place("taper_coupler_1", (217+55+1,-34), angle=165),  # For 90/200
-                i3.Place("taper_coupler_2", (217+55+1, 39), angle=-165),  # For 90/200
-                i3.Place("wire_coupler_1", (217 + 55+5, -35), angle=165),  # For 90/200
-                i3.Place("wire_coupler_2", (217 + 55+5, 40), angle=-165),  # For 90/200
+                i3.Place("wire_coupler_1", (1*np.cos(15*np.pi/180), 1-1*np.sin(15*np.pi/180)), angle=180, relative_to="heater_coupler:in0"),  # For 90/200
+                i3.Place("wire_coupler_2", (1*np.cos(15*np.pi/180), -1+1*np.sin(15*np.pi/180)), angle=-180, relative_to="heater_coupler:out0"),  # For 90/200
 
-                i3.Place("ring_elecvia_1", (217 + 55 + 1 - 5 - 1.9, -34 + 2), angle=165),
-                i3.Place("ring_elecvia_2", (217 + 55 + 1 - 5 - 1.9, 39 - 2), angle=-165),
+                i3.Place("taper_coupler_1", (0,0), angle=180, relative_to="wire_coupler_1:out0"),  # For 90/200
+                i3.Place("taper_coupler_2", (0,0), angle=-180, relative_to="wire_coupler_2:out0"),  # For 90/200
+
+                i3.Place("ring_elecvia_1", (-4,0), angle=180, relative_to="taper_coupler_1:out0"),
+                i3.Place("ring_elecvia_2", (-4,0), angle=-180, relative_to="taper_coupler_2:out0"),
 
                 ]
 
