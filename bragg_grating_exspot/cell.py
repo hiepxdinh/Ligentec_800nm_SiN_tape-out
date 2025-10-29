@@ -89,21 +89,21 @@ class FP_BG_1_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_1_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_1_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -195,21 +195,21 @@ class FP_BG_2_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_2_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_2_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -301,21 +301,21 @@ class FP_BG_3_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_3_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_3_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -407,21 +407,21 @@ class FP_BG_4_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_4_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_4_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -513,21 +513,21 @@ class FP_BG_5_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_5_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_5_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -619,21 +619,21 @@ class FP_BG_6_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_6_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_6_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -727,21 +727,21 @@ class FP_BG_7_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_7_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_7_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -836,21 +836,21 @@ class FP_BG_8_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_8_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_8_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -943,21 +943,21 @@ class FP_BG_9_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+120, in_y+10+10),
+                coordinate=(in_x+120+100, in_y+10+10),
                 text="BG_DESIGN_9_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-120, out_y+10+10),
+                coordinate=(out_x-120-100, out_y+10+10),
                 text="BG_DESIGN_9_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -1050,21 +1050,21 @@ class Sinusoidal_BG_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+125, in_y+10+10),
+                coordinate=(in_x+125+100, in_y+10+10),
                 text="BG_Sinusoidal_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-125, out_y+10+10),
+                coordinate=(out_x-125-100, out_y+10+10),
                 text="BG_Sinusoidal_FP_" +str(self.fp_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 

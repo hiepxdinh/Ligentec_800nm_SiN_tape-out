@@ -64,10 +64,12 @@ def find_top_connector_elements(dc):
     arcbend2_inst = dc.instances["arcbend2"]
 
     points = []
-    right_points = _get_points(arcbend1_inst, angle=30)
+    right_points = _get_points(arcbend1_inst, angle=40)
+    # right_points = _get_points(arcbend1_inst, angle=30)
     right_points_reversed = right_points[::-1]
     points.extend(right_points_reversed)
-    left_points = _get_points(arcbend2_inst, angle=15)
+    left_points = _get_points(arcbend2_inst, angle=5)
+    # left_points = _get_points(arcbend2_inst, angle=15)
     left_points_reversed = left_points[::1]
     points.extend(left_points_reversed)
     return i3.Shape(points=points)
@@ -679,8 +681,8 @@ class HeaterAddDropRacetrack_3(AddDropRacetrack):
                 elec_out = insts["vert_r"].ports["elec_in0"]
                 # relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle +90) - (half_width, 0.5)
                 # relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 1.5, 0.5)
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (0, half_width)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (0, half_width)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (0, 0)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (0, 0)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -692,8 +694,8 @@ class HeaterAddDropRacetrack_3(AddDropRacetrack):
                 routing_south_specs += [
                     # i3.Place("wire_in", relative_in, -15),
                     # i3.Place("wire_out", relative_out, 15),
-                    i3.Place("wire_in", relative_in, 180),
-                    i3.Place("wire_out", relative_out, 180),
+                    i3.Place("wire_in", relative_in, 90),
+                    i3.Place("wire_out", relative_out, -90),
                 ]
 
                 if taper:
@@ -946,8 +948,8 @@ class HeaterNotchRacetrack(NotchRacetrack):
                 elec_out = insts["top_ring"].ports["elec_out0"]
                 # relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width - 0.75, 0.75)
                 # relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width - 0.75, - 0.75)
-                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width-2, 0)
-                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width-2, 0)
+                relative_in = elec_in.position.move_polar_copy(half_width, elec_in.angle + 90) - (half_width-3, -1)
+                relative_out = elec_out.position.move_polar_copy(half_width, elec_out.angle - 90) + (half_width-3, 1)
                 wire = pdk.HeaterWaveguide(name=name + "_wire")
                 wire.Layout(
                     core_width=0,
@@ -959,8 +961,8 @@ class HeaterNotchRacetrack(NotchRacetrack):
                 routing_south_specs += [
                     # i3.Place("wire_in", relative_in, 30),
                     # i3.Place("wire_out", relative_out, 150),
-                    i3.Place("wire_in", relative_in, -90),
-                    i3.Place("wire_out", relative_out, -90),
+                    i3.Place("wire_in", relative_in, 180),
+                    i3.Place("wire_out", relative_out, 0),
                 ]
 
                 if taper:
@@ -990,8 +992,8 @@ class HeaterNotchRacetrack(NotchRacetrack):
                     routing_south_specs += [
                         # i3.Place("elec_via_ll:dc0", elec_in0 + (0+10.25, -4+10+2+6),30),
                         # i3.Place("elec_via_lr:dc0", elec_out0 + (0-10.25, -4+10+2+6),150),
-                        i3.Place("elec_via_ll:dc0", elec_in0 + (0, -4)),
-                        i3.Place("elec_via_lr:dc0", elec_out0 + (0, -4)),
+                        i3.Place("elec_via_ll:dc0", elec_in0 + (-12, 8)),
+                        i3.Place("elec_via_lr:dc0", elec_out0 + (12, 8)),
                     ]
 
                 insts += i3.place_and_route(insts=routing_south_insts, specs=routing_south_specs)

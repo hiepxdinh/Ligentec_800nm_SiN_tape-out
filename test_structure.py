@@ -25,6 +25,10 @@ from Aux_ring import Aux_add_drop_ring_1_2
 from Aux_ring import HeaterNotchRacetrack, Aux_add_drop_ring_3
 from Aux_ring_taper import Aux_add_drop_ring_taper_3, Aux_add_drop_ring_taper_1_2
 
+from Bragg_grating_test import  BG_Test_1
+from Bragg_grating_test_lensed_fiber_bb import BG_Test_8_lense
+from Bragg_grating_test_linear_taper import BG_Test_1_taper
+
 import ipkiss3.all as i3
 import numpy as np
 
@@ -34,11 +38,15 @@ chip_elements = list()
 ###########################
 ## For component testing
 ###########################
+fp_length_test=10.0
+
+fp_width_1=1.0
 
 main_gap_2 = 0.35
 aux_gap_2 = 0.7
 ring_gap_2 = 0.45
-#
+
 test_component = Aux_add_drop_ring_taper_3(main_gap0=main_gap_2, main_gap1=main_gap_2, aux_gap0=aux_gap_2, ring_gap=ring_gap_2-0.3)
 test_component_lv = test_component.Layout(main_radius=227.82, aux_radius=60)
+# test_component_lv.visualize(annotate=True)
 test_component_lv.write_gdsii("gds_output/test_component_lv_2.gds")

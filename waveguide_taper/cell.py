@@ -83,21 +83,21 @@ class Waveguide_Exspot(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+60, in_y+10+10),
+                coordinate=(in_x+60+100, in_y+10+10),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-60, out_y+10+10),
+                coordinate=(out_x-60-100, out_y+10+10),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -200,21 +200,21 @@ class Waveguide_Exspot_2(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+110-50, in_y+25),
+                coordinate=(in_x+110-50+200, in_y+25),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-110+50, out_y+10+10),
+                coordinate=(out_x-110+50-100, out_y+10+10),
                 text="SC_WG_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 

@@ -147,7 +147,7 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
                 text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 transformation=i3.VMirror()
             )
             return elems

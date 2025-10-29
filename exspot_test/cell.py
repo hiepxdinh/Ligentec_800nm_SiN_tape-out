@@ -94,7 +94,7 @@ class Exspot_Spiral_Square(i3.Circuit):
                 text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -104,7 +104,7 @@ class Exspot_Spiral_Square(i3.Circuit):
                 text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
 
@@ -202,7 +202,7 @@ class Exspot_Spiral_Square_2(i3.Circuit):
                 text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=20,
                 # transformation=i3.VMirror()
             )
 
@@ -212,7 +212,7 @@ class Exspot_Spiral_Square_2(i3.Circuit):
                 text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=20,
                 # transformation=i3.VMirror()
             )
 
@@ -290,7 +290,7 @@ class Exspot_Spiral_Circular_GC(i3.Circuit):
                 text="SPIRAL" +str(self.spiral_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
             return elems

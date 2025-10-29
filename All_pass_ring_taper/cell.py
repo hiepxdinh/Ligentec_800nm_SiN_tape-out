@@ -119,7 +119,7 @@ class All_pass_ring_Exspot(i3.Circuit):
                 text="RR_200_G" +str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
             return elems
@@ -285,7 +285,7 @@ class All_pass_ring_Exspot_50GHz(i3.Circuit):
                 text="RR_50_GHZ_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10
+                height=15
                 # transformation=i3.VMirror()
             )
             return elems
@@ -458,7 +458,7 @@ class All_pass_ring_Exspot_100GHz(i3.Circuit):
                 text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=fontsize,
+                height=15,
                 # transformation=i3.VMirror()
             )
             return elems
@@ -586,7 +586,7 @@ class All_pass_ring_Exspot_200GHz(i3.Circuit):
                 text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
             return elems
@@ -715,10 +715,10 @@ class All_pass_ring_Exspot_Aux(i3.Circuit):
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="AUX_RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
+                text="W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=fontsize,
+                height=15,
                 # transformation=i3.Rotation(rotation=90)+i3.HMirror()
             )
             return elems
@@ -894,7 +894,7 @@ class All_pass_ring_Exspot_Test(i3.Circuit):
                 text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=10,
+                height=15,
                 # transformation=i3.VMirror()
             )
             return elems
