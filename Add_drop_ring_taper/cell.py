@@ -139,15 +139,26 @@ class Add_drop_ring_Exspot_200GHz(i3.Circuit):
             """
             add labels at in/out put grating couplers regions
             """
-            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200+15)
+            ring_position = (self.ring_position_x+45, self.ring_position_y-100+200+15+20)
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=ring_position,
-                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
+                text="W_" + str(self.ring_width),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 transformation=i3.VMirror()
             )
+
+            elems += i3.PolygonText(
+                layer=i3.TECH.PPLAYER.X1P,
+                coordinate=(self.ring_position_x+45, self.ring_position_y-100+200+15+20-40),
+                text="G_"+str(self.ring_gap),
+                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+                font=i3.TEXT.FONT.DEFAULT,
+                height=20,
+                transformation=i3.VMirror()
+            )
+
             return elems

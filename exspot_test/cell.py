@@ -88,23 +88,23 @@ class Exspot_Spiral_Square(i3.Circuit):
             out_x = out_port.position.x
             out_y = out_port.position.y
 
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+110+0, in_y+35),
-                text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=15,
-                # transformation=i3.VMirror()
-            )
+            # elems += i3.PolygonText(
+            #     layer=i3.TECH.PPLAYER.X1P,
+            #     coordinate=(in_x+110+200, in_y+35),
+            #     text="L_" +str(self.spiral_length) + "_" +str(self.width_out),
+            #     alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+            #     font=i3.TEXT.FONT.DEFAULT,
+            #     height=15,
+            #     # transformation=i3.VMirror()
+            # )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-110-0, out_y+35),
-                text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
+                coordinate=(out_x-110-0+200-450, out_y+38),
+                text="L_" +str(self.spiral_length) + "_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 # transformation=i3.VMirror()
             )
 
@@ -196,20 +196,20 @@ class Exspot_Spiral_Square_2(i3.Circuit):
             out_x = out_port.position.x
             out_y = out_port.position.y
 
-            elems += i3.PolygonText(
-                layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(in_x+110+0, in_y+30+5),
-                text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
-                alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
-                font=i3.TEXT.FONT.DEFAULT,
-                height=20,
-                # transformation=i3.VMirror()
-            )
+            # elems += i3.PolygonText(
+            #     layer=i3.TECH.PPLAYER.X1P,
+            #     coordinate=(in_x+110+200, in_y+30+5),
+            #     text="L_" +str(self.spiral_length) + "_" +str(self.width_out),
+            #     alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
+            #     font=i3.TEXT.FONT.DEFAULT,
+            #     height=20,
+            #     # transformation=i3.VMirror()
+            # )
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(out_x-110-0, out_y+30+5),
-                text="SPIRAL_" +str(self.spiral_length) + "_" +str(self.width_out),
+                coordinate=(out_x-110-0+200-450, out_y+38),
+                text="L_" +str(self.spiral_length) + "_" +str(self.width_out),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
                 height=20,
@@ -287,10 +287,10 @@ class Exspot_Spiral_Circular_GC(i3.Circuit):
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
                 coordinate=(-150, 18),
-                text="SPIRAL" +str(self.spiral_length),
+                text="L" +str(self.spiral_length),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 # transformation=i3.VMirror()
             )
             return elems

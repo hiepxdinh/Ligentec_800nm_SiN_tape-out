@@ -188,7 +188,7 @@ class Aux_add_drop_ring_taper_1_2(i3.Circuit):
                 text="AUX_RING_1_2",
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 transformation=i3.Rotation(rotation=90)+i3.HMirror()
             )
             return elems
@@ -389,7 +389,7 @@ class Aux_add_drop_ring_taper_3(i3.Circuit):
                 text="AUX_RING_3",
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 transformation=i3.Rotation(rotation=90)+i3.HMirror()
             )
             return elems

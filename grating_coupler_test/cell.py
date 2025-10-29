@@ -230,11 +230,11 @@ class All_pass_ring_GC_2(i3.Circuit):
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(-100, 18),
-                text="RR_W_" + str(self.width_in) + "_G_"+str(self.ring_gap),
+                coordinate=(-100-50, 18+5-45),
+                text="W_" + str(self.width_in) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 # transformation=i3.VMirror()
             )
             return elems
@@ -352,15 +352,15 @@ class All_pass_ring_GC_3(i3.Circuit):
             """
             add labels at in/out put grating couplers regions
             """
-            ring_position = (0,0)
+            ring_position = (0,5)
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(0, 20),
-                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
+                coordinate=(0+5, 20+5),
+                text="W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 # transformation=i3.VMirror()
             )
             return elems
@@ -477,15 +477,15 @@ class All_pass_ring_GC_4(i3.Circuit):
             """
             add labels at in/out put grating couplers regions
             """
-            ring_position = (0,0)
+            ring_position = (0,5)
 
             elems += i3.PolygonText(
                 layer=i3.TECH.PPLAYER.X1P,
-                coordinate=(0, 20),
-                text="RR_W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
+                coordinate=(0+5, 20+5),
+                text="W_" + str(self.ring_width) + "_G_"+str(self.ring_gap),
                 alignment=(i3.TEXT.ALIGN.CENTER, i3.TEXT.ALIGN.CENTER),
                 font=i3.TEXT.FONT.DEFAULT,
-                height=15,
+                height=20,
                 # transformation=i3.VMirror()
             )
             return elems

@@ -321,13 +321,13 @@ separation =  127/3
 for i, width in enumerate(waveguide_width):
     waveguide_test = Waveguide_Exspot()
     waveguide_test_lv = waveguide_test.Layout(width_out=width)
-    chip_elements.append(i3.SRef(reference=waveguide_test, position=(615, 1800-252.3-900-78.6+127/3-32.5+650-49.266+127/3+9-0.4 + i*separation)))
+    chip_elements.append(i3.SRef(reference=waveguide_test, position=(615, -5+1800-252.3-900-78.6+127/3-32.5+650-49.266+127/3+9-0.4 + i*separation)))
 
 waveguide_width = [0.8, 1.0, 1.2, 1.4, 1.4, 1.6, 1.6, 1.8, 1.8, 2.0, 2.0, 2.2, 2.2, 2.4, 2.6]
 for i, width in enumerate(waveguide_width):
     waveguide_test = Waveguide_Exspot_2()
     waveguide_test_lv = waveguide_test.Layout(width_out=width)
-    chip_elements.append(i3.SRef(reference=waveguide_test, position=(615, 2500-252.3-159.5-32.5-900+50-118.767+127/3+650-49.266+127/3-127+9-0.4 + i*separation)))
+    chip_elements.append(i3.SRef(reference=waveguide_test, position=(615, -5+2500-252.3-159.5-32.5-900+50-118.767+127/3+650-49.266+127/3-127+9-0.4 + i*separation)))
 
 ### Spiral Test
 spiral_test_2um_1 = Exspot_Spiral_Square()
@@ -405,7 +405,7 @@ fp_length_1=1486.0
 
 bg_1_1 = FP_BG_1_Exspot(device_length=device_length_long)
 bg_1_1_lv = bg_1_1.Layout(fp_width=fp_width_1, fp_length=fp_length_1, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_1_1_lv, position=(4507+10, 100+9)))
+chip_elements.append(i3.SRef(reference=bg_1_1_lv, position=(4507+10, -5+100+9)))
 
 # BG_2: 4 devices
 fp_width_2=1.0
@@ -414,7 +414,7 @@ fp_length_2=7070.0
 bg_2_1 = FP_BG_2_Exspot(device_length=device_length_long)
 bg_2_1_lv = bg_2_1.Layout(fp_width=fp_width_2, fp_length=fp_length_2, coupler_gap=coupler_gap)
 # bg_2_lv.visualize(annotate=True)
-chip_elements.append(i3.SRef(reference=bg_2_1_lv, position=(1715+10, 100+127/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_2_1_lv, position=(1715+10, -5+100+127/3+0.2+9)))
 
 # BG_3: 4 devices
 fp_width_3=1.0
@@ -422,15 +422,15 @@ fp_length_3=[6470.0, 6470.0-50.0, 6470.0+50.0]
 
 bg_3_1 = FP_BG_3_Exspot(device_length=device_length_long)
 bg_3_1_lv = bg_3_1.Layout(fp_width=fp_width_3, fp_length=fp_length_3[0], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_3_1_lv, position=(2015+10, 100+127*2/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_3_1_lv, position=(2015+10, -5+100+127*2/3+0.2+9)))
 
 bg_3_2 = FP_BG_3_Exspot(device_length=device_length_long)
 bg_3_2_lv = bg_3_2.Layout(fp_width=fp_width_3, fp_length=fp_length_3[1], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_3_2_lv, position=(2015+10+50/2, 100+127*3/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_3_2_lv, position=(2015+10+50/2, -5+100+127*3/3+0.2+9)))
 
 bg_3_3 = FP_BG_3_Exspot(device_length=device_length_long)
 bg_3_3_lv = bg_3_3.Layout(fp_width=fp_width_3, fp_length=fp_length_3[2], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_3_3_lv, position=(2015+10-50/2, 100+127*4/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_3_3_lv, position=(2015+10-50/2, -5+100+127*4/3+0.2+9)))
 
 # BG_4: 4 devices
 fp_width_4=0.8
@@ -438,15 +438,15 @@ fp_length_4=[1712.19, 1712.19-50.0, 1712.19+50.0]
 
 bg_4_1 = FP_BG_4_Exspot(device_length=device_length_long)
 bg_4_1_lv = bg_4_1.Layout(fp_width=fp_width_4, fp_length=fp_length_4[0], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_4_1_lv, position=(4393.905+10, 100+127*5/3+9)))
+chip_elements.append(i3.SRef(reference=bg_4_1_lv, position=(4393.905+10, -5+100+127*5/3+9)))
 
 bg_4_2 = FP_BG_4_Exspot(device_length=device_length_long)
 bg_4_2_lv = bg_4_2.Layout(fp_width=fp_width_4, fp_length=fp_length_4[1], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_4_2_lv, position=(4393.905+10+50/2, 100+127*6/3+9)))
+chip_elements.append(i3.SRef(reference=bg_4_2_lv, position=(4393.905+10+50/2, -5+100+127*6/3+9)))
 
 bg_4_3 = FP_BG_4_Exspot(device_length=device_length_long)
 bg_4_3_lv = bg_4_3.Layout(fp_width=fp_width_4, fp_length=fp_length_4[2], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_4_3_lv, position=(4393.905+10-50/2, 100+127*7/3+9)))
+chip_elements.append(i3.SRef(reference=bg_4_3_lv, position=(4393.905+10-50/2, -5+100+127*7/3+9)))
 
 # BG_5: 4 devices
 fp_width_5=0.8
@@ -454,15 +454,15 @@ fp_length_5=[2500.0, 2500.0-50.0, 2500.0+50.0]
 
 bg_5_1 = FP_BG_5_Exspot(device_length=device_length_long)
 bg_5_1_lv = bg_5_1.Layout(fp_width=fp_width_5, fp_length=fp_length_5[0], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_5_1_lv, position=(4000+10, 100+127*8/3+9)))
+chip_elements.append(i3.SRef(reference=bg_5_1_lv, position=(4000+10, -5+100+127*8/3+9)))
 
 bg_5_2 = FP_BG_5_Exspot(device_length=device_length_long)
 bg_5_2_lv = bg_5_2.Layout(fp_width=fp_width_5, fp_length=fp_length_5[1], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_5_2_lv, position=(4000+10+50/2, 100+127*9/3+9)))
+chip_elements.append(i3.SRef(reference=bg_5_2_lv, position=(4000+10+50/2, -5+100+127*9/3+9)))
 
 bg_5_3 = FP_BG_5_Exspot(device_length=device_length_long)
 bg_5_3_lv = bg_5_3.Layout(fp_width=fp_width_5, fp_length=fp_length_5[2], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_5_3_lv, position=(4000+10-50/2, 100+127*10/3+9)))
+chip_elements.append(i3.SRef(reference=bg_5_3_lv, position=(4000+10-50/2, -5+100+127*10/3+9)))
 #
 # BG_6: 4 devices
 fp_width_6=1.0
@@ -470,15 +470,15 @@ fp_length_6=[3681.0, 3681.0-50.0, 3681.0+50.0]
 
 bg_6_1 = FP_BG_6_Exspot(device_length=device_length_long)
 bg_6_1_lv = bg_6_1.Layout(fp_width=fp_width_6, fp_length=fp_length_6[0], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_6_1_lv, position=(3409.5+10, 100+127*11/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_6_1_lv, position=(3409.5+10, -5+100+127*11/3+0.2+9)))
 
 bg_6_2 = FP_BG_6_Exspot(device_length=device_length_long)
 bg_6_2_lv = bg_6_2.Layout(fp_width=fp_width_6, fp_length=fp_length_6[1], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_6_2_lv, position=(3409.5+10+50/2, 100+127*12/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_6_2_lv, position=(3409.5+10+50/2, -5+100+127*12/3+0.2+9)))
 
 bg_6_3 = FP_BG_6_Exspot(device_length=device_length_long)
 bg_6_3_lv = bg_6_3.Layout(fp_width=fp_width_6, fp_length=fp_length_6[2], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_6_3_lv, position=(3409.5+10-50/2, 100+127*13/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_6_3_lv, position=(3409.5+10-50/2, -5+100+127*13/3+0.2+9)))
 #
 # BG_7: 4 devices
 fp_width_7=1.0
@@ -486,15 +486,15 @@ fp_length_7=[1440.0, 1440.0-50.0, 1440.0+50.0]
 
 bg_7_1 = FP_BG_7_Exspot(device_length=device_length_long)
 bg_7_1_lv = bg_7_1.Layout(fp_width=fp_width_7, fp_length=fp_length_7[0], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_7_1_lv, position=(-3000+7530+10, 100+127*14/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_7_1_lv, position=(-3000+7530+10, -5+100+127*14/3+0.2+9)))
 
 bg_7_2 = FP_BG_7_Exspot(device_length=device_length_long)
 bg_7_2_lv = bg_7_2.Layout(fp_width=fp_width_7, fp_length=fp_length_7[1], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_7_2_lv, position=(-3000+7530+10+50/2, 100+127*15/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_7_2_lv, position=(-3000+7530+10+50/2, -5+100+127*15/3+0.2+9)))
 
 bg_7_3 = FP_BG_7_Exspot(device_length=device_length_long)
 bg_7_3_lv = bg_7_3.Layout(fp_width=fp_width_7, fp_length=fp_length_7[2], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_7_3_lv, position=(-3000+7530+10-50/2, 100+127*16/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_7_3_lv, position=(-3000+7530+10-50/2, -5+100+127*16/3+0.2+9)))
 
 # BG_8: 4 devices
 fp_width_8=1.0
@@ -502,15 +502,15 @@ fp_length_8=[2700.0, 2600.0, 2800.0]
 
 bg_8_1 = FP_BG_8_Exspot(device_length=device_length_long)
 bg_8_1_lv = bg_8_1.Layout(fp_width=fp_width_8, fp_length=fp_length_8[0], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_8_1_lv, position=(-3000+7010+10-100-10, 100+127*17/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_8_1_lv, position=(-3000+7010+10-100-10, -5+100+127*17/3+0.2+9)))
 
 bg_8_2 = FP_BG_8_Exspot(device_length=device_length_long)
 bg_8_2_lv = bg_8_2.Layout(fp_width=fp_width_8, fp_length=fp_length_8[1], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_8_2_lv, position=(-3000+7010+10-100+515-500+25, 100+127*18/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_8_2_lv, position=(-3000+7010+10-100+515-500+25, -5+100+127*18/3+0.2+9)))
 
 bg_8_3 = FP_BG_8_Exspot(device_length=device_length_long)
 bg_8_3_lv = bg_8_3.Layout(fp_width=fp_width_8, fp_length=fp_length_8[2], coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_8_3_lv, position=(-3000+7010+10-100-35-25, 100+127*19/3+0.2+9)))
+chip_elements.append(i3.SRef(reference=bg_8_3_lv, position=(-3000+7010+10-100-35-25, -5+100+127*19/3+0.2+9)))
 #
 # BG_9: 4 devices
 fp_width_9=[0.8, 1.0]
@@ -518,11 +518,11 @@ fp_length_9=5000.0
 
 bg_9_1 = FP_BG_9_Exspot(device_length=device_length_long)
 bg_9_1_lv = bg_9_1.Layout(fp_width=fp_width_9[0], fp_length=fp_length_9, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_9_1_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*20/3+9)))
+chip_elements.append(i3.SRef(reference=bg_9_1_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*20/3+9-5)))
 
 bg_9_2 = FP_BG_9_Exspot(device_length=device_length_long)
 bg_9_2_lv = bg_9_2.Layout(fp_width=fp_width_9[0], fp_length=fp_length_9, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_9_2_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*21/3+0+9)))
+chip_elements.append(i3.SRef(reference=bg_9_2_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*21/3+0+9-5)))
 
 # BG_10: 4 devices
 fp_width_10=1.2
@@ -530,26 +530,26 @@ fp_length_10=5000.0
 
 bg_10_1 = FP_BG_4_Exspot(device_length=device_length_long)
 bg_10_1_lv = bg_10_1.Layout(fp_width=fp_width_10, fp_length=fp_length_10, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_10_1_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*22/3+0+0.4+9)))
+chip_elements.append(i3.SRef(reference=bg_10_1_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*22/3+0+0.4+9-5)))
 
 bg_10_2 = FP_BG_4_Exspot(device_length=device_length_long)
 bg_10_2_lv = bg_10_2.Layout(fp_width=fp_width_10, fp_length=fp_length_10, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=bg_10_2_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*23/3+0+0.4+9)))
+chip_elements.append(i3.SRef(reference=bg_10_2_lv, position=(-3000+7010+10-100-35-25-1100, 100+127*23/3+0+0.4+9-5)))
 
 
 # Sinusoidal BG
 
 sinusoidal_bg_1 = Sinusoidal_BG_Exspot(device_length=device_length_long)
 sinusoidal_bg_1_lv = sinusoidal_bg_1.Layout(fp_width=1.6, fp_length=3400, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=sinusoidal_bg_1_lv, position=(-3000+10+7010-100-35-325, 100+127*24/3+0.8+0+9)))
+chip_elements.append(i3.SRef(reference=sinusoidal_bg_1_lv, position=(-3000+10+7010-100-35-325, 100+127*24/3+0.8+0+9-5)))
 
 sinusoidal_bg_2 = Sinusoidal_BG_Exspot(device_length=device_length_long)
 sinusoidal_bg_2_lv = sinusoidal_bg_2.Layout(fp_width=1.6, fp_length=3350, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=sinusoidal_bg_2_lv, position=(-3000+10+7010-100-35-325+25, 100+127*25/3+0.8+0+9)))
+chip_elements.append(i3.SRef(reference=sinusoidal_bg_2_lv, position=(-3000+10+7010-100-35-325+25, 100+127*25/3+0.8+0+9-5)))
 
 sinusoidal_bg_3 = Sinusoidal_BG_Exspot(device_length=device_length_long)
 sinusoidal_bg_3_lv = sinusoidal_bg_3.Layout(fp_width=1.6, fp_length=3450, coupler_gap=coupler_gap)
-chip_elements.append(i3.SRef(reference=sinusoidal_bg_3_lv, position=(-3000+10+7010-100-35-325-25, 100+127*26/3+0.8+0+9)))
+chip_elements.append(i3.SRef(reference=sinusoidal_bg_3_lv, position=(-3000+10+7010-100-35-325-25, 100+127*26/3+0.8+0+9-5)))
 #
 
 # # #
